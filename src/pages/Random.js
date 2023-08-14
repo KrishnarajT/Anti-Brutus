@@ -1,98 +1,111 @@
 import React, { useState } from "react";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Random = () => {
-  const [includeNumbers, setIncludeNumbers] = useState(false);
-  const [includeSymbols, setIncludeSymbols] = useState(false);
-  const [includeUppercase, setIncludeUppercase] = useState(false);
-  const [passwordLength, setPasswordLength] = useState(8);
-  const [password, setPassword] = useState("Generate!");
+	const { theme } = React.useContext(ThemeContext);
+	useEffect(() => {
+		console.log(theme);
+		if (theme === "light") {
+			const light_button = document.getElementById("light_button");
+			light_button.click();
+		} else {
+			const dark_button = document.getElementById("dark_button");
+			dark_button.click();
+		}
+	});
+	const [includeNumbers, setIncludeNumbers] = useState(false);
+	const [includeSymbols, setIncludeSymbols] = useState(false);
+	const [includeUppercase, setIncludeUppercase] = useState(false);
+	const [passwordLength, setPasswordLength] = useState(8);
+	const [password, setPassword] = useState("Generate!");
 
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    switch (name) {
-      case "includeNumbers":
-        setIncludeNumbers(checked);
-        break;
-      case "includeSymbols":
-        setIncludeSymbols(checked);
-        break;
-      case "includeUppercase":
-        setIncludeUppercase(checked);
-        break;
-      default:
-        break;
-    }
-  };
+	const handleCheckboxChange = (event) => {
+		const { name, checked } = event.target;
+		switch (name) {
+			case "includeNumbers":
+				setIncludeNumbers(checked);
+				break;
+			case "includeSymbols":
+				setIncludeSymbols(checked);
+				break;
+			case "includeUppercase":
+				setIncludeUppercase(checked);
+				break;
+			default:
+				break;
+		}
+	};
 
-  const handlePasswordLengthChange = (event) => {
-    setPasswordLength(event.target.value);
-  };
-  const generatePassword = (
-    length,
-    includeNumbers,
-    includeSymbols,
-    includeUppercase,
-  ) => {
-    let result = "";
-    const lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
-    const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
-    const symbols = "!@#$%&*";
+	const handlePasswordLengthChange = (event) => {
+		setPasswordLength(event.target.value);
+	};
+	const generatePassword = (
+		length,
+		includeNumbers,
+		includeSymbols,
+		includeUppercase
+	) => {
+		let result = "";
+		const lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
+		const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		const numbers = "0123456789";
+		const symbols = "!@#$%&*";
 
-    let characters = lowercaseLetters;
-    if (includeUppercase) {
-      characters += uppercaseLetters;
-    }
-    if (includeNumbers) {
-      characters += numbers;
-    }
-    if (includeSymbols) {
-      characters += symbols;
-    }
+		let characters = lowercaseLetters;
+		if (includeUppercase) {
+			characters += uppercaseLetters;
+		}
+		if (includeNumbers) {
+			characters += numbers;
+		}
+		if (includeSymbols) {
+			characters += symbols;
+		}
 
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(
-        Math.floor(Math.random() * characters.length),
-      );
-    }
+		for (let i = 0; i < length; i++) {
+			result += characters.charAt(
+				Math.floor(Math.random() * characters.length)
+			);
+		}
 
-    if (
-      (includeNumbers && !result.match(/\d/)) ||
-      (includeSymbols && !result.match(/[!@#$%&*]/)) ||
-      (includeUppercase && !result.match(/[A-Z]/))
-    ) {
-      return generatePassword(
-        length,
-        includeNumbers,
-        includeSymbols,
-        includeUppercase,
-      );
-    }
+		if (
+			(includeNumbers && !result.match(/\d/)) ||
+			(includeSymbols && !result.match(/[!@#$%&*]/)) ||
+			(includeUppercase && !result.match(/[A-Z]/))
+		) {
+			return generatePassword(
+				length,
+				includeNumbers,
+				includeSymbols,
+				includeUppercase
+			);
+		}
 
-    return result;
-  };
-  function onGeneratePasswordClick() {
-    const password = generatePassword(
-      passwordLength,
-      includeNumbers,
-      includeSymbols,
-      includeUppercase,
-    );
-    setPassword(password);
-  }
+		return result;
+	};
+	function onGeneratePasswordClick() {
+		const password = generatePassword(
+			passwordLength,
+			includeNumbers,
+			includeSymbols,
+			includeUppercase
+		);
+		setPassword(password);
+	}
 
-  function onClickCopyPassword() {
-    navigator.clipboard.writeText(password);
-    // show the toast
-    const toast = document.querySelector(".toast");
-    toast.classList.remove("hidden");
-    setTimeout(() => {
-      toast.classList.add("hidden");
-    }, 2000);
-  }
+	function onClickCopyPassword() {
+		navigator.clipboard.writeText(password);
+		// show the toast
+		const toast = document.querySelector(".toast");
+		toast.classList.remove("hidden");
+		setTimeout(() => {
+			toast.classList.add("hidden");
+		}, 2000);
+	}
 
-  return (
+	return (
 		<div className="overflow-hidden">
 			<div className="flex justify-center p-4">
 				<div className="text-base-content text-5xl p-4 text-center rounded-full px-16 outline-secondary outline m-4">
@@ -216,7 +229,7 @@ const Random = () => {
 				</div>
 			</div>
 		</div>
-  );
+	);
 };
 
 export default Random;

@@ -1,8 +1,21 @@
 import React, { useState } from "react";
 import sha256 from "js-sha256";
-import { CheckBadgeIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { CheckBadgeIcon  } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Hashed = () => {
+  	const { theme } = React.useContext(ThemeContext);
+	useEffect(() => {
+		console.log(theme);
+		if (theme === "light") {
+			const light_button = document.getElementById("light_button");
+			light_button.click();
+		} else {
+			const dark_button = document.getElementById("dark_button");
+			dark_button.click();
+		}
+	});
   const [includeSymbols, setIncludeSymbols] = useState(false);
   const [includeUppercase, setIncludeUppercase] = useState(false);
   const [passwordLength, setPasswordLength] = useState(8);
