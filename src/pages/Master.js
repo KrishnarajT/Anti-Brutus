@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import sha256 from "js-sha256";
 import {
 	CheckBadgeIcon,
-	CheckIcon,
 	EyeIcon,
 	EyeSlashIcon,
 	InformationCircleIcon,

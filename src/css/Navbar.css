@@ -4,3 +4,9 @@
     background-size: contain;
     background-position: center;
 }
+#mainsvg{
+    background-image: url('../assets/undraw_fingerprint_login_re_t71l.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
