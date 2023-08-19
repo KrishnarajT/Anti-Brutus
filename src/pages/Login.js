@@ -3,34 +3,38 @@ import { useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import "../css/Navbar.css";
 import { NavLink } from "react-router-dom";
-const Login = () => {
-	const { theme } = React.useContext(ThemeContext);
+import { useNavigate } from "react-router-dom";
+
+const Login = (props) => {
+	let navigate = useNavigate();
+
+	function handleClick() {
+		props.setisNavbarPresent(true);
+		navigate("/home");
+	}
+	const { theme, setTheme } = React.useContext(ThemeContext);
 	useEffect(() => {
 		console.log(theme);
-		if (theme === "light") {
-			const light_button = document.getElementById("light_button");
-			light_button.click();
-		} else {
-			const dark_button = document.getElementById("dark_button");
-			dark_button.click();
-		}
+		setTheme("light");
+		const light_button = document.getElementById("light_button");
+		light_button.click();
 	});
 	return (
 		<div className="p-0 m-0">
 			<div className="overflow-hidden">
 				<div className="lg:flex rubik overflow-hidden">
 					<div className="lg:w-1/2 xl:max-w-screen-sm">
-						<div className="py-12 bg-indigo-100 lg:bg-transparent flex justify-center lg:justify-start lg:px-12">
+						<div className="py-12 bg-base-100 lg:bg-transparent flex justify-center lg:justify-start lg:px-12">
 							<div className="cursor-pointer flex items-center">
 								<div id="logo" className="w-12 h-12 m-4"></div>
-								<div className="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">
+								<div className="text-2xl text-primary-content tracking-wide ml-2 font-semibold">
 									Anti Brutus
 								</div>
 							</div>
 						</div>
 						<div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
 							<h2
-								className="text-center text-4xl text-indigo-900 font-display font-semibold lg:text-left xl:text-5xl
+								className="text-center text-4xl text-primary-content font-display font-semibold lg:text-left xl:text-5xl
               xl:text-bold"
 							>
 								Log in
@@ -38,23 +42,23 @@ const Login = () => {
 							<div className="mt-12">
 								<form>
 									<div>
-										<div className="text-2xl font-bold text-gray-700 tracking-wide">
+										<div className="text-2xl font-bold text-primary-content tracking-wide">
 											Email Address
 										</div>
 										<input
-											className="w-full text-xl py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+											className="w-full text-xl py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
 											type=""
-											placeholder="mike@gmail.com"
+											placeholder="baldev@gmail.com"
 										/>
 									</div>
 									<div className="mt-8">
 										<div className="flex justify-between items-center">
-											<div className="text-2xl font-bold text-gray-700 tracking-wide">
+											<div className="text-2xl font-bold text-primary-content bg-transparent tracking-wide">
 												Master Password
 											</div>
 											<div>
 												<NavLink
-													className="text-xl font-display font-semibold text-indigo-600 hover:text-indigo-800
+													className="text-xl font-display font-semibold text-accent hover:text-accent-focus
                                   cursor-pointer"
 													to="/fpass"
 												>
@@ -63,27 +67,30 @@ const Login = () => {
 											</div>
 										</div>
 										<input
-											className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+											className="w-full text-lg py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
 											type=""
 											placeholder="Enter your password"
 										/>
 									</div>
 									<div className="mt-10">
-										<NavLink to="/home">
-											<button
-												className="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
-                          font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
+										<button
+											className="bg-primary p-4 w-full rounded-full tracking-wide
+                          font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-primary-focus text-primary-content
                           shadow-lg text-xl cursor-pointer"
-											>
-												Log In
-											</button>
-										</NavLink>
+											onClick={() => {
+												console.log("clicked");
+												// navigate to home using router
+												handleClick();
+											}}
+										>
+											Log In
+										</button>
 									</div>
 								</form>
-								<div className="mt-12 text-xl font-display font-semibold text-gray-700 text-center">
+								<div className="mt-12 text-xl font-display font-semibold text-primary-content text-center">
 									Don't have an account ?{" "}
 									<NavLink
-										className="cursor-pointer text-indigo-600 hover:text-indigo-800"
+										className="cursor-pointer text-accent hover:text-accent-focus"
 										to="/signup"
 									>
 										Sign up

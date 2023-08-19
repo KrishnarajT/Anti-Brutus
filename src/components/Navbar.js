@@ -13,7 +13,7 @@ import {
 	HashtagIcon,
 	QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
 	IconBrush,
 	IconHome,
@@ -26,7 +26,7 @@ import {
 import "../css/Navbar.css";
 import { PhVaultFill } from "./ui/locker";
 
-export function Navbar() {
+export function Navbar(props) {
 	useEffect(() => {
 		themeChange(false);
 	}, []);
@@ -43,11 +43,6 @@ export function Navbar() {
 		}
 	});
 	const pathname = window.location.pathname;
-
-	// do not show the navigation bar if we are logging in, or signing up, or we forgot pass
-	if (pathname === "/" || pathname === "/signup" || pathname === "/fpass") {
-		return <div></div>;
-	}
 
 	return (
 		<div className="pr-4 mr-4 z-50">
@@ -210,7 +205,12 @@ export function Navbar() {
 												Profile
 											</NavLink>
 										</li>
-										<li className="text-lg">
+										<li
+											className="text-lg"
+											onClick={props.setisNavbarPresent(
+												false
+											)}
+										>
 											<NavLink
 												to={"/"}
 												id="contact_element"
@@ -360,7 +360,12 @@ export function Navbar() {
 														Profile
 													</NavLink>
 												</li>
-												<li className="text-lg">
+												<li
+													className="text-lg"
+													onClick={props.setisNavbarPresent(
+														false
+													)}
+												>
 													<NavLink
 														to={"/"}
 														id="contact_element"

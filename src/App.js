@@ -13,14 +13,37 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPass from "./pages/ForgotPass";
+import { useEffect, useState } from "react";
 
 function App() {
+	const [isNavbarPresent, setisNavbarPresent] = useState(false);
+
+	useEffect(() => {
+		if (
+			window.location.pathname === "/signup" ||
+			window.location.pathname === "/fpass" ||
+			window.location.pathname === "/"
+		) {
+			setisNavbarPresent(false);
+		} else {
+			setisNavbarPresent(true);
+		}
+		console.log(window.location.pathname, isNavbarPresent);
+	}, [isNavbarPresent]);
+
 	return (
 		<ThemeContextProvider>
 			<div className="">
-				<Navbar />
+				{isNavbarPresent ? (
+					<Navbar setisNavbarPresent={setisNavbarPresent} />
+				) : null}
 				<Routes>
-					<Route path="/" element={<Login />} />
+					<Route
+						path="/"
+						element={
+							<Login setisNavbarPresent={setisNavbarPresent} />
+						}
+					/>
 					<Route path="/home" element={<Home />} />
 					<Route path="/generator" element={<GeneratorHome />} />
 					<Route path="/about" element={<About />} />
