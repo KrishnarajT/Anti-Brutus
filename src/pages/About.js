@@ -73,7 +73,7 @@ const About = () => {
 				<div className="text-base-content text-6xl p-4 text-center rounded-full px-16 outline-secondary outline m-20">
 					Credits and Thanks
 				</div>
-				<div className="text-base-content text-3xl p-8 bg-base-200 rounded-3xl flex flex-col items-center outline mb-16">
+				<div className="text-base-content text-3xl p-8 bg-base-200 rounded-3xl flex flex-col items-center outline mb-16 text-center">
 					Huge thanks to DaisyUI for the CSS framework, and Heroicons
 					for the icons. Here are the links:
 					<br></br>
@@ -91,7 +91,14 @@ const About = () => {
 							className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
 						>
 							{" "}
-							Heroicons{" "}
+							Hero Icons{" "}
+						</a>
+						<a
+							href="https://tabler-icons.io/"
+							className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
+						>
+							{" "}
+							Tabler Icons{" "}
 						</a>
 						<a
 							href="https://www.tailwindcss.com/"
@@ -108,6 +115,19 @@ const About = () => {
 							ReactJS{" "}
 						</a>
 					</div>
+					This project was made as a part of the assignments for Full
+					Stack Development Course at MIT WPU.
+					<br></br>
+					We are grateful to our teachers, and our parents for
+					encouraging us to keep trying new stuff, without any
+					restrictions.
+					<br></br>
+					None of this would be possible without their help.
+					<br></br>
+					<br></br>
+					We are also grateful to our friends, for their inputs on the
+					looks and features of the website, and for constantly
+					encourating us to keep going.
 				</div>
 			</div>
 			<div className="toast toast-bottom toast-center duration-300 transform-gpu ease-in-out hidden md:toast-end">

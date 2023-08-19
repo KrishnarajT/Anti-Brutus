@@ -13,7 +13,7 @@ import {
 	HashtagIcon,
 	QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import {
 	IconBrush,
 	IconHome,
@@ -42,6 +42,12 @@ export function Navbar() {
 			dark_button.click();
 		}
 	});
+	const pathname = window.location.pathname;
+
+	// do not show the navigation bar if we are logging in, or signing up, or we forgot pass
+	if (pathname === "/" || pathname === "/signup" || pathname === "/fpass") {
+		return <div></div>;
+	}
 
 	return (
 		<div className="pr-4 mr-4 z-50">

@@ -12,6 +12,7 @@ import Vaults from "./pages/Vaults";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ForgotPass from "./pages/ForgotPass";
 
 function App() {
 	return (
@@ -19,7 +20,8 @@ function App() {
 			<div className="">
 				<Navbar />
 				<Routes>
-					<Route path="/" element={<Home />} />
+					<Route path="/" element={<Login />} />
+					<Route path="/home" element={<Home />} />
 					<Route path="/generator" element={<GeneratorHome />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/random" element={<Random />} />
@@ -28,7 +30,7 @@ function App() {
 					<Route path="/developers" element={<Developers />} />
 					<Route path="/vaults" element={<Vaults />} />
 					<Route path="/profile" element={<Profile />} />
-					<Route path="/login" element={<Login />} />
+					<Route path="/fpass" element={<ForgotPass />} />
 					<Route path="/signup" element={<Signup />} />
 				</Routes>
 			</div>

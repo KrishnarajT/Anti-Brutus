@@ -46,7 +46,7 @@ const GeneratorHome = () => {
 						Generate your Own Secure Passwords!
 					</div>
 					<button
-						className="btn btn-secondary rounded-full mt-20 text-5xl p-6 w-96 h-32 rubik shadow-xl"
+						className="btn btn-primary rounded-full mt-20 text-5xl p-6 w-96 h-32 rubik shadow-xl"
 						onClick={() => {
 							window.location.href = "#def";
 						}}

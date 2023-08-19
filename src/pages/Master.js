@@ -440,7 +440,7 @@ const Master = () => {
 				</div>
 			</div>
 			<div
-				className="flex justify-center p-4 flex-col align-middle items-center md:bg-blue-500 break-all"
+				className="flex justify-center p-4 flex-col align-middle items-center break-all"
 				id="how"
 			>
 				<div className="text-base-content text-5xl p-4 text-center rounded-full px-16 outline-secondary outline">
