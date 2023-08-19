@@ -7,13 +7,24 @@ import { ThemeContext } from "../context/ThemeContext";
 import {
 	SunIcon,
 	MoonIcon,
-	BookmarkIcon,
-	DevicePhoneMobileIcon,
 	InformationCircleIcon,
 	Bars3Icon,
+	AcademicCapIcon,
+	HashtagIcon,
+	QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
-import { IconLockSquare, IconUserBolt } from "@tabler/icons-react";
+import {
+	IconBrush,
+	IconHome,
+	IconKey,
+	IconLogout,
+	IconPalette,
+	IconUserBolt,
+	IconUserCircle,
+} from "@tabler/icons-react";
+import "../css/Navbar.css";
+import { PhVaultFill } from "./ui/locker";
 
 export function Navbar() {
 	useEffect(() => {
@@ -35,7 +46,7 @@ export function Navbar() {
 	return (
 		<div className="pr-4 mr-4 z-50">
 			<div
-				className={`navbar bg-secondary rounded-xl text-secondary-content flex-row-reverse justify-between m-4 
+				className={`navbar bg-primary rounded-xl text-primary-content flex-row-reverse justify-between m-4 
 			md:flex-row`}
 			>
 				{/* name */}
@@ -43,11 +54,13 @@ export function Navbar() {
 					className="flex-row-reverse px-2 gap-0
 			md:flex-row"
 				>
-					{/* <UserCircleIcon className="w-8 h-8" /> */}
-					<IconUserBolt className="w-8 h-8" />
-					<NavLink to={"/"}>
+					<NavLink to={"/"} className="flex flex-row">
+						<div
+							id="logo"
+							className="w-12 h-12 bg-center snap-center self-center"
+						></div>
 						<div className="btn btn-ghost normal-case text-lg md:text-2xl">
-							Krishnaraj
+							Anti Brutus
 						</div>
 					</NavLink>
 				</div>
@@ -58,58 +71,154 @@ export function Navbar() {
 				>
 					<ul className="menu menu-horizontal px-1">
 						<li className="text-lg md:text-2xl">
-							<NavLink to={"/projects"} id="contact_element">
-								<IconLockSquare className="w-8 h-8" />
+							<NavLink
+								to={"/vaults"}
+								id="contact_element"
+								className="hover:text-black"
+							>
+								<PhVaultFill className="w-8 h-8" />
 								Vaults
 							</NavLink>
 						</li>
+
 						<li className="text-lg md:text-2xl">
-							<NavLink to={"/about"} id="contact_element">
-								<InformationCircleIcon className="w-8 h-8" />
-								About
-							</NavLink>
+							<details>
+								<summary className="hover:text-black">
+									{/* <NavLink
+										to={"/generator"}
+										id="contact_element" className="hover:text-black"
+									>
+										Generate
+									</NavLink> */}
+									<IconKey className="w-8 h-8" />
+									Generate
+								</summary>
+								<ul className="p-2 bg-base-100 text-base-content w-52">
+									<li className="text-lg">
+										<NavLink
+											to={"/generator"}
+											id="contact_element"
+											className="hover:text-black"
+										>
+											<IconHome className="w-8 h-8" />
+											Home
+										</NavLink>
+									</li>
+									<li className="text-lg">
+										<NavLink
+											to={"/random"}
+											id="contact_element"
+											className="hover:text-black"
+										>
+											<QuestionMarkCircleIcon className="w-8 h-8" />
+											Random
+										</NavLink>
+									</li>
+									<li className="text-lg">
+										<NavLink
+											to={"/hashed"}
+											id="contact_element"
+											className="hover:text-black"
+										>
+											<HashtagIcon className="w-8 h-8" />
+											Hashed
+										</NavLink>
+									</li>
+									<li className="text-lg">
+										<NavLink
+											to={"/master"}
+											id="contact_element"
+											className="hover:text-black"
+										>
+											<AcademicCapIcon className="w-8 h-8" />
+											Master
+										</NavLink>
+									</li>
+								</ul>
+							</details>
 						</li>
 						<li className="text-lg md:text-2xl">
-							<NavLink to={"/contact"} id="contact_element">
-								<DevicePhoneMobileIcon className="w-8 h-8" />
-								Contact
+							<NavLink
+								to={"/about"}
+								id="contact_element"
+								className="hover:text-black"
+							>
+								<InformationCircleIcon className="w-8 h-8" />
+								About
 							</NavLink>
 						</li>
 					</ul>
 				</div>
 				{/* Theme */}
-				<div className="hidden md:flex">
-					<ul className="menu menu-horizontal px-1">
-						<li>
-							<details>
-								<summary className="text-lg md:text-2xl">
-									Theme
-								</summary>
-								<ul className="p-2 bg-base-100 text-base-content">
-									<li
-										// data-set-theme="cupcake"
-										className="text-lg"
-										onClick={() => setTheme("light")}
-									>
-										<div>
-											<SunIcon className="w-8 h-8" />
-											Light
-										</div>
-									</li>
-									<li
-										className="text-lg"
-										// data-set-theme="dracula"
-										onClick={() => setTheme("dark")}
-									>
-										<div>
-											<MoonIcon className="w-8 h-6" />
-											Dark
-										</div>
-									</li>
-								</ul>
-							</details>
-						</li>
-					</ul>
+				<div>
+					<div className="hidden md:flex">
+						<ul className="menu menu-horizontal px-1">
+							<li>
+								<details>
+									<summary className="text-lg md:text-2xl hover:text-black">
+										<IconPalette className="w-8 h-8" />
+										Theme
+									</summary>
+									<ul className="p-2 bg-base-100 text-base-content">
+										<li
+											// data-set-theme="cupcake"
+											className="text-lg"
+											onClick={() => setTheme("light")}
+										>
+											<div>
+												<SunIcon className="w-8 h-8" />
+												Light
+											</div>
+										</li>
+										<li
+											className="text-lg"
+											// data-set-theme="dracula"
+											onClick={() => setTheme("dark")}
+										>
+											<div>
+												<MoonIcon className="w-8 h-6" />
+												Dark
+											</div>
+										</li>
+									</ul>
+								</details>
+							</li>
+						</ul>
+					</div>
+					{/* Profile */}
+					<div className="hidden md:flex">
+						<ul className="menu menu-horizontal  px-1">
+							<li>
+								<details>
+									<summary>
+										<IconUserBolt className="w-8 h-8" />
+									</summary>
+									<ul className="p-2 bg-base-100 text-base-content">
+										<li className="text-lg">
+											<NavLink
+												to={"/profile"}
+												id="contact_element"
+												className="hover:text-black"
+											>
+												{/* <IconLockSquare className="w-8 h-8" /> */}
+												Profile
+											</NavLink>
+										</li>
+										<li className="text-lg">
+											<NavLink
+												to={"/"}
+												id="contact_element"
+												className="hover:text-black"
+											>
+												{/* <IconLockSquare className="w-8 h-8" /> */}
+												Logout
+											</NavLink>
+										</li>
+									</ul>
+								</details>
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				{/* hamburger */}
@@ -117,40 +226,87 @@ export function Navbar() {
 					<ul className="menu menu-horizontal px-1">
 						<li>
 							<details>
-								<summary className="text-lg md:text-2xl">
+								<summary className="text-lg md:text-2xl hover:text-black">
 									<Bars3Icon className="w-8 h-8" />
 								</summary>
-								<ul className="p-2 bg-base-100 text-base-content z-50">
+								<ul className="p-2 bg-base-100 text-base-content z-50 flex flex-wrap flex-col w-64 gap-2">
 									<li className="text-lg md:text-2xl">
 										<NavLink
-											to={"/projects"}
+											to={"/vaults"}
 											id="contact_element"
+											className="hover:text-black"
 										>
-											<BookmarkIcon className="w-8 h-8" />
-											Projects
+											<PhVaultFill className="w-8 h-8" />
+											Vaults
 										</NavLink>
 									</li>
 									<li className="text-lg md:text-2xl">
 										<NavLink
 											to={"/about"}
 											id="contact_element"
+											className="hover:text-black"
 										>
 											<InformationCircleIcon className="w-8 h-8" />
 											About
 										</NavLink>
 									</li>
-									<li className="text-lg md:text-2xl">
-										<NavLink
-											to={"/contact"}
-											id="contact_element"
-										>
-											<DevicePhoneMobileIcon className="w-8 h-8" />
-											Contact
-										</NavLink>
-									</li>
-									<li className="menu menu-horizontal px-1 ">
+									<li className="menu menu-horizontal px-1 py-0">
 										<details>
-											<summary className="text-lg md:text-2xl ">
+											<summary className="text-lg md:text-2xl hover:text-black">
+												<IconKey className="w-8 h-8" />
+												Generate
+											</summary>
+											<ul className="p-2 bg-base-100 text-base-content">
+												<li className="text-lg">
+													<NavLink
+														to={"/generator"}
+														id="contact_element"
+														className="hover:text-black"
+													>
+														<IconHome className="w-8 h-8" />
+														Home
+													</NavLink>
+												</li>
+												<li className="text-lg">
+													<NavLink
+														to={"/random"}
+														id="contact_element"
+														className="hover:text-black"
+													>
+														{/* <IconLockSquare className="w-8 h-8" /> */}
+														<QuestionMarkCircleIcon className="w-8 h-8" />
+														Random
+													</NavLink>
+												</li>
+												<li className="text-lg">
+													<NavLink
+														to={"/hashed"}
+														id="contact_element"
+														className="hover:text-black"
+													>
+														{/* <IconLockSquare className="w-8 h-8" /> */}
+														<HashtagIcon className="w-8 h-8" />
+														Hashed
+													</NavLink>
+												</li>
+												<li className="text-lg">
+													<NavLink
+														to={"/master"}
+														id="contact_element"
+														className="hover:text-black"
+													>
+														{/* <IconLockSquare className="w-8 h-8" /> */}
+														<AcademicCapIcon className="w-8 h-8" />
+														Master
+													</NavLink>
+												</li>
+											</ul>
+										</details>
+									</li>
+									<li className="menu menu-horizontal px-1 py-0 ">
+										<details>
+											<summary className="text-lg md:text-2xl hover:text-black">
+												<IconBrush className="w-8 h-8" />
 												Theme
 											</summary>
 											<ul className="p-2 bg-base-100 text-base-content">
@@ -177,6 +333,36 @@ export function Navbar() {
 														<MoonIcon className="w-8 h-6" />
 														Dark
 													</a>
+												</li>
+											</ul>
+										</details>
+									</li>
+									<li className="menu menu-horizontal px-1 py-0">
+										<details>
+											<summary className="text-lg md:text-2xl hover:text-black">
+												<IconUserBolt className="w-8 h-8" />
+												Account
+											</summary>
+											<ul className="p-2 bg-base-100 text-base-content">
+												<li className="text-lg">
+													<NavLink
+														to={"/profile"}
+														id="contact_element"
+														className="hover:text-black"
+													>
+														<IconUserCircle className="w-8 h-8" />
+														Profile
+													</NavLink>
+												</li>
+												<li className="text-lg">
+													<NavLink
+														to={"/"}
+														id="contact_element"
+														className="hover:text-black"
+													>
+														<IconLogout className="w-8 h-8" />
+														Logout
+													</NavLink>
 												</li>
 											</ul>
 										</details>

@@ -1,10 +1,8 @@
 import React from "react";
-import "../css/Home.css";
-
-import { ThemeContext } from "../context/ThemeContext";
 import { useEffect } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
-const Generator_Home = () => {
+const Vaults = () => {
 	const { theme } = React.useContext(ThemeContext);
 	useEffect(() => {
 		console.log(theme);
@@ -16,8 +14,7 @@ const Generator_Home = () => {
 			dark_button.click();
 		}
 	});
-
-	return <div>Home</div>;
+	return <div>vaults</div>;
 };
 
-export default Generator_Home;
+export default Vaults;
