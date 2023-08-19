@@ -13,11 +13,12 @@ import {
 	HashtagIcon,
 	QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
 	IconBrush,
 	IconHome,
 	IconKey,
+	IconLockAccessOff,
 	IconLogout,
 	IconPalette,
 	IconUserBolt,
@@ -30,8 +31,8 @@ export function Navbar(props) {
 	useEffect(() => {
 		themeChange(false);
 	}, []);
-
 	const { theme, setTheme } = React.useContext(ThemeContext);
+	const navigate = useNavigate();
 	useEffect(() => {
 		console.log(theme);
 		if (theme === "light") {
@@ -42,7 +43,10 @@ export function Navbar(props) {
 			dark_button.click();
 		}
 	});
-	const pathname = window.location.pathname;
+	function handleLogout() {
+		props.setisNavbarPresent(false);
+		navigate("/");
+	}
 
 	return (
 		<div className="pr-4 mr-4 z-50">
@@ -206,19 +210,12 @@ export function Navbar(props) {
 											</NavLink>
 										</li>
 										<li
-											className="text-lg"
-											onClick={props.setisNavbarPresent(
-												false
-											)}
+											className="text-lg hover:text-black"
+											onClick={() => {
+												handleLogout();
+											}}
 										>
-											<NavLink
-												to={"/"}
-												id="contact_element"
-												className="hover:text-black"
-											>
-												{/* <IconLockSquare className="w-8 h-8" /> */}
-												Logout
-											</NavLink>
+											<a>Logout</a>
 										</li>
 									</ul>
 								</details>
@@ -361,19 +358,13 @@ export function Navbar(props) {
 													</NavLink>
 												</li>
 												<li
-													className="text-lg"
-													onClick={props.setisNavbarPresent(
-														false
-													)}
+													className="text-lg hover:text-black"
+													onClick={() => {
+														handleLogout();
+													}}
 												>
-													<NavLink
-														to={"/"}
-														id="contact_element"
-														className="hover:text-black"
-													>
-														<IconLogout className="w-8 h-8" />
-														Logout
-													</NavLink>
+													<IconLogout className="w-8 h-8" />
+													Logout
 												</li>
 											</ul>
 										</details>

@@ -20,7 +20,7 @@ const Login = (props) => {
 		light_button.click();
 	});
 	return (
-		<div className="p-0 m-0">
+		<div className="p-0 m-0 bg-base-100">
 			<div className="overflow-hidden">
 				<div className="lg:flex rubik overflow-hidden">
 					<div className="lg:w-1/2 xl:max-w-screen-sm">
@@ -39,6 +39,20 @@ const Login = (props) => {
 							>
 								Log in
 							</h2>
+							<div
+								className="text-center text-xl text-secondary font-display font-semibold lg:text-left xl:text-xl
+              xl:text-bold rubik pt-3"
+							>
+								<span className="italic">
+									“There are no tricks in plain and simple
+									faith.”{" "}
+								</span>
+								<br></br>
+								<span className="text-accent">
+									{" "}
+									Brutus to Lucillius, Act 4, Scene 2
+								</span>
+							</div>
 							<div className="mt-12">
 								<form>
 									<div>

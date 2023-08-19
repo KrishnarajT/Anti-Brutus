@@ -44,6 +44,20 @@ function App() {
 							<Login setisNavbarPresent={setisNavbarPresent} />
 						}
 					/>
+					<Route
+						path="/fpass"
+						element={
+							<ForgotPass
+								setisNavbarPresent={setisNavbarPresent}
+							/>
+						}
+					/>
+					<Route
+						path="/signup"
+						element={
+							<Signup setisNavbarPresent={setisNavbarPresent} />
+						}
+					/>
 					<Route path="/home" element={<Home />} />
 					<Route path="/generator" element={<GeneratorHome />} />
 					<Route path="/about" element={<About />} />
@@ -53,8 +67,6 @@ function App() {
 					<Route path="/developers" element={<Developers />} />
 					<Route path="/vaults" element={<Vaults />} />
 					<Route path="/profile" element={<Profile />} />
-					<Route path="/fpass" element={<ForgotPass />} />
-					<Route path="/signup" element={<Signup />} />
 				</Routes>
 			</div>
 		</ThemeContextProvider>
