@@ -5,7 +5,7 @@ This is also our Third Year Full Stack Development Project.
 
 # Screenshots 
 
-# Features
+# features
 1. Generate Passwords using Unique Hash Scheme
 2. Store Passwords
 3. Added Security with Master Password
