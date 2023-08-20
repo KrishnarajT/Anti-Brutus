@@ -1,6 +1,6 @@
 
 # [Anti Brutus](https://antibrutus.surge.sh)
-A Password Manager and a Generator in One, for Securely storing Passwords, and never having to worry about remembering them again. 
+A PassworD Manager and a Generator in One, for Securely storing Passwords, and never having to worry about remembering them again. 
 This is also our Third Year Full Stack Development Project. 
 
 # Screenshots 
