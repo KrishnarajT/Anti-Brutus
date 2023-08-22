@@ -10,6 +10,11 @@
   }
 }
 
+@font-face {
+  font-family: "rocket";
+  src: url("../src/assets/fonts/Rocketwildness-7BB8R.ttf");
+}
+
 :root {
   --shadow-color: 306deg 16% 56%;
   --shadow-elevation-medium: 0.4px 0.7px 0.7px hsl(var(--shadow-color) / 0.59),
@@ -73,6 +78,10 @@ body {
   font-family: "Victor Mono", monospace;
 }
 
-.cormorant{
+.cormorant {
   font-family: "Cormorant Garamond", serif;
+}
+
+.rocket {
+  font-family: 'rocket';
 }

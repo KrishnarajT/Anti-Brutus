@@ -59,7 +59,7 @@ export function Navbar(props) {
 					className="flex-row-reverse px-2 gap-0
 			md:flex-row"
 				>
-					<NavLink to={"/"} className="flex flex-row">
+					<NavLink to={"/home"} className="flex flex-row">
 						<div
 							id="logo"
 							className="w-12 h-12 bg-center snap-center self-center"

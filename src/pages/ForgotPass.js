@@ -130,7 +130,7 @@ const ForgotPass = (props) => {
 					<div className="hidden lg:flex items-center justify-center bg-indigo-200 flex-1 h-screen">
 						<div className="max-w-xs transform duration-200 hover:scale-110 cursor-pointer">
 							<div
-								id="mainsvg"
+								id="fpasssvg"
 								className="w-[50rem] h-[40rem]"
 							></div>
 						</div>
