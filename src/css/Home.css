@@ -5,6 +5,13 @@
     background-position: center;
 }
 
+#divbgdark {
+    background-image: url('../assets/img/blurry-gradient-haikei_dark.png');
+    background-repeat: repeat-y;
+    background-size: cover;
+    background-position: center;
+}
+
 #logo {
     background-image: url('../assets/img/undraw_secure_login_pdn4.png');
     background-repeat: no-repeat;
@@ -65,6 +72,12 @@
     background-size: contain;
     background-position: center;
 }
+#howwedodark {
+    background-image: url('../assets/img/undraw_authentication_re_svpt.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
 
 #fpasssvg {
     background-image: url('../assets/img/undraw_forgot_password_re_hxwm.png');
@@ -72,9 +85,21 @@
     background-size: contain;
     background-position: center;
 }
+#fpasssvgdark {
+    background-image: url('../assets/img/undraw_forgot_password_re_hxwm_dark.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
 
 #vaultspng {
     background-image: url('../assets/img/undraw_vault_re_s4my.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+#vaultspngdark {
+    background-image: url('../assets/img/undraw_vault_re_s4my_dark.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

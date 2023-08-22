@@ -24,13 +24,13 @@ const Generator_Home = () => {
 	});
 
 	return (
-		<div className="" id="divbg">
+		<div className="" id={theme === "light" ? "divbg" : "divbgdark"}>
 			<div className="flex gap-24 justify-between">
 				<div className="flex-1">
 					<div className="text-[8rem] text-netural titillium p-8 m-8 line leading-tight">
 						The Only Password Manager you need!
 					</div>
-					<div className="p-8 m-8 text-5xl rubik text-primary-content">
+					<div className="p-8 m-8 text-5xl rubik text-base-content">
 						Never Forget, or remember a password ever again with
 						Anti Brutus. A password Manager unlike any other, with a
 						focus on security and ease of use. Built by a team of{" "}
@@ -38,12 +38,12 @@ const Generator_Home = () => {
 							Bleeding edge Cyber security Professionals from MIT.
 						</span>
 					</div>
-					<div className="p-8 m-8 mt-0 pt-0 text-5xl rubik text-primary-content">
+					<div className="p-8 m-8 mt-0 pt-0 text-5xl rubik text-base-content">
 						Head over to your Vaults to Begin!
 					</div>
 					<button className="fancybutton border p-8  ml-16 flex gap-4">
 						<NavLink to="/vaults">
-							<p className="text-primary-content">Vaults</p>
+							<p className="text-base-content">Vaults</p>
 						</NavLink>
 						<ArrowRightCircleIcon className="w-12 h-12" />
 					</button>
@@ -57,11 +57,11 @@ const Generator_Home = () => {
 			</div>
 			<div className="flex gap-24 justify-between">
 				<div
-					id="howwedo"
+					id={theme === "light" ? "howwedo" : "howwedodark"}
 					className="w-[90rem] h-[30rem] ml-32 m-8 p-8 mt-16"
 				></div>
 
-				<div className="p-16 m-8 text-4xl rubik text-primary-content w-11/12">
+				<div className="p-16 m-8 text-4xl rubik text-base-content w-11/12">
 					Anti Brutus uses a combination of the latest in Cyber
 					Security techniques and the most advanced encryption
 					algorithms to protect your data. We use a combination of
@@ -80,7 +80,7 @@ const Generator_Home = () => {
 				How Do I use this?
 			</div>
 			<div className="flex gap-24 justify-between">
-				<div className="p-16 m-8 text-4xl rubik text-primary-content w-11/12">
+				<div className="p-16 m-8 text-4xl rubik text-base-content w-11/12">
 					Its already difficult remembering all your passwords, and
 					with more and more websites that require login, it is
 					becoming increasingly difficult to remember all your
@@ -110,7 +110,7 @@ const Generator_Home = () => {
 					<br />
 					<button className="fancybutton border p-8 flex gap-4 mt-12">
 						<NavLink to="/generator">
-							<p className="text-primary-content">
+							<p className="text-base-content">
 								Password Generator
 							</p>
 						</NavLink>
@@ -118,7 +118,7 @@ const Generator_Home = () => {
 					</button>
 				</div>
 				<div
-					id="fpasssvg"
+					id={theme === "light" ? "fpasssvg" : "fpasssvgdark"}
 					className="w-[90rem] h-[30rem] ml-32 m-8 p-8 mt-16"
 				></div>
 			</div>
@@ -129,11 +129,11 @@ const Generator_Home = () => {
 			</div>
 			<div className="flex gap-24 justify-between">
 				<div
-					id="vaultspng"
+					id={theme === "light" ? "vaultspng" : "vaultspngdark"}
 					className="w-[90rem] h-[30rem] ml-32 m-8 p-8 mt-16"
 				></div>
 
-				<div className="p-16 m-8 text-4xl rubik text-primary-content w-11/12">
+				<div className="p-16 m-8 text-4xl rubik text-base-content w-11/12">
 					Vaults are a way to organize your passwords. You can create
 					as many vaults as you want, and store passwords in each
 					vault. This way, you can organize your passwords based on
@@ -148,7 +148,7 @@ const Generator_Home = () => {
 					<br />
 					<button className="fancybutton border p-8 flex gap-4">
 						<NavLink to="/vaults">
-							<p className="text-primary-content">Vaults</p>
+							<p className="text-base-content">Vaults</p>
 						</NavLink>
 						<ArrowRightCircleIcon className="w-12 h-12" />
 					</button>
