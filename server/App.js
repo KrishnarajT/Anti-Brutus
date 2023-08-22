@@ -47,6 +47,21 @@ app.post("/auth", async (request, response) => {
 	}
 });
 
+//insert User
+app.post("/insertUser", async (request, response) => {
+	const userInsert = await dbobj.insertUser(
+		request.query.email,
+		request.query.password
+	);
+	if(!userInsert) {
+		response.send({message: "user inserted successfully"});
+	}
+	else{
+		response.send({message: "user not inserted"});
+	}
+});
+
+
 // signup
 app.post("/signup", async (request, response) => {
 	console.log(request.query);
