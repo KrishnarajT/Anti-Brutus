@@ -1,24 +1,113 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import "../css/Navbar.css";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = (props) => {
+	const base_url = "http://localhost:3000";
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [emailError, setEmailError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+	const comment = document.getElementById("comment");
+
 	let navigate = useNavigate();
 
-	function handleClick() {
+	function redirect() {
 		props.setisNavbarPresent(true);
 		navigate("/home");
 	}
+
+	async function handleClick() {
+		// log everything
+		console.log("email: " + email);
+		console.log("password: " + password);
+
+		const response = await axios
+			.post(
+				`${base_url}/auth`,
+				{},
+				{
+					params: {
+						email: email,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+
+		if (response.data.message === "simulation") {
+			// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
+			setTimeout(() => {
+				redirect();
+			}, 1000);
+		}
+		// check if the user exists in the database
+		else if (response.data.message === "user found pass correct") {
+			console.log("user found");
+			setTimeout(() => {
+				redirect();
+			}, 1000);
+		} else if (response.data.message === "user found pass incorrect") {
+			comment.innerHTML = "Password Incorrect! Try Again!";
+		} else if (response.data.message === "user not found") {
+			comment.innerHTML = "User Doesnt Exist! Try Again or Sign Up!";
+		} else {
+			comment.innerHTML = "Something went wrong! Call the Devs!";
+			alert("Something went wrong! Call the Devs!");
+		}
+	}
+
 	const { theme, setTheme } = React.useContext(ThemeContext);
+
 	useEffect(() => {
 		console.log(theme);
 		setTheme("light");
 		const light_button = document.getElementById("light_button");
 		light_button.click();
 	});
+
+	const validateEmail = (email) => {
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return re.test(email);
+	};
+
+	const validatePassword = (password) => {
+		const re =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		return re.test(password);
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if (!validateEmail(email)) {
+			setEmailError("Please enter a valid email address.");
+		} else {
+			setEmailError("");
+		}
+		if (!validatePassword(password)) {
+			setPasswordError(
+				"Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
+			);
+		} else {
+			setPasswordError("");
+			handleClick();
+		}
+	};
+
 	return (
 		<div className="p-0 m-0 bg-base-100">
 			<div className="overflow-hidden">
@@ -54,16 +143,25 @@ const Login = (props) => {
 								</span>
 							</div>
 							<div className="mt-12">
-								<form>
+								<form onSubmit={handleSubmit}>
 									<div>
 										<div className="text-2xl font-bold text-primary-content tracking-wide">
 											Email Address
 										</div>
 										<input
 											className="w-full text-xl py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
-											type=""
+											type="email"
 											placeholder="baldev@gmail.com"
+											value={email}
+											onChange={(e) =>
+												setEmail(e.target.value)
+											}
 										/>
+										{emailError && (
+											<div className="text-red-500 text-sm mt-1">
+												{emailError}
+											</div>
+										)}
 									</div>
 									<div className="mt-8">
 										<div className="flex justify-between items-center">
@@ -82,20 +180,31 @@ const Login = (props) => {
 										</div>
 										<input
 											className="w-full text-lg py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
-											type=""
+											type="password"
 											placeholder="Enter your password"
+											value={password}
+											onChange={(e) =>
+												setPassword(e.target.value)
+											}
 										/>
+										{passwordError && (
+											<div className="text-red-500 text-sm mt-1">
+												{passwordError}
+											</div>
+										)}
+									</div>
+									<div
+										id="comment"
+										className="text-xl text-center mt-10 text-accent"
+									>
+										Enter Credentials to Log In!
 									</div>
 									<div className="mt-10">
 										<button
 											className="bg-primary p-4 w-full rounded-full tracking-wide
                           font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-primary-focus text-primary-content
                           shadow-lg text-xl cursor-pointer"
-											onClick={() => {
-												console.log("clicked");
-												// navigate to home using router
-												handleClick();
-											}}
+											type="submit"
 										>
 											Log In
 										</button>
