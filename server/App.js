@@ -5,6 +5,8 @@ const express = require("express");
 const dbobj = require("./db_manager");
 const cors = require("cors");
 const createHttpError = require("http-errors");
+const app = express()
+app.use(cors())
 
 
 
@@ -83,21 +85,7 @@ app.post("/send_email", async (request, response) => {
 		response.send({ message: "email not sent" });
 	} else if (user_fate.message == "user found") {
 		// send the salt and the final password hash to the client
-		await send_mail(
-			request.query.user_email,
-			"Password Reset",
-			request.query.user_otp
-		)
-			.then((res) => {
-				console.log(res);
-				response.send({ message: "email sent" })
-				dbobj.add_otp(request.query.user_otp, user_fate[0].user_id);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-
-	}
+    }
 });
 
 app.post("/reset_password", async (request, response) => {
@@ -126,3 +114,4 @@ app.post("/reset_password", async (request, response) => {
 });
 
 
+module.exports = app;
