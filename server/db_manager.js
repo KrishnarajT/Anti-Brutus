@@ -45,7 +45,7 @@ class DatabaseManager {
 		}
 	  }
 
-	test(callback) {
+	async test(callback) {
 		const query = `
 			SELECT * FROM users
 		`;
