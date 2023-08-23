@@ -34,33 +34,34 @@ app.get("/test", async (request, response) => {
 // processing post request
 
 // login
-// app.post("/auth", async (request, response) => {
-// 	console.log(request.query);
+app.post("/auth", async (request, response) => {
+	console.log(request.query);
 
-// 	// check if the user exists in the database
-// 	const user_fate = await dbobj.checkUser(request.query.username);
-// 	// console.log("from the app.js file");
-// 	console.log(user_fate);
-// 	if (user_fate.message == "user not found") {
-// 		// send a message to the client
-// 		return { user_data: user_fate, message: user_fate.message };
-// 	} else if (user_fate.message == "user found pass correct") {
-// 		// send the salt and the final password hash to the client
-// 		return { user_data: user_fate, message: user_fate.message };
-// 	} else {
-// 		const error = new createHttpError.BadRequest("something went wrong! Call the Devs!");
-// 		return error;
-// 	}
-// });
+	// check if the user exists in the database
+	const user_fate = await dbobj.checkUser(request.query.username);
+	// console.log("from the app.js file");
+	console.log(user_fate);
+	if (user_fate.message === "user not found") {
+		// send a message to the client
+		return { user_data: user_fate, message: user_fate.message };
+	} else if (user_fate.message === "user found pass correct") {
+		// send the salt and the final password hash to the client
+		return { user_data: user_fate, message: user_fate.message };
+	} else {
+		const error = new createHttpError.BadRequest("something went wrong! Call the Devs!");
+		return error;
+	}
+});
 
 //add User
 app.post("/add_user", async (request, response) => {
-	const username = request.params.email
+	const username = request.query.email
 	try{
 		//checking if user exists
 		const existingUSer = await dbobj.checkUser(username);
-
-		if (!existingUSer){
+		console.log(existingUSer)
+		if (existingUSer=== false){
+			console.log(existingUSer)
 			//user does not exist, so add the user to the database
 			const userInsert = await dbobj.insertUser(
 				request.query.email,
@@ -77,6 +78,7 @@ app.post("/add_user", async (request, response) => {
 			
 		}else{
 			//user exists, send a message to the client
+			console.log(existingUSer)
 			response.send({exist: true, message: "user already exists" });
 		}
 

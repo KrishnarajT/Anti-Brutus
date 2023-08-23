@@ -14,7 +14,7 @@ class DatabaseManager {
 		const createTableQuery = `
 			CREATE TABLE IF NOT EXISTS users (
 				id INTEGER PRIMARY KEY ,
-				email TEXT NOT NULL,
+				email TEXT NOT NULL unique,
 				password TEXT NOT NULL
 			)
 		`;
@@ -30,7 +30,7 @@ class DatabaseManager {
 
 	async checkUser(email) {
 		return new Promise((resolve, reject) => {
-			const query = 'SELECT * FROM users WHERE email = ?';
+			const query = 'SELECT * FROM users where email = ? ';
 	
 			this.db.get(query, [email], (err, row) => {
 				if (err) {
@@ -38,9 +38,11 @@ class DatabaseManager {
 				} else {
 					if (row) {
 						console.log("User found");
+						console.log(row)
 						resolve(true); // Resolve with true if the user exists
 					} else {
 						console.log("User not found");
+						console.log(row)
 						resolve(false); // Resolve with false if the user doesn't exist
 					}
 				}
