@@ -29,21 +29,25 @@ class DatabaseManager {
 	}
 
 	async checkUser(email) {
-		console.log("Checking user");
-		const query = `SELECT * FROM users WHERE email = '${email}'`;
-		try {
-		  const result = await this.db.run(query);
-	  
-		  if (result.length === 0) {
-			  return { message: "User not found" };
-		  } else {
-			  return { message: "User found", user: result[0] };
-		  }
-		} catch (err) {
-			console.log(err);
-			return { message: "Error checking user", error: err };
-		}
-	  }
+		return new Promise((resolve, reject) => {
+			const query = 'SELECT * FROM users WHERE email = ?';
+	
+			this.db.get(query, [email], (err, row) => {
+				if (err) {
+					reject(err); // Reject with the error if there's an issue with the query
+				} else {
+					if (row) {
+						console.log("User found");
+						resolve(true); // Resolve with true if the user exists
+					} else {
+						console.log("User not found");
+						resolve(false); // Resolve with false if the user doesn't exist
+					}
+				}
+			});
+		});
+	}
+	
 
 	async test(callback) {
 		const query = `
