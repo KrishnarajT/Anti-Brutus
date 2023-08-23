@@ -20,11 +20,11 @@ app.get("/about", (request, response) => {
 });
 
 app.get("/test", async (request, response) => {
-	 await dbobj.test((err,rows)=>{
-		if(err){
+	await dbobj.test((err, rows) => {
+		if (err) {
 			response.status(500).json({ error: 'Internal Server Error' });
 		}
-		else{
+		else {
 			response.status(200).json(rows);
 		}
 	});
@@ -39,12 +39,12 @@ app.post("/auth", async (request, response) => {
 
 	// check if the user exists in the database
 	const user_fate = await dbobj.checkUser(request.query.username);
-	console.log("from the app.js file");
+	// console.log("from the app.js file");
 	console.log(user_fate);
-	if (user_fate.message == "user not found") {
+	if (user_fate.message === "user not found") {
 		// send a message to the client
 		return { user_data: user_fate, message: user_fate.message };
-	} else if (user_fate.message == "user found pass correct") {
+	} else if (user_fate.message === "user found pass correct") {
 		// send the salt and the final password hash to the client
 		return { user_data: user_fate, message: user_fate.message };
 	} else {
@@ -53,18 +53,41 @@ app.post("/auth", async (request, response) => {
 	}
 });
 
-//insert User
-app.post("/insertUser", async (request, response) => {
-	const userInsert = await dbobj.insertUser(
-		request.query.email,
-		request.query.password
-	);
-	if(!userInsert) {
-		response.send({message: "user inserted successfully"});
+//add User
+app.post("/add_user", async (request, response) => {
+	const username = request.query.email
+	try{
+		//checking if user exists
+		const existingUSer = await dbobj.checkUser(username);
+		console.log(existingUSer)
+		if (existingUSer=== false){
+			console.log(existingUSer)
+			//user does not exist, so add the user to the database
+			const userInsert = await dbobj.insertUser(
+				request.query.email,
+				request.query.password
+			);
+			// user inserted successfully
+			if (!userInsert) {
+				response.send({ message: "user inserted successfully" });
+			}
+			// user not inserted
+			else {
+				response.send({ message: "user not inserted" });
+			}
+			
+		}else{
+			//user exists, send a message to the client
+			console.log(existingUSer)
+			response.send({exist: true, message: "user already exists" });
+		}
+
+	}catch(error){
+		console.log(error);
+		response.send({message: "something went wrong"});
 	}
-	else{
-		response.send({message: "user not inserted"});
-	}
+	
+
 });
 
 
@@ -106,7 +129,7 @@ app.post("/send_email", async (request, response) => {
 		response.send({ message: "email not sent" });
 	} else if (user_fate.message == "user found") {
 		// send the salt and the final password hash to the client
-    }
+	}
 });
 
 app.post("/reset_password", async (request, response) => {
