@@ -11,18 +11,24 @@ app.use(cors())
 
 
 app.get("/", (req, res) => {
-	res.send("Hello World!");
+	res.send("Home");
 });
+
 
 app.get("/about", (request, response) => {
 	response.send("<h1>About</h1>");
 });
 
 app.get("/test", async (request, response) => {
-	const result = await dbobj.test();
+	 await dbobj.test((err,rows)=>{
+		if(err){
+			response.status(500).json({ error: 'Internal Server Error' });
+		}
+		else{
+			response.status(200).json(rows);
+		}
+	});
 	console.log("from the app.js file");
-	console.log(result);
-	response.send(result);
 });
 
 // processing post request
@@ -37,12 +43,12 @@ app.post("/auth", async (request, response) => {
 	console.log(user_fate);
 	if (user_fate.message == "user not found") {
 		// send a message to the client
-		response.send({ user_data: user_fate, message: user_fate.message });
-	} else if (user_fate.message == "user found") {
+		return { user_data: user_fate, message: user_fate.message };
+	} else if (user_fate.message == "user found pass correct") {
 		// send the salt and the final password hash to the client
-		response.send({ user_data: user_fate, message: user_fate.message });
+		return { user_data: user_fate, message: user_fate.message };
 	} else {
-		const error = new createHttpError.BadRequest("something went wrong");
+		const error = new createHttpError.BadRequest("something went wrong! Call the Devs!");
 		return error;
 	}
 });
