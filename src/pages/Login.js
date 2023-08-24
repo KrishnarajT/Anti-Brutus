@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = (props) => {
-	const base_url = "http://localhost:3000";
+	const base_url = "http://104.28.252.198:3000";
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState("");
@@ -27,11 +27,12 @@ const Login = (props) => {
 
 		const response = await axios
 			.post(
-				`${base_url}/auth`,
+				`${base_url}/add_user`,
 				{},
 				{
 					params: {
 						email: email,
+						password: password,
 					},
 				}
 			)
