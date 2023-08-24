@@ -67,7 +67,7 @@ class DatabaseManager {
 		});
 	}
 
-	async insertUser(email, password, UserName, salt, callback) {
+	async insertUser(email, password, UserName, salt) {
 		return new Promise((resolve, reject) => {
 			const query = `INSERT INTO users (email, password, UserName, salt)
             VALUES (?,?,?,?)`;
