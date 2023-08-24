@@ -7,11 +7,11 @@ import axios from "axios";
 
 const Login = (props) => {
 	const base_url = "http://localhost:3000";
+	const comment = document.getElementById("comment");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
-	const comment = document.getElementById("comment");
 
 	let navigate = useNavigate();
 
