@@ -13,9 +13,11 @@ class DatabaseManager {
 	initializeDatabase() {
 		const createTableQuery = `
 			CREATE TABLE IF NOT EXISTS users (
-				id INTEGER PRIMARY KEY ,
+				id INTEGER PRIMARY KEY autoincrement ,
 				email TEXT NOT NULL unique,
-				password TEXT NOT NULL
+				password TEXT NOT NULL,
+				salt Text not Null,
+				UserName Text not Null
 			)
 		`;
 
@@ -39,7 +41,7 @@ class DatabaseManager {
 					if (row) {
 						console.log("User found");
 						console.log(row)
-						resolve(true); // Resolve with true if the user exists
+						resolve(row); // Resolve with true if the user exists
 					} else {
 						console.log("User not found");
 						console.log(row)
@@ -53,7 +55,7 @@ class DatabaseManager {
 
 	async test(callback) {
 		const query = `
-			SELECT * FROM users
+			delete from users  
 		`;
 		 this.db.all(query,(err,rows)=>{
 			if(err){
@@ -69,21 +71,21 @@ class DatabaseManager {
 		
 	}
 
-	async insertUser(email ,password) {
-        const insertQuery = `
-            INSERT INTO users (email, password)
-            VALUES (?, ?)
-        `;
+	async insertUser(email ,password,UserName,salt,callback) {
+		return new Promise((resolve, reject) => {
+			const query = `INSERT INTO users (email, password, UserName, salt)
+            VALUES (?,?,?,?)`;
 	
-        this.db.run(insertQuery, [email,password], (err) => {
-            if (err) {
-                console.log("User not inserted.", err);
-				return false
-            } else {
-                console.log("User inserted successfully.");
-				return true;
-            }
-        });
+			this.db.run(query, [email,password,UserName,salt], (err) => {
+				if (err) {
+					reject(err); // Reject with the error if there's an issue with the query
+				} else {
+					resolve(true); // Resolve with true if the user exists
+				}
+			});
+		});
+	
+
     }
 	// Other methods...
 }
