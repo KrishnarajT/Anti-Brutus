@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
+import { BaseUrlContext } from "../context/BaseUrlContext";
 import "../css/Navbar.css";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = (props) => {
-	const base_url = "http://localhost:3000";
+	const base_url = React.useContext(BaseUrlContext).baseUrl;
 	const comment = document.getElementById("comment");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -32,6 +33,7 @@ const Login = (props) => {
 				{
 					params: {
 						email: email,
+						password: password,
 					},
 				}
 			)
@@ -48,7 +50,7 @@ const Login = (props) => {
 				};
 				return response;
 			});
-
+		console.log("from login", response.data)
 		if (response.data.message === "simulation") {
 			// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
 			setTimeout(() => {
@@ -115,7 +117,10 @@ const Login = (props) => {
 					<div className="lg:w-1/2 xl:max-w-screen-sm">
 						<div className="py-12 bg-base-100 lg:bg-transparent flex justify-center lg:justify-start lg:px-12">
 							<div className="cursor-pointer flex items-center">
-								<div id="logo" className="w-12 h-12 m-4"></div>
+								<div
+									id="brutuslogo"
+									className="w-12 h-12 m-4"
+								></div>
 								<div className="text-2xl text-primary-content tracking-wide ml-2 font-semibold">
 									Anti Brutus
 								</div>
