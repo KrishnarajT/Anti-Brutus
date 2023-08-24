@@ -111,6 +111,7 @@ const Signup = (props) => {
 	};
 
 	const handleSubmit = async () => {
+		const comment = document.getElementById("comment");
 		console.log(
 			"username: ",
 			username,
@@ -520,6 +521,16 @@ const Signup = (props) => {
 								<button
 									className="bg-primary p-4 w-full rounded-full tracking-wide font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-primary-focus text-primary-content shadow-lg text-2xl cursor-pointer"
 									onClick={handleSubmit}
+									// disabled={
+									// 	!passwordMatch ||
+									// 	!hasCapital ||
+									// 	!hasNumber ||
+									// 	!hasSymbol ||
+									// 	!passLength ||
+									// 	!email ||
+									// 	!username ||
+									// 	!password
+									// }
 								>
 									Welcome to the Empire!
 								</button>
