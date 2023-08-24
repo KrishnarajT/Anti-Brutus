@@ -1,16 +1,77 @@
 import React from "react";
 import { useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
+import { BaseUrlContext } from "../context/BaseUrlContext";
 import "../css/Navbar.css";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ForgotPass = (props) => {
-	let navigate = useNavigate();
+  let navigate = useNavigate();
+  let base_url = React.useContext(BaseUrlContext).baseUrl;
 
-	function handleClick() {
+	function redirect() {
 		props.setisNavbarPresent(true);
-		navigate("/home");
+		navigate("/login");
+	}
+
+	async function handleClick() {
+		// log everything
+		console.log("email: " + email);
+		console.log("password: " + password);
+		console.log("confirm password: " + confirmPassword);
+		console.log("otp: " + otp);
+
+		// check if the user exists in the database
+
+    const response = await axios
+			.post(
+				`${base_url}/check_user`,
+				{},
+				{
+					params: {
+            email: email,
+            password: password,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+
+		if (response.data.message === "simulation") {
+			// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
+			setTimeout(() => {
+				redirect();
+			}, 1000);
+		}
+		// check if the user exists in the database
+		else if (response.data.message === "user found pass correct") {
+			console.log("user found");
+			setTimeout(() => {
+				redirect();
+			}, 1000);
+    }
+    // else if (response.data.message === "user found pass incorrect") {
+		// 	comment.innerHTML = "Password Incorrect! Try Again!";
+		// } else if (response.data.message === "user not found") {
+		// 	comment.innerHTML = "User Doesnt Exist! Try Again or Sign Up!";
+    // }
+    else {
+			// comment.innerHTML = "Something went wrong! Call the Devs!";
+			alert("Something went wrong! Call the Devs!");
+		}
 	}
 	const { theme, setTheme } = React.useContext(ThemeContext);
 	useEffect(() => {
@@ -19,6 +80,78 @@ const ForgotPass = (props) => {
 		const light_button = document.getElementById("light_button");
 		light_button.click();
 	});
+
+	const [email, setEmail] = React.useState("");
+	const [password, setPassword] = React.useState("");
+	const [confirmPassword, setConfirmPassword] = React.useState("");
+	const [otp, setOtp] = React.useState("");
+	const [emailError, setEmailError] = React.useState("");
+	const [passwordError, setPasswordError] = React.useState("");
+	const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
+	const [otpError, setOtpError] = React.useState("");
+
+	const validateEmail = (email) => {
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return re.test(email);
+	};
+
+	const validatePassword = (password) => {
+		const re =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		return re.test(password);
+	};
+
+	const handleEmailChange = (e) => {
+		const value = e.target.value;
+		setEmail(value);
+
+		if (!validateEmail(value)) {
+			setEmailError("Please enter a valid email address.");
+		} else {
+			setEmailError("");
+		}
+	};
+
+	const handlePasswordChange = (e) => {
+		const value = e.target.value;
+		setPassword(value);
+
+		if (!validatePassword(value)) {
+			setPasswordError(
+				"Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one symbol."
+			);
+		} else {
+			setPasswordError("");
+		}
+	};
+
+	const handleConfirmPasswordChange = (e) => {
+		const value = e.target.value;
+		setConfirmPassword(value);
+
+		if (value !== password) {
+			setConfirmPasswordError("Passwords do not match.");
+		} else {
+			setConfirmPasswordError("");
+		}
+	};
+
+	const handleOtpChange = (e) => {
+		const value = e.target.value;
+		setOtp(value);
+
+		if (value.length !== 6) {
+			setOtpError("OTP must be 6 digits long.");
+		} else {
+			setOtpError("");
+		}
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		// Submit the form
+	};
+
 	return (
 		<div className="p-0 m-0 bg-base-100">
 			<div className="overflow-hidden">
@@ -44,8 +177,7 @@ const ForgotPass = (props) => {
               xl:text-bold rubik pt-3"
 							>
 								“The fault, dear Brutus, is not in our stars But
-								in ourselves.”{" "}
-								<br></br>
+								in ourselves.” <br></br>
 								<br></br>
 								<span className="text-accent">
 									{" "}
@@ -53,16 +185,23 @@ const ForgotPass = (props) => {
 								</span>
 							</div>
 							<div className="mt-12">
-								<form>
+								<form onSubmit={handleSubmit}>
 									<div>
 										<div className="text-2xl font-bold text-primary-content tracking-wide">
 											Email Address
 										</div>
 										<input
 											className="w-full text-xl py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
-											type=""
+											type="email"
 											placeholder="baldev@gmail.com"
+											value={email}
+											onChange={handleEmailChange}
 										/>
+										{emailError && (
+											<p className="text-red-500">
+												{emailError}
+											</p>
+										)}
 									</div>
 									<div className="mt-8">
 										<div className="flex justify-between items-center">
@@ -72,9 +211,16 @@ const ForgotPass = (props) => {
 										</div>
 										<input
 											className="w-full text-lg py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
-											type=""
+											type="password"
 											placeholder="Enter your password"
+											value={password}
+											onChange={handlePasswordChange}
 										/>
+										{passwordError && (
+											<p className="text-red-500">
+												{passwordError}
+											</p>
+										)}
 									</div>
 									<div className="mt-8">
 										<div className="flex justify-between items-center">
@@ -84,9 +230,18 @@ const ForgotPass = (props) => {
 										</div>
 										<input
 											className="w-full text-lg py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
-											type=""
+											type="password"
 											placeholder="Enter your password again. Dont copy paste. "
+											value={confirmPassword}
+											onChange={
+												handleConfirmPasswordChange
+											}
 										/>
+										{confirmPasswordError && (
+											<p className="text-red-500">
+												{confirmPasswordError}
+											</p>
+										)}
 									</div>
 									<div className="mt-8">
 										<div className="flex justify-between items-center">
@@ -96,15 +251,28 @@ const ForgotPass = (props) => {
 										</div>
 										<input
 											className="w-full text-lg py-2 border-b border-primary focus:outline-none focus:border-accent bg-transparent"
-											type=""
+											type="number"
 											placeholder="Enter the OTP Received on your phone"
+											value={otp}
+											onChange={handleOtpChange}
 										/>
+										{otpError && (
+											<p className="text-red-500">
+												{otpError}
+											</p>
+										)}
 									</div>
 									<div className="mt-10">
 										<button
 											className="bg-primary p-4 w-full rounded-full tracking-wide
                           font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-primary-focus text-primary-content
                           shadow-lg text-xl cursor-pointer"
+											disabled={
+												!validateEmail(email) ||
+												!validatePassword(password) ||
+												password !== confirmPassword ||
+												otp.length !== 6
+											}
 											onClick={() => {
 												console.log("clicked");
 												// navigate to home using router
