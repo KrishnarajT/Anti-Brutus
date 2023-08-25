@@ -120,42 +120,67 @@ app.post("/add_user", async (request, response) => {
 // Route for sending oTP email
 app.post("/send_email", async (request, response) => {
     console.log(request.query);
+	if (!request.query.email){
+		response.send({ message: "email not sent" });
+		return
+	}
     // Check if the user exists in the database
     const user_fate = await dbobj.checkUser(request.query.email);
     console.log(user_fate);
     if (user_fate === false) {
         // Send a message to the client if user not found and send password reset email
         const generated_Otp = otp();
-        send_mail(request.query.email, "Password Reset", generated_Otp)
+        send_mail(request.query.email, "OTP Verification", generated_Otp)
         response.send({ message: "email sent" , OTP: generated_Otp});
-    } else if (user_fate === true) {
+    } else if (user_fate) {
         // Send a message to the client if user found and email not sent
         response.send({ message: "email not sent" });
     }
 });
 
+app.post("/send_reset_email", async (request, response) => {
+    console.log(request.query);
+	if (!request.query.email){
+		response.send({ message: "email not sent" });
+		return
+	}
+    // Check if the user exists in the database
+    const user_fate = await dbobj.checkUser(request.query.email);
+    console.log(user_fate);
+    if (user_fate === false) {
+		// Send a message to the client if user not found and send password reset email
+        response.send({ message: "email not sent" });
+    } else if (user_fate) {
+		// Send a message to the client if user found 
+        const generated_Otp = otp();
+        send_mail(request.query.email, "Password Reset", generated_Otp)
+        response.send({ message: "email sent" , OTP: generated_Otp});
+    }
+});
+
+
 // Route for resetting user password
 app.post("/reset_password", async (request, response) => {
     console.log(request.query);
     // Check if the user exists in the database
-    const user_fate = await dbobj.checkUserEmail(request.query.user_email);
+    const user_fate = await dbobj.checkUser(request.query.email);
     console.log(user_fate);
-    if (user_fate.message === "user not found") {
-        // Send a message to the client if user not found
-        response.send({ message: "user not found" });
-    } else if (user_fate.message === "user found") {
-        // Reset user password if OTP is valid
-        const reset_result = await dbobj.reset_pass(
-            request.query.user_hash,
-            request.query.user_salt,
-            user_fate[0].user_id,
-            request.query.user_otp
+    if (user_fate ) {
+        // Send a message to the client if user found
+		const new_password = hashPassword(request.query.password, user_fate.salt)
+		const reset_result = await dbobj.reset_password(
+            request.query.email,
+            new_password
         );
         if (reset_result) {
-            response.send({ message: "password reset successful" });
+            response.send({ message: "success" });
         } else {
-            response.send({ message: "otp invalid" });
+            response.send({ message: "failure" });
         }
+       
+    } else {
+        // Reset user password if OTP is valid
+		response.send({ message: "user not found" });
     }
 });
 
