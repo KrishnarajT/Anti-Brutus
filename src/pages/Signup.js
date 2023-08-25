@@ -14,7 +14,7 @@ import {
 } from "@tabler/icons-react";
 
 const Signup = (props) => {
-	const { theme, setTheme } = React.useContext(ThemeContext);
+	const { setTheme } = React.useContext(ThemeContext);
 	useEffect(() => {
 		// console.log(theme);
 		setTheme("light");
@@ -39,7 +39,6 @@ const Signup = (props) => {
 	const [otp, setOtp] = useState(0);
 	const base_url = React.useContext(BaseUrlContext).baseUrl;
 
-	const comment = document.getElementById("comment");
 	// password criteria states
 	const [passLength, setPassLength] = useState(0);
 
