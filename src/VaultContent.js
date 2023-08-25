@@ -1,46 +1,43 @@
-import React from "react";
-import { useEffect } from "react";
-import { ThemeContext } from "../context/ThemeContext";
 import { IconPlus } from "@tabler/icons-react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 
-const Vaults = () => {
-	const { theme } = React.useContext(ThemeContext);
-	const navigate = useNavigate();
-	let vaults = [
+const VaultContent = () => {
+	let passwords = [
 		{
 			id: 1,
-			name: "Favourites",
+			name: "Facebook",
+			username: "username",
+			password: "password",
+			url: "https://facebook.com",
 			description: "Your Favourtites",
 		},
 		{
 			id: 2,
-			name: "Passwords",
+			name: "Instagram",
+			username: "username",
+			password: "password",
+			url: "https://instagram.com",
 			description: "The place for your passwords",
 		},
 		{
 			id: 3,
-			name: "Cards",
+			name: "Twitter",
+			username: "username",
+			password: "password",
+			url: "https://twitter.com",
 			description: "Safely Store your cards",
 		},
 	];
 
-	useEffect(() => {
-		console.log(theme);
-		if (theme === "light") {
-			const light_button = document.getElementById("light_button");
-			light_button.click();
-		} else {
-			const dark_button = document.getElementById("dark_button");
-			dark_button.click();
-		}
-	});
+	const params = useParams();
+	console.log(params);
 	return (
 		<div>
 			<div className="h-44 bg-secondary p-10 m-4 rounded-3xl flex justify-between">
 				<div className="flex-1 flex items-center">
 					<h1 className="text-5xl w-full font-bold text-secondary-content">
-						Your Vaults
+						{params.id} Passwords
 					</h1>
 				</div>
 				<div className="flex items-center">
@@ -64,13 +61,13 @@ const Vaults = () => {
 							</tr>
 						</thead>
 						<tbody className="">
-							{vaults.map((vault) => {
+							{passwords.map((vault) => {
 								return (
 									<tr
 										className="h-24 transition-all duration-300 transform-gpu hover:bg-base-200 rounded-3xl hover:cursor-pointer border-base-content"
-										onClick={() => {
-											navigate(`/vaults/${vault.id}`);
-										}}
+										// onClick={() => {
+										// 	navigate(`/vaults/${vault.id}`);
+										// }}
 									>
 										<th>{vault.id}</th>
 										<td className="hover:text-accent text-5xl transition-all duration-300">
@@ -90,4 +87,4 @@ const Vaults = () => {
 	);
 };
 
-export default Vaults;
+export default VaultContent;

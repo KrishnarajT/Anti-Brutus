@@ -14,55 +14,65 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPass from "./pages/ForgotPass";
 import { useEffect, useState } from "react";
+import VaultContent from "./VaultContent";
 
 function App() {
-  const [isNavbarPresent, setisNavbarPresent] = useState(false);
+	const [isNavbarPresent, setisNavbarPresent] = useState(false);
 
-  useEffect(() => {
-    if (
-      window.location.pathname === "/signup" ||
-      window.location.pathname === "/fpass" ||
-      window.location.pathname === "/"
-    ) {
-      setisNavbarPresent(false);
-    } else {
-      setisNavbarPresent(true);
-    }
-    console.log(window.location.pathname, isNavbarPresent);
-  }, [isNavbarPresent]);
+	useEffect(() => {
+		if (
+			window.location.pathname === "/signup" ||
+			window.location.pathname === "/fpass" ||
+			window.location.pathname === "/"
+		) {
+			setisNavbarPresent(false);
+		} else {
+			setisNavbarPresent(true);
+		}
+		console.log(window.location.pathname, isNavbarPresent);
+	}, [isNavbarPresent]);
 
-  return (
-    <ThemeContextProvider>
-      <div className="">
-        {isNavbarPresent ? (
-          <Navbar setisNavbarPresent={setisNavbarPresent} />
-        ) : null}
-        <Routes>
-          <Route
-            path="/"
-            element={<Login setisNavbarPresent={setisNavbarPresent} />}
-          />
-          <Route
-            path="/fpass"
-            element={<ForgotPass setisNavbarPresent={setisNavbarPresent} />}
-          />
-          <Route
-            path="/signup"
-            element={<Signup setisNavbarPresent={setisNavbarPresent} />}
-          />
-          <Route path="/home" element={<Home />} />
-          <Route path="/generator" element={<GeneratorHome />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/random" element={<Random />} />
-          <Route path="/master" element={<Master />} />
-          <Route path="/hashed" element={<Hashed />} />
-          <Route path="/developers" element={<Developers />} />
-          <Route path="/vaults" element={<Vaults />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </div>
-    </ThemeContextProvider>
-  );
+	return (
+		<ThemeContextProvider>
+			<div className="">
+				{isNavbarPresent ? (
+					<Navbar setisNavbarPresent={setisNavbarPresent} />
+				) : null}
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<Login setisNavbarPresent={setisNavbarPresent} />
+						}
+					/>
+					<Route
+						path="/fpass"
+						element={
+							<ForgotPass
+								setisNavbarPresent={setisNavbarPresent}
+							/>
+						}
+					/>
+					<Route
+						path="/signup"
+						element={
+							<Signup setisNavbarPresent={setisNavbarPresent} />
+						}
+					/>
+					<Route path="/home" element={<Home />} />
+					<Route path="/generator" element={<GeneratorHome />} />
+					<Route path="/about" element={<About />} />
+					<Route path="/random" element={<Random />} />
+					<Route path="/master" element={<Master />} />
+					<Route path="/hashed" element={<Hashed />} />
+					<Route path="/developers" element={<Developers />} />
+					<Route path="/vaults" element={<Vaults />} />
+					<Route path="/vaults/:id" element={<VaultContent />} />
+					<Route path="/profile" element={<Profile />} />
+				</Routes>
+			</div>
+		</ThemeContextProvider>
+	);
 }
 
 export default App;
