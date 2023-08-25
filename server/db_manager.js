@@ -81,6 +81,19 @@ class DatabaseManager {
 			});
 		});
 	}
+
+	async reset_password(email, password){
+		return new Promise ((resolve, reject) => {
+			const query = `UPDATE users SET password = ? WHERE email = ?`;
+			this.db.run(query, [password, email], (err) => {
+				if (err) {
+					reject(err); // Reject with the error if there's an issue with the query
+				} else {
+					resolve(true); // Resolve with true if password updated successfully
+				}
+			});
+		})
+	}
 	// Other methods...
 }
 
