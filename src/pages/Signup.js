@@ -47,9 +47,10 @@ const Signup = (props) => {
 		return re.test(email);
 	};
 	const validateUsername = (username) => {
-		const re = /^[a-zA-Z0-9_-]{3,16}$/;
+		const re = /^[a-zA-Z0-9_-\s]{3,25}$/;
 		return re.test(username);
 	};
+
 
 	const validatePassword = (password) => {
 		const re =

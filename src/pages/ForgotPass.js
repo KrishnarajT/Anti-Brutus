@@ -74,7 +74,7 @@ const ForgotPass = (props) => {
 					};
 					return response;
 				});
-
+			console.log(response.data);
 			if (response.data.message === "simulation") {
 				comment.innerHTML =
 					"Login Successful! Redirecting to Home Page!";
@@ -89,11 +89,14 @@ const ForgotPass = (props) => {
 				comment.innerHTML =
 					"The New Password cannot be the same as the old password!";
 			} else if (response.data.message === "user found pass incorrect") {
+				console.log(
+					"something is happening here. user found pass incorrect"
+				);
 				// success
 				// send email
 				let response = await axios
 					.post(
-						`${base_url}/send_email_reset`,
+						`${base_url}/send_reset_email`,
 						{},
 						{
 							params: {
@@ -116,7 +119,7 @@ const ForgotPass = (props) => {
 						};
 						return response;
 					});
-
+				console.log("from email", response.data);
 				if (response.data.message === "simulation") {
 					comment.innerHTML =
 						"Password Change Successful! redirecting to Login Page!";
@@ -157,7 +160,7 @@ const ForgotPass = (props) => {
 			// reset password
 			let response = await axios
 				.post(
-					`${base_url}/reset_pass`,
+					`${base_url}/reset_password`,
 					{},
 					{
 						params: {
@@ -191,6 +194,9 @@ const ForgotPass = (props) => {
 
 			if (response.data.message === "success") {
 				comment.innerHTML = "Password Changed! Redirecting to Login!";
+				setTimeout(() => {
+					redirect();
+				}, 1000);
 			} else if (response.data.message === "failure") {
 				comment.innerHTML =
 					"Couldnt change password, There has been some error. Try Again! ";
