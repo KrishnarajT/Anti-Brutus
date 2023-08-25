@@ -36,6 +36,7 @@ const Signup = (props) => {
 	const [passwordMatch, setPasswordMatch] = useState(false);
 	const [passVisible, setPassVisible] = useState(false);
 	const [serverOTP, setServerOTP] = useState(0);
+	const [otp, setOtp] = useState(0);
 	const base_url = React.useContext(BaseUrlContext).baseUrl;
 
 	const comment = document.getElementById("comment");
@@ -53,7 +54,7 @@ const Signup = (props) => {
 
 	const validatePassword = (password) => {
 		const re =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?&])[A-Za-z\d@$#!%*?&]{8,}$/;
 		return re.test(password);
 	};
 
@@ -110,11 +111,10 @@ const Signup = (props) => {
 
 	const redirect = () => {
 		props.setisNavbarPresent(true);
-		navigate("/login");
+		navigate("/");
 	};
 
 	const handleSubmit = async () => {
-		const comment = document.getElementById("comment");
 		console.log(
 			"username: ",
 			username,
@@ -133,63 +133,30 @@ const Signup = (props) => {
 			"passwordMatch: ",
 			passwordMatch
 		);
-		if (passwordError || emailError || usernameError || !passwordMatch) {
-			comment.innerHTML = "Please fill the form correctly";
-			comment.classList.add("text-red-500");
-			setTimeout(() => {
-				comment.innerHTML = "Enter Credentials to Sign Up!";
-				comment.classList.remove("text-red-500");
-			}, 3000);
-			return;
-		} else {
-			const response = await axios
-				.post(
-					`${base_url}/auth`,
-					{},
-					{
-						params: {
-							email: email,
-						},
-					}
-				)
-				.then((response) => {
-					return response;
-				})
-				.catch((error) => {
-					console.error(error);
-					alert(
-						"server not running! a simulated response is being sent"
-					);
-					const response = {
-						data: {
-							message: "simulation",
-						},
-					};
-					return response;
-				});
 
-			console.log(response.data);
-			if (response.data.message === "simulation") {
-				// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
+		const comment = document.getElementById("comment");
+		const mainbutton = document.getElementById("mainbutton");
+
+		if (mainbutton.innerHTML === "Send OTP") {
+			if (
+				passwordError ||
+				emailError ||
+				usernameError ||
+				!passwordMatch
+			) {
+				comment.innerHTML = "Please fill the form correctly";
+				comment.classList.add("text-red-500");
 				setTimeout(() => {
-					redirect();
-				}, 1000);
-			}
-
-			// check if the user exists in the database
-			else if (response.data.user_data === true) {
-				console.log("user found");
-				comment.innerHTML = "User Exists! Redirecting to Login Page!";
-				setTimeout(() => {
-					redirect();
-				}, 1000);
-			} else if (response.data.user_data === false) {
-				// disable main button
-
-				// ask server to send otp
-				let response = await axios
+					comment.innerHTML = "Enter Credentials to Sign Up!";
+					comment.classList.remove("text-red-500");
+				}, 3000);
+				return;
+			} else {
+				// so everything at this point is filled correctly.
+				// send a auth request making sure the user doesnt exist already.
+				const response = await axios
 					.post(
-						`${base_url}/send_email`,
+						`${base_url}/auth`,
 						{},
 						{
 							params: {
@@ -213,6 +180,7 @@ const Signup = (props) => {
 						return response;
 					});
 
+				console.log(response.data);
 				if (response.data.message === "simulation") {
 					// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
 					setTimeout(() => {
@@ -220,21 +188,130 @@ const Signup = (props) => {
 					}, 1000);
 				}
 
-				if (response.data.message === "email sent") {
-					comment.innerHTML = "OTP Sent! Check your Email!";
-					setServerOTP(response.data.OTP);
-					comment.innerHTML = "OTP Sent! Check your Email!";
-				} else if (response.data.message === "email not sent") {
-					comment.innerHTML = "Couldnt Send OTP! Try Again!";
+				// check if the user exists in the database
+				else if (response.data.user_data === true) {
+					console.log("user found");
+					comment.innerHTML =
+						"User Exists! Redirecting to Login Page!";
+					setTimeout(() => {
+						redirect();
+					}, 1000);
+				} else if (response.data.user_data === false) {
+					// so if the user doesnt exist
+					// ask server to send otp
+					let response = await axios
+						.post(
+							`${base_url}/send_email`,
+							{},
+							{
+								params: {
+									email: email,
+								},
+							}
+						)
+						.then((response) => {
+							return response;
+						})
+						.catch((error) => {
+							console.error(error);
+							alert(
+								"server not running! a simulated response is being sent"
+							);
+							const response = {
+								data: {
+									message: "simulation",
+								},
+							};
+							return response;
+						});
+
+					if (response.data.message === "simulation") {
+						comment.innerHTML =
+							"Signup Successful! Redirecting to Login Page!";
+						setTimeout(() => {
+							redirect();
+						}, 1000);
+					}
+
+					if (response.data.message === "email sent") {
+						setServerOTP(response.data.OTP);
+						comment.innerHTML = "OTP Sent! Check your Email!";
+						mainbutton.innerHTML = "Welcome to the Empire!";
+					} else if (response.data.message === "email not sent") {
+						comment.innerHTML = "Couldnt Send OTP! Try Again!";
+						alert(
+							"Something went wrong! Call the Devs! couldnt send otp"
+						);
+					}
+				} else if (response.data === true) {
+					comment.innerHTML = "User not found! Try Again!";
+				} else {
+					comment.innerHTML = "Something went wrong! Call the Devs!";
+					alert("Something went wrong! Call the Devs!");
+				}
+			}
+		}
+		if (mainbutton.innerHTML === "Welcome to the Empire!") {
+			const comment = document.getElementById("comment");
+			comment.innerHTML = "OTP Sent! Check your Email!";
+			// here we will check the otp
+			// if otp is correct, we will add the user to the database
+			if (otp < 6) {
+				comment.innerHTML = "OTP must be 6 digits long";
+				return;
+			}
+
+			if (otp === serverOTP) {
+				comment.innerHTML = "OTP Verified! Redirecting to Login Page!";
+				// add user post request.
+				const response = await axios
+					.post(
+						`${base_url}/add_user`,
+						{},
+						{
+							params: {
+								email: email,
+								UserName: username,
+								password: password,
+							},
+						}
+					)
+					.then((response) => {
+						return response;
+					})
+					.catch((error) => {
+						console.error(error);
+						alert(
+							"server not running! a simulated response is being sent"
+						);
+						const response = {
+							data: {
+								message: "simulation",
+							},
+						};
+						return response;
+					});
+				console.log(response.data);
+				if (response.data.message === "simulation") {
+					// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
+					setTimeout(() => {
+						redirect();
+					}, 1000);
+				}
+
+				if (response.data.message === "user inserted successfully") {
+					comment.innerHTML = "User Registered";
+					setTimeout(() => {
+						redirect();
+					}, 1000);
+				} else {
+					comment.innerHTML = "User not inserted";
 					alert(
-						"Something went wrong! Call the Devs! couldnt send otp"
+						"Something went wrong! Call the Devs! couldnt add user"
 					);
 				}
-			} else if (response.data === true) {
-				comment.innerHTML = "User not found! Try Again!";
 			} else {
-				comment.innerHTML = "Something went wrong! Call the Devs!";
-				alert("Something went wrong! Call the Devs!");
+				comment.innerHTML = "OTP Incorrect! Try Again!";
 			}
 		}
 	};
@@ -248,63 +325,8 @@ const Signup = (props) => {
 		}
 	};
 
-	const handleOtp = async (e) => {
-		const comment = document.getElementById("comment");
-		if (e.target.value.length < 6) {
-			comment.innerHTML = "OTP must be 6 digits long";
-			return;
-		}
-		const otp = e.target.value;
-		if (otp === serverOTP) {
-			comment.innerHTML = "OTP Verified! Redirecting to Login Page!";
-			// add user post request.
-			const response = await axios
-				.post(
-					`${base_url}/add_user`,
-					{},
-					{
-						params: {
-							email: email,
-							UserName: username,
-							password: password,
-						},
-					}
-				)
-				.then((response) => {
-					return response;
-				})
-				.catch((error) => {
-					console.error(error);
-					alert(
-						"server not running! a simulated response is being sent"
-					);
-					const response = {
-						data: {
-							message: "simulation",
-						},
-					};
-					return response;
-				});
-			console.log(response.data)
-			if (response.data.message === "simulation") {
-				// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
-				setTimeout(() => {
-					redirect();
-				}, 1000);
-			}
-
-			if (response.data.message === "user inserted successfully") {
-				comment.innerHTML = "User Registered";
-				setTimeout(() => {
-					redirect();
-				}, 1000);
-			} else {
-				comment.innerHTML = "User not inserted";
-				alert("Something went wrong! Call the Devs! couldnt add user");
-			}
-		} else {
-			comment.innerHTML = "OTP Incorrect! Try Again!";
-		}
+	const handleOtp = (e) => {
+		setOtp(e.target.value);
 	};
 
 	return (
@@ -384,6 +406,7 @@ const Signup = (props) => {
 												type="number"
 												placeholder="Enter OTP Received on Email ID"
 												onChange={handleOtp}
+												value={otp}
 											/>
 										</div>
 									</div>
@@ -547,8 +570,9 @@ const Signup = (props) => {
 									// 	!username ||
 									// 	!password
 									// }
+									id="mainbutton"
 								>
-									Welcome to the Empire!
+									Send OTP
 								</button>
 							</div>
 						</div>

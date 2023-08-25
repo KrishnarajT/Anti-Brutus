@@ -8,69 +8,196 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ForgotPass = (props) => {
-  let navigate = useNavigate();
-  let base_url = React.useContext(BaseUrlContext).baseUrl;
+	let navigate = useNavigate();
+	let base_url = React.useContext(BaseUrlContext).baseUrl;
+	const [email, setEmail] = React.useState("");
+	const [password, setPassword] = React.useState("");
+	const [confirmPassword, setConfirmPassword] = React.useState("");
+	const [otp, setOtp] = React.useState("");
+	const [emailError, setEmailError] = React.useState("");
+	const [passwordError, setPasswordError] = React.useState("");
+	const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
+	const [otpError, setOtpError] = React.useState("");
+	const [serverOTP, setServerOTP] = React.useState("");
 
 	function redirect() {
 		props.setisNavbarPresent(true);
-		navigate("/login");
+		navigate("/");
 	}
-
-	async function handleClick() {
+	async function handleClick(e) {
 		// log everything
 		console.log("email: " + email);
 		console.log("password: " + password);
 		console.log("confirm password: " + confirmPassword);
 		console.log("otp: " + otp);
 
-		// check if the user exists in the database
+		const comment = document.getElementById("comment");
+		const mainbutton = document.getElementById("mainbutton");
+		if (mainbutton.innerHTML === "Send OTP") {
+			// if things arent correct comment and return
+			if (!validateEmail(email)) {
+				comment.innerHTML = "Please enter a valid email address.";
+				return;
+			}
+			if (!validatePassword(password)) {
+				comment.innerHTML = "Enter valid Password";
+				return;
+			}
+			if (password !== confirmPassword) {
+				comment.innerHTML = "Passwords dont match";
+				return;
+			}
+			// check if the user exists in the database
+			const response = await axios
+				.post(
+					`${base_url}/auth`,
+					{},
+					{
+						params: {
+							email: email,
+							password: password,
+						},
+					}
+				)
+				.then((response) => {
+					return response;
+				})
+				.catch((error) => {
+					console.error(error);
+					alert(
+						"server not running! a simulated response is being sent"
+					);
+					const response = {
+						data: {
+							message: "simulation",
+						},
+					};
+					return response;
+				});
 
-    const response = await axios
-			.post(
-				`${base_url}/check_user`,
-				{},
-				{
-					params: {
-            email: email,
-            password: password,
-					},
+			if (response.data.message === "simulation") {
+				comment.innerHTML =
+					"Login Successful! Redirecting to Home Page!";
+				setTimeout(() => {
+					redirect();
+				}, 1000);
+			}
+			// check if the user exists in the database
+			else if (response.data.message === "user found pass correct") {
+				// doom message
+				console.log("user found");
+				comment.innerHTML =
+					"The New Password cannot be the same as the old password!";
+			} else if (response.data.message === "user found pass incorrect") {
+				// success
+				// send email
+				let response = await axios
+					.post(
+						`${base_url}/send_email_reset`,
+						{},
+						{
+							params: {
+								email: email,
+							},
+						}
+					)
+					.then((response) => {
+						return response;
+					})
+					.catch((error) => {
+						console.error(error);
+						alert(
+							"server not running! a simulated response is being sent"
+						);
+						const response = {
+							data: {
+								message: "simulation",
+							},
+						};
+						return response;
+					});
+
+				if (response.data.message === "simulation") {
+					comment.innerHTML =
+						"Password Change Successful! redirecting to Login Page!";
+					setTimeout(() => {
+						redirect();
+					}, 1000);
 				}
-			)
-			.then((response) => {
-				return response;
-			})
-			.catch((error) => {
-				console.error(error);
-				alert("server not running! a simulated response is being sent");
-				const response = {
-					data: {
-						message: "simulation",
-					},
-				};
-				return response;
-			});
 
-		if (response.data.message === "simulation") {
-			// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
-			setTimeout(() => {
-				redirect();
-			}, 1000);
-		}
-		// check if the user exists in the database
-		else if (response.data.message === "user found pass correct") {
-			console.log("user found");
-			setTimeout(() => {
-				redirect();
-			}, 1000);
-    }
-    // else if (response.data.message === "user found pass incorrect") {
-		// 	comment.innerHTML = "Password Incorrect! Try Again!";
-		// } else if (response.data.message === "user not found") {
-		// 	comment.innerHTML = "User Doesnt Exist! Try Again or Sign Up!";
-    // }
-    else {
-			// comment.innerHTML = "Something went wrong! Call the Devs!";
-			alert("Something went wrong! Call the Devs!");
+				if (response.data.message === "email sent") {
+					comment.innerHTML = "OTP Sent! Check your Email!";
+					setServerOTP(response.data.OTP);
+					comment.innerHTML = "OTP Sent! Check your Email!";
+					mainbutton.innerHTML = "Reset Password";
+				} else if (response.data.message === "email not sent") {
+					comment.innerHTML = "Couldnt Send OTP! Try Again!";
+					alert(
+						"Something went wrong! Call the Devs! couldnt send otp"
+					);
+				} else {
+					comment.innerHTML = "Server not running!";
+					alert(
+						"Something went wrong! Server not running! Call the Devs! couldnt send otp"
+					);
+				}
+			} else if (response.data.message === "user not found") {
+				comment.innerHTML = "User Doesnt Exist! Try Again or Sign Up!";
+			} else {
+				comment.innerHTML = "Something went wrong! Call the Devs!";
+				alert("Something went wrong! Call the Devs!");
+			}
+			// mainbutton.innerHTML = "Reset Password";
+		} else if (mainbutton.innerHTML === "Reset Password") {
+			// here we check the otp and reset the password
+			if (otp !== serverOTP) {
+				comment.innerHTML = "OTP Incorrect! Try Again!";
+				return;
+			}
+			// reset password
+			let response = await axios
+				.post(
+					`${base_url}/reset_pass`,
+					{},
+					{
+						params: {
+							email: email,
+							password: password,
+						},
+					}
+				)
+				.then((response) => {
+					return response;
+				})
+				.catch((error) => {
+					console.error(error);
+					alert(
+						"server not running! a simulated response is being sent"
+					);
+					const response = {
+						data: {
+							message: "simulation",
+						},
+					};
+					return response;
+				});
+
+			if (response.data.message === "simulation") {
+				// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
+				setTimeout(() => {
+					redirect();
+				}, 1000);
+			}
+
+			if (response.data.message === "success") {
+				comment.innerHTML = "Password Changed! Redirecting to Login!";
+			} else if (response.data.message === "failure") {
+				comment.innerHTML =
+					"Couldnt change password, There has been some error. Try Again! ";
+			} else {
+				comment.innerHTML = "Something went wrong! Call the Devs!";
+				alert("Something went wrong! Call the Devs! couldnt send otp");
+			}
 		}
 	}
 	const { theme, setTheme } = React.useContext(ThemeContext);
@@ -81,15 +208,6 @@ const ForgotPass = (props) => {
 		light_button.click();
 	});
 
-	const [email, setEmail] = React.useState("");
-	const [password, setPassword] = React.useState("");
-	const [confirmPassword, setConfirmPassword] = React.useState("");
-	const [otp, setOtp] = React.useState("");
-	const [emailError, setEmailError] = React.useState("");
-	const [passwordError, setPasswordError] = React.useState("");
-	const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
-	const [otpError, setOtpError] = React.useState("");
-
 	const validateEmail = (email) => {
 		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return re.test(email);
@@ -97,7 +215,7 @@ const ForgotPass = (props) => {
 
 	const validatePassword = (password) => {
 		const re =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?&])[A-Za-z\d@$!#%*?&]{8,}$/;
 		return re.test(password);
 	};
 
@@ -159,7 +277,10 @@ const ForgotPass = (props) => {
 					<div className="lg:w-1/2 xl:max-w-screen-sm">
 						<div className="py-12 bg-base-100 lg:bg-transparent flex justify-center lg:justify-start lg:px-12">
 							<div className="cursor-pointer flex items-center">
-								<div id="logo" className="w-12 h-12 m-4"></div>
+								<div
+									id="brutuslogo"
+									className="w-12 h-12 m-4"
+								></div>
 								<div className="text-2xl text-primary-content tracking-wide ml-2 font-semibold">
 									Anti Brutus
 								</div>
@@ -262,24 +383,31 @@ const ForgotPass = (props) => {
 											</p>
 										)}
 									</div>
+									<div
+										id="comment"
+										className="text-2xl text-center m-4 text-accent"
+									>
+										Enter Credentials to Sign Up!
+									</div>
 									<div className="mt-10">
 										<button
 											className="bg-primary p-4 w-full rounded-full tracking-wide
                           font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-primary-focus text-primary-content
                           shadow-lg text-xl cursor-pointer"
-											disabled={
-												!validateEmail(email) ||
-												!validatePassword(password) ||
-												password !== confirmPassword ||
-												otp.length !== 6
-											}
+											// disabled={
+											// 	!validateEmail(email) ||
+											// 	!validatePassword(password) ||
+											// 	password !== confirmPassword
+											// 	// || otp.length !== 6
+											// }
 											onClick={() => {
 												console.log("clicked");
 												// navigate to home using router
 												handleClick();
 											}}
+											id="mainbutton"
 										>
-											Log In
+											Send OTP
 										</button>
 									</div>
 								</form>
