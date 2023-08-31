@@ -2087,6 +2087,13 @@ html{
     background-color: hsl(var(--nf) / var(--tw-bg-opacity));
   }
 
+  .btn-success:hover{
+    --tw-border-opacity: 1;
+    border-color: hsl(var(--su) / var(--tw-border-opacity));
+    --tw-bg-opacity: 1;
+    background-color: hsl(var(--su) / var(--tw-bg-opacity));
+  }
+
   .btn.glass:hover{
     --glass-opacity: 25%;
     --glass-border-opacity: 15%;
@@ -2414,17 +2421,6 @@ html{
   align-items: center;
 }
 
-.progress{
-  position: relative;
-  width: 100%;
-  -webkit-appearance: none;
-          appearance: none;
-  overflow: hidden;
-  height: 0.5rem;
-  background-color: hsl(var(--bc) / 0.2);
-  border-radius: var(--rounded-box, 1rem);
-}
-
 .range{
   height: 1.5rem;
   width: 100%;
@@ -2603,6 +2599,23 @@ html{
   border-color: hsl(var(--nf) / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: hsl(var(--nf) / var(--tw-bg-opacity));
+}
+
+.btn-success{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--su) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--su) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--suc) / var(--tw-text-opacity));
+  outline-color: hsl(var(--su) / 1);
+}
+
+.btn-success.btn-active{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--su) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--su) / var(--tw-bg-opacity));
 }
 
 .btn.glass{
@@ -3245,65 +3258,6 @@ html{
   0%{
     opacity: 0;
   }
-}
-
-.progress::-moz-progress-bar{
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--bc) / var(--tw-bg-opacity));
-}
-
-.progress-error::-moz-progress-bar{
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--er) / var(--tw-bg-opacity));
-}
-
-.progress:indeterminate{
-  --progress-color: hsl(var(--bc));
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--progress-color) -1%,
-    var(--progress-color) 10%,
-    transparent 10%,
-    transparent 90%
-  );
-  background-size: 200%;
-  background-position-x: 15%;
-  -webkit-animation: progress-loading 5s ease-in-out infinite;
-          animation: progress-loading 5s ease-in-out infinite;
-}
-
-.progress-error:indeterminate{
-  --progress-color: hsl(var(--er));
-}
-
-.progress::-webkit-progress-bar{
-  background-color: transparent;
-  border-radius: var(--rounded-box, 1rem);
-}
-
-.progress::-webkit-progress-value{
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--bc) / var(--tw-bg-opacity));
-  border-radius: var(--rounded-box, 1rem);
-}
-
-.progress-error::-webkit-progress-value{
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--er) / var(--tw-bg-opacity));
-}
-
-.progress:indeterminate::-moz-progress-bar{
-  background-color: transparent;
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--progress-color) -1%,
-    var(--progress-color) 10%,
-    transparent 10%,
-    transparent 90%
-  );
-  background-size: 200%;
-  background-position-x: 15%;
-  animation: progress-loading 5s ease-in-out infinite;
 }
 
 @-webkit-keyframes progress-loading{
@@ -4017,6 +3971,10 @@ html{
   margin: 0px;
 }
 
+.m-10{
+  margin: 2.5rem;
+}
+
 .m-16{
   margin: 4rem;
 }
@@ -4049,10 +4007,6 @@ html{
 
 .mb-0{
   margin-bottom: 0px;
-}
-
-.mb-10{
-  margin-bottom: 2.5rem;
 }
 
 .mb-16{
@@ -4139,6 +4093,10 @@ html{
   display: none;
 }
 
+.h-1\/2{
+  height: 50%;
+}
+
 .h-10{
   height: 2.5rem;
 }
@@ -4153,6 +4111,10 @@ html{
 
 .h-16{
   height: 4rem;
+}
+
+.h-24{
+  height: 6rem;
 }
 
 .h-32{
@@ -4201,6 +4163,10 @@ html{
   height: fit-content;
 }
 
+.h-full{
+  height: 100%;
+}
+
 .h-screen{
   height: 100vh;
 }
@@ -4213,6 +4179,10 @@ html{
 
 .min-h-screen{
   min-height: 100vh;
+}
+
+.w-1\/2{
+  width: 50%;
 }
 
 .w-1\/3{
@@ -4285,10 +4255,6 @@ html{
 
 .w-\[28rem\]{
   width: 28rem;
-}
-
-.w-\[30rem\]{
-  width: 30rem;
 }
 
 .w-\[34rem\]{
@@ -4397,6 +4363,10 @@ html{
   justify-content: space-between;
 }
 
+.justify-evenly{
+  justify-content: space-evenly;
+}
+
 .gap-0{
   gap: 0px;
 }
@@ -4437,6 +4407,10 @@ html{
   overflow: hidden;
 }
 
+.overflow-x-auto{
+  overflow-x: auto;
+}
+
 .break-all{
   word-break: break-all;
 }
@@ -4459,6 +4433,15 @@ html{
 
 .border-b{
   border-bottom-width: 1px;
+}
+
+.border-none{
+  border-style: none;
+}
+
+.border-base-content{
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--bc) / var(--tw-border-opacity));
 }
 
 .border-primary{
@@ -4496,6 +4479,11 @@ html{
   background-color: hsl(var(--s) / var(--tw-bg-opacity));
 }
 
+.bg-secondary-focus{
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--sf) / var(--tw-bg-opacity));
+}
+
 .bg-transparent{
   background-color: transparent;
 }
@@ -4506,6 +4494,10 @@ html{
 
 .p-0{
   padding: 0px;
+}
+
+.p-10{
+  padding: 2.5rem;
 }
 
 .p-12{
@@ -4557,6 +4549,11 @@ html{
   padding-right: 0.5rem;
 }
 
+.px-20{
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -4595,6 +4592,10 @@ html{
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.pb-4{
+  padding-bottom: 1rem;
 }
 
 .pr-4{
@@ -4785,6 +4786,12 @@ html{
   outline-color: hsl(var(--s) / 1);
 }
 
+.transition-all{
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .duration-200{
   transition-duration: 200ms;
 }
@@ -4904,6 +4911,15 @@ body {
           transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.hover\:cursor-pointer:hover{
+  cursor: pointer;
+}
+
+.hover\:bg-base-200:hover{
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b2) / var(--tw-bg-opacity));
+}
+
 .hover\:bg-neutral:hover{
   --tw-bg-opacity: 1;
   background-color: hsl(var(--n) / var(--tw-bg-opacity));
@@ -4912,6 +4928,16 @@ body {
 .hover\:bg-primary-focus:hover{
   --tw-bg-opacity: 1;
   background-color: hsl(var(--pf) / var(--tw-bg-opacity));
+}
+
+.hover\:bg-success:hover{
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--su) / var(--tw-bg-opacity));
+}
+
+.hover\:text-accent:hover{
+  --tw-text-opacity: 1;
+  color: hsl(var(--a) / var(--tw-text-opacity));
 }
 
 .hover\:text-accent-focus:hover{
@@ -4927,6 +4953,11 @@ body {
 .hover\:text-neutral-content:hover{
   --tw-text-opacity: 1;
   color: hsl(var(--nc) / var(--tw-text-opacity));
+}
+
+.hover\:text-success-content:hover{
+  --tw-text-opacity: 1;
+  color: hsl(var(--suc) / var(--tw-text-opacity));
 }
 
 .hover\:shadow-2xl:hover{

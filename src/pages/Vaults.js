@@ -1,8 +1,9 @@
 import React from "react";
 import { useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
-import { IconPlus } from "@tabler/icons-react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { IconArrowRight, IconPlus } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import select_image from "../utils/images";
 
 const Vaults = () => {
 	const { theme } = React.useContext(ThemeContext);
@@ -37,9 +38,9 @@ const Vaults = () => {
 	});
 	return (
 		<div>
-			<div className="h-44 bg-secondary p-10 m-4 rounded-3xl flex justify-between">
+			<div className="h-32 bg-transparent p-10 m-4 rounded-3xl flex justify-between">
 				<div className="flex-1 flex items-center">
-					<h1 className="text-5xl w-full font-bold text-secondary-content">
+					<h1 className="text-5xl w-full font-bold text-base-content">
 						Your Vaults
 					</h1>
 				</div>
@@ -53,37 +54,44 @@ const Vaults = () => {
 				</div>
 			</div>
 			<div>
-				<div className="overflow-x-auto p-8 px-20">
-					<table className="table text-3xl">
-						{/* head */}
-						<thead>
-							<tr className="text-4xl text-base-content border-base-content">
-								<th></th>
-								<th>Name</th>
-								<th>Description</th>
-							</tr>
-						</thead>
-						<tbody className="">
-							{vaults.map((vault) => {
-								return (
-									<tr
-										className="h-24 transition-all duration-300 transform-gpu hover:bg-base-200 rounded-3xl hover:cursor-pointer border-base-content"
-										onClick={() => {
-											navigate(`/vaults/${vault.id}`);
-										}}
-									>
-										<th>{vault.id}</th>
-										<td className="hover:text-accent text-5xl transition-all duration-300">
-											{vault.name}
-										</td>
-										<td className="">
-											{vault.description}
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
+				<div className="overflow-x-auto p-8 px-20 flex flex-wrap justify-center">
+					{vaults.map((vault) => {
+						return (
+							<div className="card w-1/4 h-72 bg-base-100 shadow-xl image-full m-4">
+								<div
+									style={{
+										backgroundImage: `url("${
+											select_image()["image"]
+										}")`,
+										backgroundSize: "cover",
+										backgroundPosition: "center",
+										backgroundRepeat: "no-repeat",
+									}}
+									className="image-full rounded-xl h-full w-full"
+								></div>
+								<div className="card-body">
+									<h2 className="card-title text-3xl">
+										{vault.name}
+									</h2>
+									<p className="text-2xl">
+										{vault.description}
+									</p>
+									<div className="card-actions justify-end">
+										<button
+											className="btn btn-primary btn-lg"
+											onClick={() => {
+												navigate(`/vaults/${vault.id}`);
+											}}
+										>
+											{" "}
+											Open
+											<IconArrowRight className="text-2xl" />
+										</button>
+									</div>
+								</div>
+							</div>
+						);
+					})}
 				</div>
 			</div>
 		</div>
