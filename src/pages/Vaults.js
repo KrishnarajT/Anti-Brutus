@@ -6,6 +6,11 @@ import { useNavigate } from "react-router-dom";
 import select_image from "../utils/images";
 
 const Vaults = () => {
+	useEffect(() => {
+		const html = document.querySelector("html");
+		html.classList.remove("overflow-hidden");
+	}, []);
+
 	const { theme } = React.useContext(ThemeContext);
 	const navigate = useNavigate();
 	let vaults = [
@@ -80,7 +85,7 @@ const Vaults = () => {
 										<button
 											className="btn btn-primary btn-lg"
 											onClick={() => {
-												navigate(`/vaults/${vault.id}`);
+												navigate(`/vaults/${vault.id}/${vault.name}`);
 											}}
 										>
 											{" "}
