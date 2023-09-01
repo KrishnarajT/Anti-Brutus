@@ -51,7 +51,6 @@ const Signup = (props) => {
 		return re.test(username);
 	};
 
-
 	const validatePassword = (password) => {
 		const re =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?&])[A-Za-z\d@$#!%*?&]{8,}$/;
@@ -189,14 +188,20 @@ const Signup = (props) => {
 				}
 
 				// check if the user exists in the database
-				else if (response.data.user_data === true) {
+				else if (
+					response.data.message === "user found pass correct" ||
+					response.data.message === "user found pass incorrect"
+				) {
 					console.log("user found");
 					comment.innerHTML =
 						"User Exists! Redirecting to Login Page!";
 					setTimeout(() => {
 						redirect();
 					}, 1000);
-				} else if (response.data.user_data === false) {
+				} else if (
+					response.data.user_data === false ||
+					response.data.message === "user not found"
+				) {
 					// so if the user doesnt exist
 					// ask server to send otp
 					let response = await axios
@@ -243,8 +248,6 @@ const Signup = (props) => {
 							"Something went wrong! Call the Devs! couldnt send otp"
 						);
 					}
-				} else if (response.data === true) {
-					comment.innerHTML = "User not found! Try Again!";
 				} else {
 					comment.innerHTML = "Something went wrong! Call the Devs!";
 					alert("Something went wrong! Call the Devs!");

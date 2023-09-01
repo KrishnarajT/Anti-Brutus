@@ -1,23 +1,11 @@
 var nodemailer = require("nodemailer");
-const fs = require("fs");
-var path = require("path");
+const get_data = require("./firebase");
 
-var password_file_path = path.join(__dirname, "./password.txt");
+
 const email_id = "puzzlelists@gmail.com";
-console.log(password_file_path);
-async function read_file() {
-  return new Promise((resolve, reject) => {
-    fs.readFile(password_file_path, "utf8", (err, data) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    });
-  });
-}
 
 async function send_mail(to, subject, otp) {
-  const email_pass = await read_file();
+  const email_pass = await get_data("gmail_pass");
   return new Promise((resolve, reject) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
@@ -54,15 +42,5 @@ async function send_mail(to, subject, otp) {
     });
   });
 }
-// send_mail().then(
-// 	(result) => {
-// 		if (result) {
-// 			console.log("Mail sent");
-// 		}
-// 	},
-// 	(err) => {
-// 		console.log(err);
-// 	}
-// );
 
 module.exports = send_mail;

@@ -6,9 +6,10 @@ const createHttpError = require("http-errors");
 const app = express()
 const send_mail = require("./send_mail");
 const otp = require("./OTP");
-
+const get_data = require("./firebase")
 // Enable CORS
 app.use(cors())
+
 
 // Importing crypto module for generating salt and hashing password
 const crypto = require('crypto');
@@ -17,6 +18,31 @@ const crypto = require('crypto');
 function generateSalt() {
     return crypto.randomBytes(5).toString('hex');
 }
+
+//Function to create DEK for encryption
+function generateDEK(email, salt,string) {
+    const key = email + salt;
+    const cipher = crypto.createCipher('aes-256-cbc', key);
+    let dek = cipher.update(string, 'utf8', 'hex');
+    dek += cipher.final('hex');
+    return dek;
+  }
+
+  function decryptDEK(dek, email, salt) {
+    const key = email + salt;
+    const decipher = crypto.createDecipher('aes-256-cbc', key);
+    let secretKey = decipher.update(dek, 'hex', 'utf8');
+    secretKey += decipher.final('utf8');
+    return secretKey;
+  }
+
+  function encryptDEK(dek, kek) {
+  const cipher = crypto.createCipher('aes-256-cbc', kek);
+  let encryptedDEK = cipher.update(dek, 'utf8', 'hex');
+  encryptedDEK += cipher.final('hex');
+  return encryptedDEK;
+}
+
 
 // Function to hash password with salt
 function hashPassword(password, salt) {
@@ -37,12 +63,15 @@ app.get("/about", (request, response) => {
 
 // Route for testing database connection
 app.get("/test", async (request, response) => {
+    const KEK = await get_data("KEK")
     await dbobj.test((err, rows) => {
         if (err) {
             response.status(500).json({ error: 'Internal Server Error' });
         }
         else {
-            response.status(200).json(rows);
+            console.log(KEK);
+            response.send(KEK);
+            
         }
     });
     console.log("from the app.js file");
