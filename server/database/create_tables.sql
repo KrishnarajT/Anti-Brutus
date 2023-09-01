@@ -23,7 +23,7 @@ CREATE TABLE if not exists passwords (
 	description string,
 	password string,
 	username string,
-	phone_no string,
+	pass_name string,
 	icon string,
 	FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (vault_id) REFERENCES vaults (vault_id)
