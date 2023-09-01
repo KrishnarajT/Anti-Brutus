@@ -312,7 +312,7 @@ const VaultContent = () => {
 				<div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll scroll-smooth">
 					<div className="flex items-center justify-between">
 						<div className="text-5xl font-bold text-center text-base-content">
-							Details
+							Details {selected_password ? selected_password.name : null}
 						</div>
 						<button
 							className="btn btn-primary btn-lg text-2xl"
