@@ -16,6 +16,7 @@ import ForgotPass from "./pages/ForgotPass";
 import { useEffect, useState } from "react";
 import VaultContent from "./pages/VaultContent";
 
+
 function App() {
 	const [isNavbarPresent, setisNavbarPresent] = useState(false);
 
