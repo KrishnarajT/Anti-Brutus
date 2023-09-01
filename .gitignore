@@ -1,4 +1,3 @@
-./server/admin.json
 # Logs
 logs
 *.log
@@ -151,3 +150,4 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+server/admin.json
