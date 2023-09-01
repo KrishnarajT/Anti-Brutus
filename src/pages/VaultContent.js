@@ -1,8 +1,24 @@
-import { IconDeviceFloppy, IconPlus, IconSearch } from "@tabler/icons-react";
+import {
+	IconDeviceFloppy,
+	IconEye,
+	IconEyeClosed,
+	IconPencilBolt,
+	IconPlus,
+	IconSearch,
+} from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { BaseUrlContext } from "../context/BaseUrlContext";
+import { UserInfoContext } from "../context/UserInfoContext";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 const VaultContent = () => {
+	// get context data
+	const user_email = React.useContext(UserInfoContext).userEmail;
+	const base_url = React.useContext(BaseUrlContext).baseUrl;
+
+	const navigate = useNavigate();
 	let passwords = [
 		{
 			id: 1,
@@ -226,11 +242,161 @@ const VaultContent = () => {
 	const [name, setName] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [passVisible, setPassVisible] = useState(false);
 	const [url, setUrl] = useState("");
 	const [description, setDescription] = useState("");
 
 	const params = useParams();
 	console.log(params);
+
+	const handleSave = async () => {
+		// save the password to the database
+		// update the password in the passwords array
+
+		if (selected_password.id === -1) {
+			// send a request to the backend to add a new password to the database.
+			const response = await axios
+				.post(
+					`${base_url}/add_vault_data`,
+					{},
+					{
+						params: {
+							vault_id: params.id,
+							user_email: user_email,
+							pass_name: name,
+							user_name: username,
+							password: password,
+							url: url,
+							description: description,
+							icon: `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`,
+						},
+					}
+				)
+				.then((response) => {
+					return response;
+				})
+				.catch((error) => {
+					console.error(error);
+					alert(
+						"server not running! a simulated response is being sent"
+					);
+					const response = {
+						data: {
+							message: "simulation",
+						},
+					};
+					return response;
+				});
+			console.log("password sending", response.data);
+			if (response.data.message === "success") {
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Password Saved!";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			} else if (response.data.message === "simulation") {
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Simulated Saved!";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			} else if (response.data.message === "failure") {
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Could not save Password! Try Again";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			} else if (response.data.message === "something went wrong") {
+				// comment.innerHTML = "Login Failed! Try Again!";
+				// alert("something went wrong! try again!");
+				// show toast.
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Something Went Wrong!";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			}
+		} else {
+			// send a request to update the password in the database.
+			const response = await axios
+				.post(
+					`${base_url}/update_vault_data`,
+					{},
+					{
+						params: {
+							vault_id: params.id,
+							pass_id: selected_password.id,
+							pass_name: name,
+							user_name: username,
+							password: password,
+							url: url,
+							description: description,
+							icon: `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`,
+						},
+					}
+				)
+				.then((response) => {
+					return response;
+				})
+				.catch((error) => {
+					console.error(error);
+					alert(
+						"server not running! a simulated response is being sent"
+					);
+					const response = {
+						data: {
+							message: "simulation",
+						},
+					};
+					return response;
+				});
+			console.log("password sending", response.data);
+			if (response.data.message === "success") {
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Password Saved!";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			} else if (response.data.message === "simulation") {
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Simulated Saved!";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			} else if (response.data.message === "failure") {
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Could not save Password! Try Again";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			} else if (response.data.message === "something went wrong") {
+				// comment.innerHTML = "Login Failed! Try Again!";
+				// alert("something went wrong! try again!");
+				// show toast.
+				const toast_div = document.querySelector(".toast");
+				const toast_content = document.querySelector("#toast_content");
+				toast_content.innerHTML = "Something Went Wrong!";
+				toast_div.classList.remove("hidden");
+				setTimeout(() => {
+					toast_div.classList.add("hidden");
+				}, 2000);
+			}
+		}
+	};
 	return (
 		<div>
 			<div className="h-32 bg-transparent p-10 m-4 rounded-3xl flex justify-between items-center">
@@ -250,7 +416,21 @@ const VaultContent = () => {
 					/>
 				</div>
 				<div className="flex items-center">
-					<button className="btn bg-primary border-none text-2xl btn-lg hover:bg-primary-focus hover:text-primary-content flex items-center gap-2 text-primary-content">
+					<button
+						className="btn bg-primary border-none text-2xl btn-lg hover:bg-primary-focus hover:text-primary-content flex items-center gap-2 text-primary-content"
+						onClick={() => {
+							// clear all fields.
+							setName("");
+							setUsername("");
+							setPassword("");
+							setUrl("");
+							setDescription("");
+							setSelectedPassword({
+								name: "New Password",
+								id: -1,
+							});
+						}}
+					>
 						New Password
 						<span className="text-primary-content"></span>
 						<IconPlus className="text-5xl text-primary-content" />
@@ -312,64 +492,112 @@ const VaultContent = () => {
 				<div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll scroll-smooth">
 					<div className="flex items-center justify-between">
 						<div className="text-5xl font-bold text-center text-base-content">
-							Details {selected_password ? selected_password.name : null}
+							Details{" "}
+							{selected_password
+								? `- ${selected_password.name}`
+								: null}
 						</div>
 						<button
 							className="btn btn-primary btn-lg text-2xl"
-							onClick={() => {
-								// save the password
-								// create a json obejct containing the new values of the password.
-								// send it to the server.
-							}}
+							onClick={() => window.my_modal_3.showModal()}
 						>
-							Save
+							{selected_password && selected_password.id === -1
+								? "Save"
+								: "Update"}
 							<IconDeviceFloppy className="text-5xl text-primary-content h-8 w-8" />
 						</button>
 					</div>
 
 					{/* textbox for name and username */}
-					<div className="form-control w-full max-w-xs">
-						<label className="label">
-							<span className="label-text text-xl">Name</span>
-						</label>
-						<input
-							type="text"
-							placeholder="Type here"
-							className="input input-bordered w-full max-w-xs"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-						/>
-					</div>
-					<div className="form-control w-full max-w-xs">
-						<label className="label">
-							<span className="label-text text-xl">UserName</span>
-						</label>
-						<input
-							type="text"
-							placeholder="Type here"
-							className="input input-bordered w-full max-w-xs"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-						/>
+					<div className="flex gap-16">
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text text-xl">Name</span>
+							</label>
+							<input
+								type="text"
+								placeholder="Type here"
+								className="input input-bordered w-full max-w-xs"
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+							/>
+						</div>
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text text-xl">
+									UserName
+								</span>
+							</label>
+							<input
+								type="text"
+								placeholder="Type here"
+								className="input input-bordered w-full max-w-xs"
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
+							/>
+						</div>
 					</div>
 					{/* textbox for password */}
-					<div className="form-control w-full max-w-xs">
-						<label className="label">
-							<span className="label-text text-xl">Password</span>
-						</label>
-						<input
-							type="text"
-							placeholder="Type here"
-							className="input input-bordered w-full max-w-xs"
-							value={password}
-							onChange={(e) => setName(e.target.value)}
-						/>
+					<div className="flex gap-16 items-end mt-4">
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text text-xl">
+									Password
+								</span>
+							</label>
+							<div className="flex gap-2">
+								<input
+									type={passVisible ? "text" : "password"}
+									placeholder="Type here"
+									className="input input-bordered w-full max-w-xs"
+									value={password}
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
+								/>
+								{passVisible ? (
+									<IconEye
+										className="w-10 h-10"
+										onClick={() => {
+											setPassVisible(() => {
+												return !passVisible;
+											});
+										}}
+									/>
+								) : (
+									<IconEyeClosed
+										className="w-10 h-10"
+										onClick={() => {
+											setPassVisible(() => {
+												return !passVisible;
+											});
+										}}
+									/>
+								)}
+							</div>
+						</div>
+						<button
+							className="btn btn-md btn-secondary text-2xl items-center"
+							onClick={() => {
+								// navigate to the password generator page.
+								navigate("/master");
+							}}
+						>
+							Generate
+							<IconPencilBolt className="text-5xl text-secondary-content h-8 w-8" />
+						</button>
+						<div className="flex items-center justify-center h-full">
+							<div className="badge badge-lg outline outline-1 text-2xl p-4 mb-2">
+								Length: {password.length}
+							</div>
+						</div>
 					</div>
-
 					{/* textbox for url */}
-					<div className="form-control w-full max-w-xs">
+					<div className="form-control w-full max-w-xs mt-4">
 						<label className="label">
-							<span className="label-text text-xl">url</span>
+							<span className="label-text text-xl">
+								Website URL
+							</span>
 						</label>
 						<input
 							type="text"
@@ -381,12 +609,41 @@ const VaultContent = () => {
 					</div>
 
 					{/* textbox for description */}
-					<textarea
-						className="textarea textarea-secondary"
-						placeholder="Bio"
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-					></textarea>
+					<div className="mt-4 ">
+						<label className="label">
+							<span className="label-text text-xl">
+								Description
+							</span>
+						</label>
+						<textarea
+							className="textarea textarea-secondary w-full"
+							placeholder="Bio"
+							value={description}
+							onChange={(e) => setDescription(e.target.value)}
+						></textarea>
+					</div>
+				</div>
+			</div>
+			<dialog id="my_modal_3" className="modal">
+				<form method="dialog" className="modal-box">
+					<h3 className="font-bold text-lg">Confirm</h3>
+					<p className="py-4">
+						Are you Sure you Want to Save changes?
+					</p>
+					<div className="modal-action">
+						{/* if there is a button in form, it will close the modal */}
+						<button className="btn" onClick={handleSave}>
+							Save
+						</button>
+					</div>
+				</form>
+			</dialog>
+			<div className="toast toast-end duration-300 transform-gpu ease-in-out hidden">
+				<div className="alert alert-success bg-primary">
+					<span className="flex items-center gap-4 text-2xl">
+						<CheckBadgeIcon className="w-10 h-10" />
+						<p id="toast_content">Copied to Clipboard!</p>
+					</span>
 				</div>
 			</div>
 		</div>

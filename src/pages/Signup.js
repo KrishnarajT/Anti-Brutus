@@ -276,6 +276,7 @@ const Signup = (props) => {
 								email: email,
 								UserName: username,
 								password: password,
+								special_string: "dog",
 							},
 						}
 					)

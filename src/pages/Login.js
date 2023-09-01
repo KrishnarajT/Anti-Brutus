@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { BaseUrlContext } from "../context/BaseUrlContext";
+import { UserInfoContext } from "../context/UserInfoContext";
 import "../css/Navbar.css";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +9,9 @@ import axios from "axios";
 
 const Login = (props) => {
 	const base_url = React.useContext(BaseUrlContext).baseUrl;
+	const userEmail = React.useContext(UserInfoContext).userEmail;
+	const setUserInfo = React.useContext(UserInfoContext).setUserInfo;
+
 	const comment = document.getElementById("comment");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -18,6 +22,7 @@ const Login = (props) => {
 
 	function redirect() {
 		props.setisNavbarPresent(true);
+		setUserInfo(email);
 		navigate("/home");
 	}
 
@@ -50,7 +55,7 @@ const Login = (props) => {
 				};
 				return response;
 			});
-		console.log("from login", response.data)
+		console.log("from login", response.data);
 		if (response.data.message === "simulation") {
 			// comment.innerHTML = "Login Successful! Redirecting to Home Page!";
 			setTimeout(() => {

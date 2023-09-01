@@ -1,35 +1,27 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { IconArrowRight, IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import select_image from "../utils/images";
+import axios from "axios";
+import { BaseUrlContext } from "../context/BaseUrlContext";
+import { UserInfoContext } from "../context/UserInfoContext";
 
 const Vaults = () => {
+	const base_url = React.useContext(BaseUrlContext).baseUrl;
+	const userEmail = React.useContext(UserInfoContext).userEmail;
 	useEffect(() => {
 		const html = document.querySelector("html");
 		html.classList.remove("overflow-hidden");
 	}, []);
 
+	const [vaults, setVaults] = React.useState([]);
+	const [newVaultName, setNewVaultName] = React.useState("");
+	const [newVaultDescription, setNewVaultDescription] = React.useState("");
+
 	const { theme } = React.useContext(ThemeContext);
 	const navigate = useNavigate();
-	let vaults = [
-		{
-			id: 1,
-			name: "Favourites",
-			description: "Your Favourtites",
-		},
-		{
-			id: 2,
-			name: "Passwords",
-			description: "The place for your passwords",
-		},
-		{
-			id: 3,
-			name: "Cards",
-			description: "Safely Store your cards",
-		},
-	];
 
 	useEffect(() => {
 		console.log(theme);
@@ -40,7 +32,108 @@ const Vaults = () => {
 			const dark_button = document.getElementById("dark_button");
 			dark_button.click();
 		}
+		if (vaults.length === 0) {
+			getVaults();
+		}
 	});
+
+	const getVaults = async () => {
+		const response = await axios
+			.post(
+				`${base_url}/get_vaults`,
+				{},
+				{
+					params: {
+						user_email: userEmail,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				// alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+
+		if (response.data.message === "simulation") {
+			setVaults([
+				{
+					id: 1,
+					name: "Favourifgtes",
+					description: "Your Favourtites",
+				},
+				{
+					id: 2,
+					name: "Passwords",
+					description: "The place for your passwords",
+				},
+				{
+					id: 3,
+					name: "Cards",
+					description: "Safely Store your cards",
+				},
+			]);
+		} else {
+			// setVaults(response.data);
+			setVaults([
+				{
+					id: 1,
+					name: "Favourifgtes",
+					description: "Your Favourtites",
+				},
+				{
+					id: 2,
+					name: "Passwords",
+					description: "The place for your passwords",
+				},
+				{
+					id: 3,
+					name: "Cards",
+					description: "Safely Store your cards",
+				},
+			]);
+		}
+		console.log("password sending", response.data);
+	};
+
+	const handleSave = async () => {
+		const modal = document.getElementById("my_modal_3");
+		modal.close();
+
+		// send request to server to add a new vault.
+		const response = await axios
+			.post(
+				`${base_url}/add_vault`,
+				{},
+				{
+					params: {
+						name: newVaultName,
+						description: newVaultDescription,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+		console.log("password sending", response.data);
+	};
 	return (
 		<div>
 			<div className="h-32 bg-transparent p-10 m-4 rounded-3xl flex justify-between">
@@ -50,7 +143,13 @@ const Vaults = () => {
 					</h1>
 				</div>
 				<div className="flex items-center">
-					<button className="btn bg-secondary-focus border-none text-2xl btn-lg hover:bg-success hover:text-success-content flex items-center gap-2 text-secondary-content">
+					<button
+						className="btn bg-secondary-focus border-none text-2xl btn-lg hover:bg-success hover:text-success-content flex items-center gap-2 text-secondary-content"
+						onClick={() => {
+							const modal = document.getElementById("my_modal_3");
+							modal.showModal();
+						}}
+					>
 						Add Vaults
 						<span className="text-secondary-content"></span>
 						<IconPlus className="text-5xl text-secondary-content" />
@@ -85,7 +184,9 @@ const Vaults = () => {
 										<button
 											className="btn btn-primary btn-lg"
 											onClick={() => {
-												navigate(`/vaults/${vault.id}/${vault.name}`);
+												navigate(
+													`/vaults/${vault.id}/${vault.name}`
+												);
 											}}
 										>
 											{" "}
@@ -99,6 +200,49 @@ const Vaults = () => {
 					})}
 				</div>
 			</div>
+			<dialog id="my_modal_3" className="modal">
+				<form method="dialog" className="modal-box">
+					<div className="font-bold text-3xl">Add New Vault</div>
+					<div className="flex gap-4 flex-col">
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text text-xl">Name</span>
+							</label>
+							<input
+								type="text"
+								placeholder="Enter Name Here"
+								className="input input-bordered w-full max-w-xs"
+								value={newVaultName}
+								onChange={(e) =>
+									setNewVaultName(e.target.value)
+								}
+							/>
+						</div>
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text text-xl">
+									Description
+								</span>
+							</label>
+							<input
+								type="text"
+								placeholder="Type here"
+								className="input input-bordered w-full max-w-xs"
+								value={newVaultDescription}
+								onChange={(e) =>
+									setNewVaultDescription(e.target.value)
+								}
+							/>
+						</div>
+					</div>
+					<div className="modal-action">
+						{/* if there is a button in form, it will close the modal */}
+						<button className="btn" onClick={handleSave}>
+							Save
+						</button>
+					</div>
+				</form>
+			</dialog>
 		</div>
 	);
 };
