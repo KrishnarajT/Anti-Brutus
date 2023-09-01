@@ -1,6 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
-const dbPath = path.join(__dirname, "./database", "example.sqlite");
+const dbPath = path.join(__dirname, "./database", "anti_brutus.sqlite");
+const fs = require("fs");
 
 class DatabaseManager {
 	constructor() {
@@ -10,21 +11,16 @@ class DatabaseManager {
 	}
 
 	initializeDatabase() {
-		const createTableQuery = `
-			CREATE TABLE IF NOT EXISTS users (
-				id INTEGER PRIMARY KEY autoincrement ,
-				email TEXT NOT NULL unique,
-				password TEXT NOT NULL,
-				salt Text not Null,
-				UserName Text not Null
-			)
-		`;
-
-		this.db.run(createTableQuery, (err) => {
+		const createTableQuery = fs.readFileSync(
+			path.join(__dirname, "./database", "create_tables.sql"),
+			"utf8"
+		);
+		// console.log(createTableQuery);
+		this.db.exec(createTableQuery, (err) => {
 			if (err) {
-				console.log("Error creating table:", err);
+				console.log("Error creating tables:", err);
 			} else {
-				console.log("Table 'example' created or already exists.");
+				console.log("Tables created successfully.");
 			}
 		});
 	}
@@ -67,12 +63,12 @@ class DatabaseManager {
 		});
 	}
 
-	async insertUser(email, password, UserName, salt) {
+	async insertUser(email, password, UserName, salt, DEK) {
 		return new Promise((resolve, reject) => {
-			const query = `INSERT INTO users (email, password, UserName, salt)
-            VALUES (?,?,?,?)`;
+			const query = `INSERT INTO users (email, password, UserName, salt,DEK)
+            VALUES (?,?,?,?,?)`;
 
-			this.db.run(query, [email, password, UserName, salt], (err) => {
+			this.db.run(query, [email, password, UserName, salt,DEK], (err) => {
 				if (err) {
 					reject(err); // Reject with the error if there's an issue with the query
 				} else {
@@ -82,8 +78,8 @@ class DatabaseManager {
 		});
 	}
 
-	async reset_password(email, password){
-		return new Promise ((resolve, reject) => {
+	async reset_password(email, password) {
+		return new Promise((resolve, reject) => {
 			const query = `UPDATE users SET password = ? WHERE email = ?`;
 			this.db.run(query, [password, email], (err) => {
 				if (err) {
@@ -92,7 +88,7 @@ class DatabaseManager {
 					resolve(true); // Resolve with true if password updated successfully
 				}
 			});
-		})
+		});
 	}
 	// Other methods...
 }
