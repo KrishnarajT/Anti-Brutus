@@ -18,17 +18,17 @@
 
 5. Vaults Screen
 
-    1. Add Vault
-    2. View Vault
-    3. Delete Vault
+   1. Add Vault
+   2. View Vault
+   3. Delete Vault
 
-    4. Types of passwords:
-        1. normal
-        2. card
+   4. Types of passwords:
+      1. normal
+      2. card
 
 6. Credits Screen
-    1. Images and developer intro
-    2. actual credits
-    3. donations
+   1. Images and developer intro
+   2. actual credits
+   3. donations
 
 # features
