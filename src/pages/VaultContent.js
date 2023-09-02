@@ -535,7 +535,7 @@ const VaultContent = () => {
 												{password.username}
 											</td>
 											<td className="text-2xl">
-												{password.date}
+												{password.pass_date}
 											</td>
 										</tr>
 									);
