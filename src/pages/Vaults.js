@@ -61,7 +61,7 @@ const Vaults = () => {
 				};
 				return response;
 			});
-
+		console.log(response.data);
 		if (response.data.message === "simulation") {
 			setVaults([
 				{
@@ -81,24 +81,8 @@ const Vaults = () => {
 				},
 			]);
 		} else {
-			// setVaults(response.data);
-			setVaults([
-				{
-					id: 1,
-					name: "Favourifgtes",
-					description: "Your Favourtites",
-				},
-				{
-					id: 2,
-					name: "Passwords",
-					description: "The place for your passwords",
-				},
-				{
-					id: 3,
-					name: "Cards",
-					description: "Safely Store your cards",
-				},
-			]);
+			setVaults(response.data.data);
+			console.log(vaults);
 		}
 		console.log("password sending", response.data);
 	};
@@ -160,45 +144,47 @@ const Vaults = () => {
 			</div>
 			<div>
 				<div className="overflow-x-auto p-8 px-20 flex flex-wrap justify-center">
-					{vaults.map((vault) => {
-						return (
-							<div className="card w-1/4 h-72 bg-base-100 shadow-xl image-full m-4">
-								<div
-									style={{
-										backgroundImage: `url("${
-											select_image()["image"]
-										}")`,
-										backgroundSize: "cover",
-										backgroundPosition: "center",
-										backgroundRepeat: "no-repeat",
-									}}
-									className="image-full rounded-xl h-full w-full"
-								></div>
-								<div className="card-body">
-									<h2 className="card-title text-3xl">
-										{vault.name}
-									</h2>
-									<p className="text-2xl">
-										{vault.description}
-									</p>
-									<div className="card-actions justify-end">
-										<button
-											className="btn btn-primary btn-lg"
-											onClick={() => {
-												navigate(
-													`/vaults/${vault.id}/${vault.name}`
-												);
+					{vaults.length > 0
+						? (vaults.map((vault) => {
+								return (
+									<div className="card w-1/4 h-72 bg-base-100 shadow-xl image-full m-4">
+										<div
+											style={{
+												backgroundImage: `url("${
+													select_image()["image"]
+												}")`,
+												backgroundSize: "cover",
+												backgroundPosition: "center",
+												backgroundRepeat: "no-repeat",
 											}}
-										>
-											{" "}
-											Open
-											<IconArrowRight className="text-2xl" />
-										</button>
+											className="image-full rounded-xl h-full w-full"
+										></div>
+										<div className="card-body">
+											<h2 className="card-title text-3xl">
+												{vault.vault_name}
+											</h2>
+											<p className="text-2xl">
+												{vault.vault_description}
+											</p>
+											<div className="card-actions justify-end">
+												<button
+													className="btn btn-primary btn-lg"
+													onClick={() => {
+														navigate(
+															`/vaults/${vault.vault_id}/${vault.vault_name}`
+														);
+													}}
+												>
+													{" "}
+													Open
+													<IconArrowRight className="text-2xl" />
+												</button>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-						);
-					})}
+								);
+						  }))
+						: "No Vaults Found"}
 				</div>
 			</div>
 			<dialog id="my_modal_3" className="modal">

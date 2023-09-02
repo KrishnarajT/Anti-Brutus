@@ -123,13 +123,13 @@ app.post("/auth", async (request, response) => {
 
 // Route for adding a new user
 app.post("/add_user", async (request, response) => {
-  const username = request.query.email;
+  const user_email = request.query.email;
   try {
     // Check if user already exists
-    const existingUSer = await dbobj.checkUser(username);
-    console.log(existingUSer);
-    if (existingUSer === false) {
-      console.log(existingUSer);
+    const existingUser = await dbobj.checkUser(user_email);
+    console.log(existingUser);
+    if (existingUser === false) {
+      console.log(existingUser);
       // Generate salt and hash password
       const salt = generateSalt();
       const DEK = generateDEK(
@@ -160,7 +160,7 @@ app.post("/add_user", async (request, response) => {
       }
     } else {
       // Send a message to the client if user already exists
-      console.log(existingUSer);
+      console.log(existingUser);
       response.send({ exist: true, message: "user already exists" });
     }
   } catch (error) {

@@ -63,35 +63,45 @@ class DatabaseManager {
     });
   }
 
+  async addDefaultVaults(email) {
+    return new Promise((resolve, reject) => {
+      const query = `INSERT INTO vaults (vault_name, vault_description, user_email) VALUES (?, ?, ?), (?, ?, ?);`;
+      this.db.run(
+        query,
+        [
+          "Favorites",
+          "Your favorite Passwords",
+          email,
+          "Passwords",
+          "Your Passwords",
+          email,
+        ],
+        (err) => {
+          if (err) {
+            reject(err); // Reject with the error if there's an issue with the query
+          } else {
+            resolve(true); // Resolve with true if the user exists
+          }
+        }
+      );
+    });
+  }
+
   async insertUser(email, password, UserName, salt, DEK) {
     return new Promise((resolve, reject) => {
       const query = `INSERT INTO users (email, password, UserName, salt,DEK)
             VALUES (?,?,?,?,?)`;
 
-      this.db.run(query, [email, password, UserName, salt, DEK], (err) => {
+      this.db.run(query, [email, password, UserName, salt, DEK], async (err) => {
         if (err) {
           reject(err); // Reject with the error if there's an issue with the query
         } else {
-          resolve(true); // Resolve with true if the user inserted
-          const query = `INSERT INTO vaults (vault_name, vault_description, user_email) VALUES (?, ?, ?); INSERT INTO vaults (vault_name, vault_description, user_email) VALUES (?, ?, ?)`;
-          this.db.run(
-            query,
-            [
-              "Favorites",
-              "Your favorite Passwords",
-              email,
-              "Passwords",
-              "Your Passwords",
-              email,
-            ],
-            (err) => {
-              if (err) {
-                reject(err); // Reject with the error if there's an issue with the query
-              } else {
-                resolve(true); // Resolve with true if the user exists
-              }
-            }
-          );
+          const added_vaults = await this.addDefaultVaults(email);
+          if (added_vaults) {
+            resolve(true); // Resolve with true if the user inserted
+          } else {
+            reject("Error adding default vaults");
+          }
         }
       });
     });

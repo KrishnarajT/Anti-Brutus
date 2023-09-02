@@ -33,7 +33,7 @@ const Login = (props) => {
 
 		const response = await axios
 			.post(
-				`${base_url}/add_user`,
+				`${base_url}/auth`,
 				{},
 				{
 					params: {
