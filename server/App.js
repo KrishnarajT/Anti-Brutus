@@ -123,13 +123,13 @@ app.post("/auth", async (request, response) => {
 
 // Route for adding a new user
 app.post("/add_user", async (request, response) => {
-  const username = request.query.email;
+  const user_email = request.query.email;
   try {
     // Check if user already exists
-    const existingUSer = await dbobj.checkUser(username);
-    console.log(existingUSer);
-    if (existingUSer === false) {
-      console.log(existingUSer);
+    const existingUser = await dbobj.checkUser(user_email);
+    console.log(existingUser);
+    if (existingUser === false) {
+      console.log(existingUser);
       // Generate salt and hash password
       const salt = generateSalt();
       const DEK = generateDEK(
@@ -160,7 +160,7 @@ app.post("/add_user", async (request, response) => {
       }
     } else {
       // Send a message to the client if user already exists
-      console.log(existingUSer);
+      console.log(existingUser);
       response.send({ exist: true, message: "user already exists" });
     }
   } catch (error) {
@@ -316,7 +316,7 @@ app.post("/update_vault_data", async (request, response) => {
   const password = request.query.password;
   const url = request.query.url;
   const description = request.query.description;
-  const icon = request.query.ico;
+  const icon = request.query.icon;
   const pass_id = request.query.pass_id;
 
   try {
@@ -365,6 +365,11 @@ app.post("/add_vault", async (request, response) => {
 // Route for deleting vaults data
 app.post("/delete_vault_data", async (request, response) => {
   const pass_id = request.query.pass_id;
+  console.log(pass_id)
+  if (!pass_id) {
+    response.send({ message: "failure" });
+    return;
+  }
   try {
     const vault_data = await dbobj.delete_vault_data(pass_id);
     if (vault_data) {
@@ -394,7 +399,8 @@ app.post("/delete_vault", async (request, response) => {
 
 // Route for get vault passwords
 app.post("/get_vault_data", async (request, response) => {
-  const vaultid = request.query.vaultid;
+  const vaultid = request.query.vault_id;
+  console.log(vaultid)
   try {
     const vault_data = await dbobj.get_vault_data(vaultid);
     if (vault_data) {
