@@ -25,6 +25,7 @@ CREATE TABLE if not exists passwords (
 	username string,
 	pass_name string,
 	icon string,
+	pass_date date,
 	FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (vault_id) REFERENCES vaults (vault_id)
 );

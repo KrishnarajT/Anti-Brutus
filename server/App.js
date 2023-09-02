@@ -12,6 +12,7 @@ app.use(cors());
 
 // Importing crypto module for generating salt and hashing password
 const crypto = require("crypto");
+const { log } = require("console");
 
 // Function to generate a random salt
 function generateSalt() {
@@ -27,12 +28,11 @@ function generateDEK(email, salt, string) {
   return dek;
 }
 
-function decryptDEK(dek, email, salt) {
-  const key = email + salt;
-  const decipher = crypto.createDecipher("aes-256-cbc", key);
-  let secretKey = decipher.update(dek, "hex", "utf8");
-  secretKey += decipher.final("utf8");
-  return secretKey;
+function decryptDEK(DEK,KEK) {
+  const decipher = crypto.createDecipher("aes-256-cbc", KEK);
+  let decryptedDEK = decipher.update(DEK, "hex", "utf8");
+  decryptedDEK += decipher.final("utf8");
+  return decryptedDEK
 }
 
 function encryptUsingKEK(dek, kek) {
@@ -54,6 +54,22 @@ function hashPassword(password, salt) {
   const hash = crypto.createHash("sha256");
   hash.update(password + salt);
   return hash.digest("hex");
+}
+
+// Function to encrypt data using DEK
+function encryptData(data, dek) {
+  const cipher = crypto.createCipher("aes-256-cbc", dek);
+  let encryptedData = cipher.update(data, "utf8", "hex");
+  encryptedData += cipher.final("hex");
+  return encryptedData;
+}
+
+// Funtion to decrypt data using DEK
+function decryptData(data, dek) {
+  const decipher = crypto.createDecipher("aes-256-cbc", dek);
+  let decryptedData = decipher.update(data, "hex", "utf8");
+  decryptedData += decipher.final("utf8");
+  return decryptedData;
 }
 
 // Route for home page
@@ -282,6 +298,11 @@ app.post("/add_vault_data", async (request, response) => {
     email
   );
   const user_fate = await dbobj.checkUser(email);
+  const KEK = await get_data("KEK");
+  const DEK = decryptDEK(user_fate.DEK, KEK);
+  const encryptedPassword = encryptData(Password, DEK);
+  const encryptedUrl = encryptData(Url, DEK);
+
   if (user_fate) {
     try {
       const vault_data = await dbobj.add_vault_data(
@@ -289,8 +310,8 @@ app.post("/add_vault_data", async (request, response) => {
         user_fate.id,
         Pass_name,
         username,
-        Password,
-        Url,
+        encryptedPassword,
+        encryptedUrl,
         Description,
         Icon
       );
@@ -319,24 +340,34 @@ app.post("/update_vault_data", async (request, response) => {
   const icon = request.query.icon;
   const pass_id = request.query.pass_id;
 
-  try {
-    const vault_data = await dbobj.update_vault_data(
-      vaultid,
-      pass_id,
-      pass_name,
-      username,
-      password,
-      url,
-      description,
-      icon
-    );
-    if (vault_data) {
-      response.send({ message: "success" });
-    } else {
-      response.send({ message: "failure" });
+  const user_fate = await dbobj.checkUser(request.query.user_email);
+  const KEK = await get_data("KEK");
+  const DEK = decryptDEK(user_fate.DEK, KEK);
+  const encryptedPassword = encryptData(password, DEK);
+  const encryptedUrl = encryptData(url, DEK);
+  console.log("This is :")
+  if(user_fate){
+    try {
+      const vault_data = await dbobj.update_vault_data(
+        vaultid,
+        pass_id,
+        pass_name,
+        username,
+        encryptedPassword,
+        encryptedUrl,
+        description,
+        icon
+      );
+      if (vault_data) {
+        response.send({ message: "success" });
+      } else {
+        response.send({ message: "failure" });
+      }
+    } catch (error) {
+      response.send({ message: "something went wrong" });
     }
-  } catch (error) {
-    response.send({ message: "something went wrong" });
+  }else{
+    response.send({ message: "user not found" });
   }
 });
 
@@ -402,15 +433,56 @@ app.post("/get_vault_data", async (request, response) => {
   const vaultid = request.query.vault_id;
   console.log(vaultid)
   try {
+    const user_fate = await dbobj.checkUser(request.query.user_email);
+    console.log("This is Encrypted DEK: ",user_fate.DEK)
     const vault_data = await dbobj.get_vault_data(vaultid);
+    const KEK = await get_data("KEK");
+    const DEK = decryptDEK(user_fate.DEK, KEK);
+    console.log(vault_data)
     if (vault_data) {
-      response.send({ message: "success", data: vault_data });
+      if (vault_data.length === 0 ){
+        response.send({ message: "sucess", data: vault_data });
+        return;
+      }else {
+        for (let i = 0; i < vault_data.length; i++) {
+          vault_data[i].password = decryptData(vault_data[i].password, DEK);
+          vault_data[i].website_url = decryptData(vault_data[i].website_url, DEK);
+        }
+      }
+      response.send({ message: "success", data: vault_data});
     } else {
       response.send({ message: "failure" });
     }
   } catch (error) {
+    console.log(error);
     response.send({ message: "something went wrong" });
   }
+});
+
+// Route for get vault passwords
+app.post("/get_profile_data", async (request, response) => {
+	const user_email = request.query.user_email;
+	const user_fate = await dbobj.checkUser(user_email);
+	try {
+		let count_passwords = await dbobj.get_no_of_passwords(user_fate.id);
+    let count_vaults = await dbobj.get_no_of_vaults(user_email);
+    console.log(count_vaults)
+		if (!count_vaults) {
+			count_vaults = 0;
+		}
+		if (!count_passwords) {
+			count_passwords = 0;
+		}
+		const data_to_send = {
+			count_passwords: count_passwords[0].count,
+			count_vaults: count_vaults[0].count,
+			user_name: user_fate.UserName,
+		};
+		// send data to client
+		response.send({ message: "success", data: data_to_send });
+	} catch (error) {
+		response.send({ message: "failure" });
+	}
 });
 
 
