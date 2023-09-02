@@ -152,7 +152,6 @@ app.post("/add_user", async (request, response) => {
       // Send a success message if user inserted successfully
       console.log("Debug Insert USer: " + userInsert);
       if (userInsert) {
-
         response.send({ message: "user inserted successfully" });
       }
       // Send an error message if user not inserted
@@ -220,7 +219,9 @@ app.post("/reset_password", async (request, response) => {
   console.log(user_fate);
   if (user_fate) {
     // Send a message to the client if user found
-    const new_password = hashPassword(request.query.password, user_fate.salt);
+    const KEK = await get_data("KEK");
+    const decryptedSalt = decrypSalt(user_fate.salt, KEK);
+    const new_password = hashPassword(request.query.password, decryptedSalt);
     const reset_result = await dbobj.reset_password(
       request.query.email,
       new_password
@@ -256,14 +257,13 @@ app.post("/get_vaults", async (request, response) => {
 // Route for vault data
 app.post("/add_vault_data", async (request, response) => {
   const vaultid = request.query.vault_id;
-  const User_id = request.query.user_id;
   const Pass_name = request.query.pass_name;
   const username = request.query.user_name;
   const Password = request.query.password;
   const Url = request.query.url;
   const Description = request.query.description;
   const Icon = request.query.icon;
-
+  const email = request.query.user_email;
   console.log(
     vaultid,
     " ",
@@ -278,28 +278,33 @@ app.post("/add_vault_data", async (request, response) => {
     Description,
     " ",
     Icon,
-    " ", User_id
+    " ",
+    email
   );
-
-  try {
-    const vault_data = await dbobj.add_vault_data(
-      vaultid,
-      User_id,
-      Pass_name,
-      username,
-      Password,
-      Url,
-      Description,
-      Icon
-    );
-    if (vault_data) {
-      response.send({ message: "success" });
-    } else {
-      response.send({ message: "failure" });
+  const user_fate = await dbobj.checkUser(email);
+  if (user_fate) {
+    try {
+      const vault_data = await dbobj.add_vault_data(
+        vaultid,
+        user_fate.id,
+        Pass_name,
+        username,
+        Password,
+        Url,
+        Description,
+        Icon
+      );
+      if (vault_data) {
+        response.send({ message: "success" });
+      } else {
+        response.send({ message: "failure" });
+      }
+    } catch (error) {
+      console.log(error);
+      response.send({ message: "something went wrong" });
     }
-  } catch (error) {
-    console.log(error);
-    response.send({ message: "something went wrong" });
+  } else {
+    response.send({ message: "user not found" });
   }
 });
 
@@ -401,6 +406,7 @@ app.post("/get_vault_data", async (request, response) => {
     response.send({ message: "something went wrong" });
   }
 });
+
 
 // Exporting the app module
 module.exports = app;
