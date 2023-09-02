@@ -604,8 +604,8 @@ const VaultContent = () => {
                 Generate
                 <IconPencilBolt className="text-5xl text-secondary-content h-8 w-8" />
               </button>
-              <div className="flex items-center justify-center h-full">
-                <div className="badge badge-lg outline outline-1 text-2xl p-4 mb-2">
+              <div className="flex items-center justify-center h-full w-fit">
+                <div className="badge badge-lg outline outline-1 text-2xl p-4 mb-2 w-fit">
                   Length: {password.length}
                 </div>
               </div>
