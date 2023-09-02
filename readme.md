@@ -3,7 +3,9 @@
 A Password Manager and a Generator in One, for Securely storing Passwords, and never having to worry about remembering them again.
 This is also our Third Year Full Stack Development Project.
 
-# ScreenshotS
+# Screenshots
+
+
 
 # Features
 
@@ -27,14 +29,18 @@ This is also our Third Year Full Stack Development Project.
 3. Parth - Security
 4. Saubhagya - Backend
 
-# ToDo
-
-1. Make Front end.
-2. Make DB
-3. Make Back End.
-4. Think whether to use sql or firebase.
-5. Register accordigly.
-6. Fix theme
-7. Make Responsive.
-
 # Credits
+
+Huge thanks to DaisyUI for the CSS framework, and Heroicons for the icons. Here are the links:
+DaisyUI
+
+[Hero Icons](https://heroicons.com/)
+[Tabler Icons](https://tablericons.com/)
+[TailwindCSS](https://tailwindcss.com/)
+[ReactJS](https://reactjs.org/)
+
+This project was made as a part of the assignments for Full Stack Development Course at MIT WPU.
+We are grateful to our teachers, and our parents for encouraging us to keep trying new stuff, without any restrictions.
+None of this would be possible without their help.
+
+We are also grateful to our friends, for their inputs on the looks and features of the website, and for constantly encourating us to keep going.
