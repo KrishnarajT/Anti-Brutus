@@ -114,8 +114,9 @@ const Vaults = () => {
 				{},
 				{
 					params: {
-						name: newVaultName,
-						description: newVaultDescription,
+						vault_name: newVaultName,
+						vault_description: newVaultDescription,
+						user_email: userEmail,
 					},
 				}
 			)

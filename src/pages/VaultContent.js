@@ -249,6 +249,99 @@ const VaultContent = () => {
 	const params = useParams();
 	console.log(params);
 
+	const handleDelete = async () => {
+		// send a request to the backend to delete the password from the database.
+		const response = await axios
+			.post(
+				`${base_url}/delete_vault_data`,
+				{},
+				{
+					params: {
+						vault_id: params.id,
+						pass_id: selected_password.id,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+		console.log("password sending", response.data);
+		if (response.data.message === "success") {
+			const toast_div = document.querySelector(".toast");
+			const toast_content = document.querySelector("#toast_content");
+			toast_content.innerHTML = "Password Deleted!";
+			toast_div.classList.remove("hidden");
+			setTimeout(() => {
+				toast_div.classList.add("hidden");
+			}, 2000);
+		} else if (response.data.message === "simulation") {
+			const toast_div = document.querySelector(".toast");
+			const toast_content = document.querySelector("#toast_content");
+			toast_content.innerHTML = "Simulated Deleted!";
+			toast_div.classList.remove("hidden");
+			setTimeout(() => {
+				toast_div.classList.add("hidden");
+			}, 2000);
+		} else if (response.data.message === "failure") {
+			const toast_div = document.querySelector(".toast");
+			const toast_content = document.querySelector("#toast_content");
+			toast_content.innerHTML = "Could not Delete Password! Try Again";
+			toast_div.classList.remove("hidden");
+			setTimeout(() => {
+				toast_div.classList.add("hidden");
+			}, 2000);
+		} else if (response.data.message === "something went wrong") {
+			// comment.innerHTML = "Login Failed! Try Again!";
+			// alert("something went wrong! try again!");
+			// show toast.
+			const toast_div = document.querySelector(".toast");
+			const toast_content = document.querySelector("#toast_content");
+			toast_content.innerHTML = "Something Went Wrong!";
+			toast_div.classList.remove("hidden");
+			setTimeout(() => {
+				toast_div.classList.add("hidden");
+			}, 2000);
+		}
+	};
+
+	const getVaultData = async () => {
+		// send a request to the backend to get the passwords from the database.
+		const response = await axios
+			.post(
+				`${base_url}/get_vault_data`,
+				{},
+				{
+					params: {
+						vault_id: params.id,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+		console.log("password sending", response.data);
+	};
+
 	const handleSave = async () => {
 		// save the password to the database
 		// update the password in the passwords array
