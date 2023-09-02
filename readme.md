@@ -5,7 +5,45 @@ This is also our Third Year Full Stack Development Project.
 
 # Screenshots
 
+# Demo
 
+![](/design/anti-brutus.gif)
+
+# Login and Signup
+
+![](/design/screenshots/login_light.png)
+![](/design/screenshots/signup_light.png)
+![](/design/screenshots/signup_dark.png)
+
+# Home Page
+
+![](/design/screenshots/home_dark.png)
+![](/design/screenshots/home_light.png)
+
+# Password Generator
+
+![](/design/screenshots/generator_light.png)
+![](/design/screenshots/master_light.png)
+
+# Vaults
+
+![](/design/screenshots/vaults_light.png)
+![](/design/screenshots/vaults_dark.png)
+
+# Password Management
+
+![](/design/screenshots/passwords_light.png)
+![](/design/screenshots/passwords_display_light.png)
+![](/design/screenshots/passwords_dark.png)
+![](/design/screenshots/passwords_display.png)
+
+# About
+
+![](/design/screenshots/about_light.png)
+
+# Profile
+
+![](/design/screenshots/profile_light.png)
 
 # Features
 
