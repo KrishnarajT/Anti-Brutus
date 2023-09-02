@@ -151,3 +151,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 server/admin.json
+
+server/database/anti_brutus.sqlite
