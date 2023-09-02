@@ -49,7 +49,7 @@ class DatabaseManager {
 
   async test(callback) {
     const query = `
-			delete from users  
+			drop table passwords  
 		`;
     this.db.all(query, (err, rows) => {
       if (err) {
@@ -140,7 +140,9 @@ class DatabaseManager {
 				password,
 				username,
 				pass_name,
-				icon) values (?,?,?,?,?,?,?,?)  
+				icon,
+				pass_date
+				) values (?,?,?,?,?,?,?,?,DATE('now'))  
 			`;
 
       this.db.run(
@@ -183,7 +185,8 @@ class DatabaseManager {
 				password = ?,
 				website_url = ?,
 				description = ?,
-				icon = ?
+				icon = ?,
+				pass_date = DATE('now')
 				WHERE vault_id = ? AND pass_id = ?`;
       this.db.run(
         query,
@@ -276,6 +279,35 @@ class DatabaseManager {
 		  resolve(true); // Resolve with data if the user exists
 		}
 	  });
+	});
+  }
+
+  async get_no_of_passwords(user_id) {
+	return new Promise((resolve, reject) => {
+	  const query = `select count(*) as count from passwords where user_id = ?`;
+
+	  this.db.all(query, [user_id], (err, rows) => {
+      if (err) {
+        console.log(err)
+				reject(err); // Reject with the error if there's an issue with the query
+			} else {
+				resolve(rows); // Resolve with data if the user exists
+			}
+		});
+	});
+  }
+
+  async get_no_of_vaults(user_email) {
+	return new Promise((resolve, reject) => {
+	  const query = `select count(*) as count from vaults where user_email = ?`;
+
+	  this.db.all(query, [user_email], (err, rows) => {
+			if (err) {
+				reject(err); // Reject with the error if there's an issue with the query
+			} else {
+				resolve(rows); // Resolve with data if the user exists
+			}
+		});
 	});
   }
 
