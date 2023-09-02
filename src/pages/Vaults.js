@@ -330,7 +330,7 @@ const Vaults = () => {
 			</div>
 			<dialog id="my_modal_1" className="modal">
 				<form method="dialog" className="modal-box">
-					<h3 className="font-bold text-lg">Hello!</h3>
+					<div className="font-bold text-3xl">Are You Sure? </div>
 					<p className="py-4">
 						Are you sure you want to delete this vault? This will
 						delete all Passwords in the Vault, and it is

@@ -1,10 +1,13 @@
 import {
+	IconAlertCircleFilled,
+	IconCrossFilled,
 	IconDeviceFloppy,
 	IconEye,
 	IconEyeClosed,
 	IconPencilBolt,
 	IconPlus,
 	IconSearch,
+	IconTrashFilled,
 } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,14 +15,23 @@ import axios from "axios";
 import { BaseUrlContext } from "../context/BaseUrlContext";
 import { UserInfoContext } from "../context/UserInfoContext";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
+import "../css/Vault.css";
 
 const VaultContent = () => {
 	// get context data
 	const user_email = React.useContext(UserInfoContext).userEmail;
 	const base_url = React.useContext(BaseUrlContext).baseUrl;
-
+	const [selected_password, setSelectedPassword] = React.useState(null);
+	const [dontHavePasswords, setDontHavePasswords] = React.useState(false);
+	const [passwords, setPasswords] = React.useState([]);
+	const [name, setName] = useState("");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [passVisible, setPassVisible] = useState(false);
+	const [url, setUrl] = useState("");
+	const [description, setDescription] = useState("");
 	const navigate = useNavigate();
-	let passwords = [
+	let simulation_passwords = [
 		{
 			id: 1,
 			name: "Facebook",
@@ -110,146 +122,80 @@ const VaultContent = () => {
 			date: "12/12/12",
 			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://github.com&size=128",
 		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
-		{
-			id: 3,
-			name: "Twitter",
-			username: "username",
-			password: "password",
-			url: "https://twitter.com",
-			description: "Safely Store your cards",
-			date: "12/12/12",
-			icon: "https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://google.com&size=128",
-		},
 	];
+
 	useEffect(() => {
 		console.log("VaultContent");
 		const html = document.querySelector("html");
 		html.classList.add("overflow-hidden");
-
 		// get the passwords from the database
-	}, []);
-	const [selected_password, setSelectedPassword] = React.useState(null);
-	const [name, setName] = useState("");
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [passVisible, setPassVisible] = useState(false);
-	const [url, setUrl] = useState("");
-	const [description, setDescription] = useState("");
+		if (passwords.length === 0) {
+			if (!dontHavePasswords) {
+				getPasswords();
+			}
+		}
+	}, [passwords]);
 
 	const params = useParams();
 	console.log(params);
 
+	const getPasswords = async () => {
+		const response = await axios
+			.post(
+				`${base_url}/get_vault_data`,
+				{},
+				{
+					params: {
+						user_email: user_email,
+						vault_id: params.id,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				// alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+		console.log(response.data);
+		if (response.data.message === "simulation") {
+			setPasswords(simulation_passwords);
+		} else {
+			// set vaults but also set the image for each vault
+			if (response.data.data.length === 0) {
+				console.log("you have no passwords");
+				console.log(passwords);
+				setPasswords([]);
+				setDontHavePasswords(true);
+			} else {
+				setPasswords(response.data.data);
+			}
+		}
+		console.log("password sending", response.data);
+	};
+
 	const handleDelete = async () => {
+		if (selected_password.pass_id === -1) {
+			// alert("this password is not saved!");
+			const toast_div = document.querySelector("#toast_problem");
+			const toast_content = document.querySelector(
+				"#toast_content_problem"
+			);
+			toast_content.innerHTML =
+				"This password is not saved! Delete Failed!";
+			toast_div.classList.remove("hidden");
+			setTimeout(() => {
+				toast_div.classList.add("hidden");
+			}, 2000);
+			return;
+		}
 		// send a request to the backend to delete the password from the database.
 		const response = await axios
 			.post(
@@ -257,8 +203,7 @@ const VaultContent = () => {
 				{},
 				{
 					params: {
-						vault_id: params.id,
-						pass_id: selected_password.id,
+						pass_id: selected_password.pass_id,
 					},
 				}
 			)
@@ -284,6 +229,8 @@ const VaultContent = () => {
 			setTimeout(() => {
 				toast_div.classList.add("hidden");
 			}, 2000);
+			getPasswords();
+			setSelectedPassword(null);
 		} else if (response.data.message === "simulation") {
 			const toast_div = document.querySelector(".toast");
 			const toast_content = document.querySelector("#toast_content");
@@ -293,8 +240,10 @@ const VaultContent = () => {
 				toast_div.classList.add("hidden");
 			}, 2000);
 		} else if (response.data.message === "failure") {
-			const toast_div = document.querySelector(".toast");
-			const toast_content = document.querySelector("#toast_content");
+			const toast_div = document.querySelector("#toast_problem");
+			const toast_content = document.querySelector(
+				"#toast_content_problem"
+			);
 			toast_content.innerHTML = "Could not Delete Password! Try Again";
 			toast_div.classList.remove("hidden");
 			setTimeout(() => {
@@ -304,9 +253,11 @@ const VaultContent = () => {
 			// comment.innerHTML = "Login Failed! Try Again!";
 			// alert("something went wrong! try again!");
 			// show toast.
-			const toast_div = document.querySelector(".toast");
-			const toast_content = document.querySelector("#toast_content");
-			toast_content.innerHTML = "Something Went Wrong!";
+			const toast_div = document.querySelector("#toast_problem");
+			const toast_content = document.querySelector(
+				"#toast_content_problem"
+			);
+			toast_content.innerHTML = "Something Went Wrong! Login Again.";
 			toast_div.classList.remove("hidden");
 			setTimeout(() => {
 				toast_div.classList.add("hidden");
@@ -314,39 +265,31 @@ const VaultContent = () => {
 		}
 	};
 
-	const getVaultData = async () => {
-		// send a request to the backend to get the passwords from the database.
-		const response = await axios
-			.post(
-				`${base_url}/get_vault_data`,
-				{},
-				{
-					params: {
-						vault_id: params.id,
-					},
-				}
-			)
-			.then((response) => {
-				return response;
-			})
-			.catch((error) => {
-				console.error(error);
-				alert("server not running! a simulated response is being sent");
-				const response = {
-					data: {
-						message: "simulation",
-					},
-				};
-				return response;
-			});
-		console.log("password sending", response.data);
-	};
-
 	const handleSave = async () => {
 		// save the password to the database
 		// update the password in the passwords array
 
-		if (selected_password.id === -1) {
+		// check if the fields are fileld first.
+		if (
+			name === "" ||
+			username === "" ||
+			password === "" ||
+			url === "" ||
+			description === ""
+		) {
+			const toast_div = document.querySelector("#toast_problem");
+			const toast_content = document.querySelector(
+				"#toast_content_problem"
+			);
+			toast_content.innerHTML = "Please fill all the fields!";
+			toast_div.classList.remove("hidden");
+			setTimeout(() => {
+				toast_div.classList.add("hidden");
+			}, 2000);
+			return;
+		}
+
+		if (selected_password.pass_id === -1) {
 			// send a request to the backend to add a new password to the database.
 			const response = await axios
 				.post(
@@ -389,6 +332,9 @@ const VaultContent = () => {
 				setTimeout(() => {
 					toast_div.classList.add("hidden");
 				}, 2000);
+				setDontHavePasswords(false);
+				getPasswords();
+				setSelectedPassword(null);
 			} else if (response.data.message === "simulation") {
 				const toast_div = document.querySelector(".toast");
 				const toast_content = document.querySelector("#toast_content");
@@ -398,20 +344,24 @@ const VaultContent = () => {
 					toast_div.classList.add("hidden");
 				}, 2000);
 			} else if (response.data.message === "failure") {
-				const toast_div = document.querySelector(".toast");
-				const toast_content = document.querySelector("#toast_content");
+				const toast_div = document.querySelector("#toast_problem");
+				const toast_content = document.querySelector(
+					"#toast_content_problem"
+				);
 				toast_content.innerHTML = "Could not save Password! Try Again";
 				toast_div.classList.remove("hidden");
 				setTimeout(() => {
 					toast_div.classList.add("hidden");
 				}, 2000);
-			} else if (response.data.message === "something went wrong") {
+			} else if (response.data.message === "user not found") {
 				// comment.innerHTML = "Login Failed! Try Again!";
 				// alert("something went wrong! try again!");
 				// show toast.
-				const toast_div = document.querySelector(".toast");
-				const toast_content = document.querySelector("#toast_content");
-				toast_content.innerHTML = "Something Went Wrong!";
+				const toast_div = document.querySelector("#toast_problem");
+				const toast_content = document.querySelector(
+					"#toast_content_problem"
+				);
+				toast_content.innerHTML = "Something Went Wrong! Login Agai.";
 				toast_div.classList.remove("hidden");
 				setTimeout(() => {
 					toast_div.classList.add("hidden");
@@ -426,7 +376,7 @@ const VaultContent = () => {
 					{
 						params: {
 							vault_id: params.id,
-							pass_id: selected_password.id,
+							pass_id: selected_password.pass_id,
 							pass_name: name,
 							user_name: username,
 							password: password,
@@ -460,6 +410,9 @@ const VaultContent = () => {
 				setTimeout(() => {
 					toast_div.classList.add("hidden");
 				}, 2000);
+				setDontHavePasswords(false);
+				getPasswords();
+				setSelectedPassword(null);
 			} else if (response.data.message === "simulation") {
 				const toast_div = document.querySelector(".toast");
 				const toast_content = document.querySelector("#toast_content");
@@ -469,8 +422,10 @@ const VaultContent = () => {
 					toast_div.classList.add("hidden");
 				}, 2000);
 			} else if (response.data.message === "failure") {
-				const toast_div = document.querySelector(".toast");
-				const toast_content = document.querySelector("#toast_content");
+				const toast_div = document.querySelector("#toast_problem");
+				const toast_content = document.querySelector(
+					"#toast_content_problem"
+				);
 				toast_content.innerHTML = "Could not save Password! Try Again";
 				toast_div.classList.remove("hidden");
 				setTimeout(() => {
@@ -480,9 +435,11 @@ const VaultContent = () => {
 				// comment.innerHTML = "Login Failed! Try Again!";
 				// alert("something went wrong! try again!");
 				// show toast.
-				const toast_div = document.querySelector(".toast");
-				const toast_content = document.querySelector("#toast_content");
-				toast_content.innerHTML = "Something Went Wrong!";
+				const toast_div = document.querySelector("#toast_problem");
+				const toast_content = document.querySelector(
+					"#toast_content_problem"
+				);
+				toast_content.innerHTML = "Something Went Wrong! Login Agai.";
 				toast_div.classList.remove("hidden");
 				setTimeout(() => {
 					toast_div.classList.add("hidden");
@@ -519,8 +476,8 @@ const VaultContent = () => {
 							setUrl("");
 							setDescription("");
 							setSelectedPassword({
-								name: "New Password",
-								id: -1,
+								pass_name: "New Password",
+								pass_id: -1,
 							});
 						}}
 					>
@@ -533,195 +490,225 @@ const VaultContent = () => {
 			</div>
 			<div className="flex">
 				<div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll scroll-smooth">
-					<table className="table text-xl">
-						{/* head */}
-						<thead>
-							<tr className="text-3xl text-base-content border-base-content outline rounded-ss-2xl rounded-se-2xl">
-								<th></th>
-								<th>Name</th>
-								<th>Username</th>
-								<th>Date</th>
-							</tr>
-						</thead>
-						<tbody className="">
-							{passwords.map((password) => {
-								return (
-									<tr
-										className="h-16 transition-all duration-200 transform-gpu hover:bg-base-200 hover:cursor-pointer border-base-content"
-										onClick={() => {
-											setSelectedPassword(password);
-											// set values as well from this password.
-											setName(password.name);
-											setUsername(password.username);
-											setPassword(password.password);
-											setUrl(password.url);
-											setDescription(
-												password.description
-											);
-										}}
-									>
-										<td>
-											<img
-												src={password.icon}
-												className="h-12 w-12 rounded-full outline outline-2 outline-offset-2 outline-primary"
-												alt=""
-											/>
-										</td>
-										<td className="hover:text-accent text-3xl transition-all duration-300">
-											{password.name}
-										</td>
-										<td className="text-2xl">
-											{password.username}
-										</td>
-										<td className="text-2xl">
-											{password.date}
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-				</div>
-				<div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll scroll-smooth">
-					<div className="flex items-center justify-between">
-						<div className="text-5xl font-bold text-center text-base-content">
-							Details{" "}
-							{selected_password
-								? `- ${selected_password.name}`
-								: null}
-						</div>
-						<button
-							className="btn btn-primary btn-lg text-2xl"
-							onClick={() => window.my_modal_3.showModal()}
-						>
-							{selected_password && selected_password.id === -1
-								? "Save"
-								: "Update"}
-							<IconDeviceFloppy className="text-5xl text-primary-content h-8 w-8" />
-						</button>
-					</div>
+					{passwords.length !== 0 ? (
+						<table className="table text-xl">
+							{/* head */}
+							<thead>
+								<tr className="text-3xl text-base-content border-base-content outline rounded-ss-2xl rounded-se-2xl">
+									<th></th>
+									<th>Name</th>
+									<th>Username</th>
+									<th>Date</th>
+								</tr>
+							</thead>
 
-					{/* textbox for name and username */}
-					<div className="flex gap-16">
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text text-xl">Name</span>
-							</label>
-							<input
-								type="text"
-								placeholder="Type here"
-								className="input input-bordered w-full max-w-xs"
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-							/>
+							<tbody className="">
+								{passwords.map((password) => {
+									return (
+										<tr
+											className="h-16 transition-all duration-200 transform-gpu hover:bg-base-200 hover:cursor-pointer border-base-content"
+											key={password.pass_id}
+											onClick={() => {
+												setSelectedPassword(password);
+												// set values as well from this password.
+												setName(password.pass_name);
+												setUsername(password.username);
+												setPassword(password.password);
+												setUrl(password.website_url);
+												setDescription(
+													password.description
+												);
+											}}
+										>
+											<td>
+												<img
+													src={password.icon}
+													className="h-12 w-12 rounded-full outline outline-2 outline-offset-2 outline-primary"
+													alt=""
+												/>
+											</td>
+											<td className="hover:text-accent text-3xl transition-all duration-300">
+												{password.pass_name}
+											</td>
+											<td className="text-2xl">
+												{password.username}
+											</td>
+											<td className="text-2xl">
+												{password.date}
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					) : (
+						<div className="w-full h-full">
+							<div className="text-4xl text-base-content text-center font-semibold m-8">
+								Theres Nothing Here!
+							</div>
+							<div id="emptysvg" className="w-full h-2/3"></div>
 						</div>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text text-xl">
-									UserName
-								</span>
-							</label>
-							<input
-								type="text"
-								placeholder="Type here"
-								className="input input-bordered w-full max-w-xs"
-								value={username}
-								onChange={(e) => setUsername(e.target.value)}
-							/>
+					)}
+				</div>
+				{selected_password ? (
+					<div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll scroll-smooth">
+						<div className="flex items-center justify-between">
+							<div className="text-5xl font-bold text-center text-base-content">
+								Details{" "}
+								{selected_password
+									? `- ${selected_password.pass_name}`
+									: null}
+							</div>
+							<button
+								className="btn btn-primary btn-lg text-2xl"
+								onClick={() => window.my_modal_3.showModal()}
+							>
+								{selected_password &&
+								selected_password.pass_id === -1
+									? "Save"
+									: "Update"}
+								<IconDeviceFloppy className="text-5xl text-primary-content h-8 w-8" />
+							</button>
 						</div>
-					</div>
-					{/* textbox for password */}
-					<div className="flex gap-16 items-end mt-4">
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text text-xl">
-									Password
-								</span>
-							</label>
-							<div className="flex gap-2">
+
+						{/* textbox for name and username */}
+						<div className="flex gap-16">
+							<div className="form-control w-full max-w-xs">
+								<label className="label">
+									<span className="label-text text-xl">
+										Name
+									</span>
+								</label>
 								<input
-									type={passVisible ? "text" : "password"}
+									type="text"
 									placeholder="Type here"
 									className="input input-bordered w-full max-w-xs"
-									value={password}
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+								/>
+							</div>
+							<div className="form-control w-full max-w-xs">
+								<label className="label">
+									<span className="label-text text-xl">
+										UserName
+									</span>
+								</label>
+								<input
+									type="text"
+									placeholder="Type here"
+									className="input input-bordered w-full max-w-xs"
+									value={username}
 									onChange={(e) =>
-										setPassword(e.target.value)
+										setUsername(e.target.value)
 									}
 								/>
-								{passVisible ? (
-									<IconEye
-										className="w-10 h-10"
-										onClick={() => {
-											setPassVisible(() => {
-												return !passVisible;
-											});
-										}}
-									/>
-								) : (
-									<IconEyeClosed
-										className="w-10 h-10"
-										onClick={() => {
-											setPassVisible(() => {
-												return !passVisible;
-											});
-										}}
-									/>
-								)}
 							</div>
 						</div>
-						<button
-							className="btn btn-md btn-secondary text-2xl items-center"
-							onClick={() => {
-								// navigate to the password generator page.
-								navigate("/master");
-							}}
-						>
-							Generate
-							<IconPencilBolt className="text-5xl text-secondary-content h-8 w-8" />
-						</button>
-						<div className="flex items-center justify-center h-full">
-							<div className="badge badge-lg outline outline-1 text-2xl p-4 mb-2">
-								Length: {password.length}
+						{/* textbox for password */}
+						<div className="flex gap-16 items-end mt-4">
+							<div className="form-control w-full max-w-xs">
+								<label className="label">
+									<span className="label-text text-xl">
+										Password
+									</span>
+								</label>
+								<div className="flex gap-2">
+									<input
+										type={passVisible ? "text" : "password"}
+										placeholder="Type here"
+										className="input input-bordered w-full max-w-xs"
+										value={password}
+										onChange={(e) =>
+											setPassword(e.target.value)
+										}
+									/>
+									{passVisible ? (
+										<IconEye
+											className="w-10 h-10"
+											onClick={() => {
+												setPassVisible(() => {
+													return !passVisible;
+												});
+											}}
+										/>
+									) : (
+										<IconEyeClosed
+											className="w-10 h-10"
+											onClick={() => {
+												setPassVisible(() => {
+													return !passVisible;
+												});
+											}}
+										/>
+									)}
+								</div>
+							</div>
+							<button
+								className="btn btn-md btn-secondary text-2xl items-center"
+								onClick={() => {
+									// navigate to the password generator page.
+									navigate("/master");
+								}}
+							>
+								Generate
+								<IconPencilBolt className="text-5xl text-secondary-content h-8 w-8" />
+							</button>
+							<div className="flex items-center justify-center h-full">
+								<div className="badge badge-lg outline outline-1 text-2xl p-4 mb-2">
+									Length: {password.length}
+								</div>
 							</div>
 						</div>
-					</div>
-					{/* textbox for url */}
-					<div className="form-control w-full max-w-xs mt-4">
-						<label className="label">
-							<span className="label-text text-xl">
-								Website URL
-							</span>
-						</label>
-						<input
-							type="text"
-							placeholder="Type here"
-							className="input input-bordered w-full max-w-xs"
-							value={url}
-							onChange={(e) => setUrl(e.target.value)}
-						/>
-					</div>
+						{/* textbox for url */}
+						<div className="form-control w-full max-w-xs mt-4">
+							<label className="label">
+								<span className="label-text text-xl">
+									Website URL
+								</span>
+							</label>
+							<input
+								type="text"
+								placeholder="Type here"
+								className="input input-bordered w-full max-w-xs"
+								value={url}
+								onChange={(e) => setUrl(e.target.value)}
+							/>
+						</div>
 
-					{/* textbox for description */}
-					<div className="mt-4 ">
-						<label className="label">
-							<span className="label-text text-xl">
-								Description
-							</span>
-						</label>
-						<textarea
-							className="textarea textarea-secondary w-full"
-							placeholder="Bio"
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-						></textarea>
+						{/* textbox for description */}
+						<div className="mt-4 ">
+							<label className="label">
+								<span className="label-text text-xl">
+									Description
+								</span>
+							</label>
+							<textarea
+								className="textarea textarea-secondary w-full"
+								placeholder="Bio"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+							></textarea>
+						</div>
+
+						<div>
+							<button
+								className="btn btn-lg btn-error text-2xl mt-12 flex items-center"
+								onClick={() => {
+									window.my_modal_1.showModal();
+								}}
+							>
+								<IconTrashFilled className="text-5xl text-error-content h-8 w-8" />
+								DELETE
+							</button>
+						</div>
 					</div>
-				</div>
+				) : null}
 			</div>
 			<dialog id="my_modal_3" className="modal">
 				<form method="dialog" className="modal-box">
 					<h3 className="font-bold text-lg">Confirm</h3>
 					<p className="py-4">
-						Are you Sure you Want to Save changes?
+						Are you sure you sant to save changes?
 					</p>
 					<div className="modal-action">
 						{/* if there is a button in form, it will close the modal */}
@@ -739,6 +726,33 @@ const VaultContent = () => {
 					</span>
 				</div>
 			</div>
+			<div
+				className="toast toast-end duration-300 transform-gpu ease-in-out hidden"
+				id="toast_problem"
+			>
+				<div className="alert alert-error bg-error">
+					<span className="flex items-center gap-4 text-2xl">
+						<IconAlertCircleFilled className="w-10 h-10" />
+						<p id="toast_content_problem">Copied to Clipboard!</p>
+					</span>
+				</div>
+			</div>
+			<dialog id="my_modal_1" className="modal">
+				<form method="dialog" className="modal-box">
+					<div className="font-bold text-3xl">Are You Sure?</div>
+					<p className="py-4">
+						Are you sure you want to delete this password? It is
+						irreversable!
+					</p>
+					<div className="modal-action flex gap-4">
+						{/* if there is a button in form, it will close the modal */}
+						<button className="btn" onClick={handleDelete}>
+							Yes, Delete!
+						</button>
+						<button className="btn">NO!</button>
+					</div>
+				</form>
+			</dialog>
 		</div>
 	);
 };

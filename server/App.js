@@ -316,7 +316,7 @@ app.post("/update_vault_data", async (request, response) => {
   const password = request.query.password;
   const url = request.query.url;
   const description = request.query.description;
-  const icon = request.query.ico;
+  const icon = request.query.icon;
   const pass_id = request.query.pass_id;
 
   try {
@@ -365,6 +365,11 @@ app.post("/add_vault", async (request, response) => {
 // Route for deleting vaults data
 app.post("/delete_vault_data", async (request, response) => {
   const pass_id = request.query.pass_id;
+  console.log(pass_id)
+  if (!pass_id) {
+    response.send({ message: "failure" });
+    return;
+  }
   try {
     const vault_data = await dbobj.delete_vault_data(pass_id);
     if (vault_data) {
@@ -394,7 +399,8 @@ app.post("/delete_vault", async (request, response) => {
 
 // Route for get vault passwords
 app.post("/get_vault_data", async (request, response) => {
-  const vaultid = request.query.vaultid;
+  const vaultid = request.query.vault_id;
+  console.log(vaultid)
   try {
     const vault_data = await dbobj.get_vault_data(vaultid);
     if (vault_data) {
