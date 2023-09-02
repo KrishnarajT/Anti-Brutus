@@ -13,14 +13,11 @@ class DatabaseManager {
   initializeDatabase() {
     const createTableQuery = fs.readFileSync(
       path.join(__dirname, "./database", "create_tables.sql"),
-      "utf8"
+      "utf8",
     );
-    // console.log(createTableQuery);
     this.db.exec(createTableQuery, (err) => {
       if (err) {
-        console.log("Error creating tables:", err);
       } else {
-        console.log("Tables created successfully.");
       }
     });
   }
@@ -34,12 +31,8 @@ class DatabaseManager {
           reject(err); // Reject with the error if there's an issue with the query
         } else {
           if (row) {
-            console.log("User found");
-            console.log(row);
             resolve(row); // Resolve with true if the user exists
           } else {
-            console.log("User not found");
-            console.log(row);
             resolve(false); // Resolve with false if the user doesn't exist
           }
         }
@@ -56,8 +49,6 @@ class DatabaseManager {
         console.error("Error executing query:", err);
         callback(err, null);
       } else {
-        console.log("Query executed successfully.");
-        // console.log(rows);
         callback(null, rows);
       }
     });
@@ -82,7 +73,7 @@ class DatabaseManager {
           } else {
             resolve(true); // Resolve with true if the user exists
           }
-        }
+        },
       );
     });
   }
@@ -92,18 +83,22 @@ class DatabaseManager {
       const query = `INSERT INTO users (email, password, UserName, salt,DEK)
             VALUES (?,?,?,?,?)`;
 
-      this.db.run(query, [email, password, UserName, salt, DEK], async (err) => {
-        if (err) {
-          reject(err); // Reject with the error if there's an issue with the query
-        } else {
-          const added_vaults = await this.addDefaultVaults(email);
-          if (added_vaults) {
-            resolve(true); // Resolve with true if the user inserted
+      this.db.run(
+        query,
+        [email, password, UserName, salt, DEK],
+        async (err) => {
+          if (err) {
+            reject(err); // Reject with the error if there's an issue with the query
           } else {
-            reject("Error adding default vaults");
+            const added_vaults = await this.addDefaultVaults(email);
+            if (added_vaults) {
+              resolve(true); // Resolve with true if the user inserted
+            } else {
+              reject("Error adding default vaults");
+            }
           }
-        }
-      });
+        },
+      );
     });
   }
 
@@ -128,7 +123,7 @@ class DatabaseManager {
     password,
     url,
     description,
-    icon
+    icon,
   ) {
     return new Promise((resolve, reject) => {
       const query = `Insert into passwords
@@ -163,7 +158,7 @@ class DatabaseManager {
           } else {
             resolve(true); // Resolve with true if the user exists
           }
-        }
+        },
       );
     });
   }
@@ -176,7 +171,7 @@ class DatabaseManager {
     password,
     url,
     description,
-    icon
+    icon,
   ) {
     return new Promise((resolve, reject) => {
       const query = `UPDATE passwords SET 
@@ -206,7 +201,7 @@ class DatabaseManager {
           } else {
             resolve(true); // Resolve with true if the user exists
           }
-        }
+        },
       );
     });
   }
@@ -253,64 +248,62 @@ class DatabaseManager {
       });
     });
   }
-  
-  async delete_vault_data(pass_id){
-	return new Promise((resolve, reject) => {
-	  const query = `DELETE FROM passwords WHERE pass_id = ?`;
 
-	  this.db.run(query, [pass_id], (err) => {
-		if (err) {
-		  reject(err); // Reject with the error if there's an issue with the query
-		} else {
-		  resolve(true); // Resolve with data if the user exists
-		}
-	  });
-	});
+  async delete_vault_data(pass_id) {
+    return new Promise((resolve, reject) => {
+      const query = `DELETE FROM passwords WHERE pass_id = ?`;
+
+      this.db.run(query, [pass_id], (err) => {
+        if (err) {
+          reject(err); // Reject with the error if there's an issue with the query
+        } else {
+          resolve(true); // Resolve with data if the user exists
+        }
+      });
+    });
   }
 
   async delete_vault(vault_id) {
-	return new Promise((resolve, reject) => {
-	  const query = `DELETE FROM vaults WHERE vault_id = ?`;
+    return new Promise((resolve, reject) => {
+      const query = `DELETE FROM vaults WHERE vault_id = ?`;
 
-	  this.db.run(query, [vault_id], (err) => {
-		if (err) {
-		  reject(err); // Reject with the error if there's an issue with the query
-		} else {
-		  resolve(true); // Resolve with data if the user exists
-		}
-	  });
-	});
+      this.db.run(query, [vault_id], (err) => {
+        if (err) {
+          reject(err); // Reject with the error if there's an issue with the query
+        } else {
+          resolve(true); // Resolve with data if the user exists
+        }
+      });
+    });
   }
 
   async get_no_of_passwords(user_id) {
-	return new Promise((resolve, reject) => {
-	  const query = `select count(*) as count from passwords where user_id = ?`;
+    return new Promise((resolve, reject) => {
+      const query = `select count(*) as count from passwords where user_id = ?`;
 
-	  this.db.all(query, [user_id], (err, rows) => {
-      if (err) {
-        console.log(err)
-				reject(err); // Reject with the error if there's an issue with the query
-			} else {
-				resolve(rows); // Resolve with data if the user exists
-			}
-		});
-	});
+      this.db.all(query, [user_id], (err, rows) => {
+        if (err) {
+          reject(err); // Reject with the error if there's an issue with the query
+        } else {
+          resolve(rows); // Resolve with data if the user exists
+        }
+      });
+    });
   }
 
   async get_no_of_vaults(user_email) {
-	return new Promise((resolve, reject) => {
-	  const query = `select count(*) as count from vaults where user_email = ?`;
+    return new Promise((resolve, reject) => {
+      const query = `select count(*) as count from vaults where user_email = ?`;
 
-	  this.db.all(query, [user_email], (err, rows) => {
-			if (err) {
-				reject(err); // Reject with the error if there's an issue with the query
-			} else {
-				resolve(rows); // Resolve with data if the user exists
-			}
-		});
-	});
+      this.db.all(query, [user_email], (err, rows) => {
+        if (err) {
+          reject(err); // Reject with the error if there's an issue with the query
+        } else {
+          resolve(rows); // Resolve with data if the user exists
+        }
+      });
+    });
   }
-
 }
 var dbobj = new DatabaseManager();
 

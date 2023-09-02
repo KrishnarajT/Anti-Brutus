@@ -3,17 +3,12 @@ import "../css/Home.css";
 
 import { ThemeContext } from "../context/ThemeContext";
 import { useEffect } from "react";
-import { IconArrowRight, IconArrowWaveRightUp } from "@tabler/icons-react";
-import {
-  ArrowRightCircleIcon,
-  ArrowUpRightIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 
 const Generator_Home = () => {
   const { theme } = React.useContext(ThemeContext);
   useEffect(() => {
-    console.log(theme);
     if (theme === "light") {
       const light_button = document.getElementById("light_button");
       light_button.click();

@@ -7,7 +7,6 @@ import { ThemeContext } from "../context/ThemeContext";
 const Hashed = () => {
   const { theme } = React.useContext(ThemeContext);
   useEffect(() => {
-    console.log(theme);
     if (theme === "light") {
       const light_button = document.getElementById("light_button");
       light_button.click();
@@ -84,7 +83,6 @@ const Hashed = () => {
     if (updated_whichth_pos === undefined) {
       updated_whichth_pos = 0;
     }
-    console.log(includeUppercase, includeSymbols, base_hash_string);
     let result = "";
     let hashSubstring = "";
     const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -98,8 +96,6 @@ const Hashed = () => {
       (updated_whichth_pos + 1) * length,
     );
     // const hashSubstring = hash.substring(hash.length - length);
-    console.log(hash, length, updated_whichth_pos);
-    console.log("this substring is: ", hashSubstring);
     if (includeSymbols && includeUppercase) {
       // find a random number between 0 and length
       // replace that character with a random uppercase letter
@@ -117,14 +113,6 @@ const Hashed = () => {
         randomUppercase +
         randomSymbol +
         hashSubstring.substring(randomIndex + 2);
-      console.log(
-        result,
-        randomIndex,
-        randomSymbolIndex,
-        randomUppercase,
-        randomSymbol,
-        hashSubstring,
-      );
     } else if (includeSymbols && !includeUppercase) {
       // find a random number between 0 and length
       // replace that character with a random symbol
@@ -152,18 +140,6 @@ const Hashed = () => {
     } else {
       result = hashSubstring;
     }
-    // console.log(result);
-    // if (
-    // 	(includeSymbols && !result.match(/[!@#$%&*]/)) ||
-    // 	(includeUppercase && !result.match(/[A-Z]/))
-    // ) {
-    // 	return generatePassword(
-    // 		length,
-    // 		includeSymbols,
-    // 		includeUppercase,
-    // 		base_hash_string
-    // 	);
-    // }
     return result;
   };
   function onGeneratePasswordClick() {
@@ -174,7 +150,6 @@ const Hashed = () => {
       base_hash_string,
     );
     if (password) {
-      console.log(password);
       setPassword(password);
       // enable the whichthpositionslider
       const whichth_position_slider = document.querySelector(

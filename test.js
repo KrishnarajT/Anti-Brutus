@@ -10,9 +10,7 @@ function test(something) {
     // Insert data into the table
     db.run(`INSERT INTO Foo (name) VALUES (${something})`);
     // Query data from the table
-    db.each("SELECT id, name FROM Foo", function (err, row) {
-      console.log(row.id + ": " + row.name);
-    });
+    db.each("SELECT id, name FROM Foo", function (err, row) {});
   });
   db.close();
 }
