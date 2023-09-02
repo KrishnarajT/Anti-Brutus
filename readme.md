@@ -62,10 +62,10 @@ This is also our Third Year Full Stack Development Project.
 
 # Distribution
 
-1. Krish - Frontend
-2. Karad - SQL
-3. Parth - Security
-4. Saubhagya - Backend
+1. Sourab Karad - Backend Database
+2. Saubhagya Singh - Responsive Design
+3. Parth Zarekar - Security and Backend
+4. Krishnaraj T - Front End
 
 # Credits
 
