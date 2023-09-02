@@ -2,8 +2,56 @@ import React from "react";
 import { useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import "../css/Home.css";
+import axios from "axios";
+import { BaseUrlContext } from "../context/BaseUrlContext";
+import { UserInfoContext } from "../context/UserInfoContext";
+
 const Profile = () => {
 	const { theme } = React.useContext(ThemeContext);
+	const base_url = React.useContext(BaseUrlContext).baseUrl;
+	const userEmail = React.useContext(UserInfoContext).userEmail;
+	const simulation_data = {
+		user_name: "John Doe",
+		count_passwords: 10,
+		count_vaults: 5,
+	};
+	const [data, setData] = React.useState(null);
+	const getDataFromServer = async () => {
+		const response = await axios
+			.post(
+				`${base_url}/get_profile_data`,
+				{},
+				{
+					params: {
+						user_email: userEmail,
+					},
+				}
+			)
+			.then((response) => {
+				return response;
+			})
+			.catch((error) => {
+				console.error(error);
+				// alert("server not running! a simulated response is being sent");
+				const response = {
+					data: {
+						message: "simulation",
+					},
+				};
+				return response;
+			});
+		console.log(response.data);
+		if (response.data.message === "simulation") {
+			setData(simulation_data);
+		} else {
+			if (response.data.length === 0) {
+				setData(simulation_data);
+			} else {
+				setData(response.data.data);
+			}
+		}
+	};
+
 	useEffect(() => {
 		if (theme === "light") {
 			const light_button = document.getElementById("light_button");
@@ -12,7 +60,13 @@ const Profile = () => {
 			const dark_button = document.getElementById("dark_button");
 			dark_button.click();
 		}
+		if (!data) {
+			getDataFromServer();
+			// if (data.user_name !== "John Doe") {
+			// }
+		}
 	});
+	console.log(data);
 	return (
 		<div
 			className="h-screen p-10"
@@ -69,33 +123,42 @@ const Profile = () => {
 						/>
 					</svg>
 				</div>
-				<div className="flex flex-col justify-start h-full items-start w-1/2 py-10">
-					<div>
-						<div className="text-4xl m-2">
-							Name: <span className="text-accent">John Doe</span>
+				{data ? (
+					<div className="flex flex-col justify-start h-full items-start w-1/2 py-10">
+						<div>
+							<div className="text-4xl m-2">
+								Name:{" "}
+								<span className="text-accent">
+									{data.user_name}
+								</span>
+							</div>
+						</div>
+						<div>
+							<div className="text-4xl m-2">
+								Registered Email:{" "}
+								<span className="text-accent">{userEmail}</span>
+							</div>
+						</div>
+						<div>
+							<div className="text-4xl m-2">
+								No. of Passwords Saved:{" "}
+								<span className="text-accent">
+									{data.count_passwords}
+								</span>
+							</div>
+						</div>
+						<div>
+							<div className="text-4xl m-2">
+								No. of Vaults:{" "}
+								<span className="text-accent">
+									{data.count_vaults}
+								</span>
+							</div>
 						</div>
 					</div>
-					<div>
-						<div className="text-4xl m-2">
-							Registered Email:{" "}
-							<span className="text-accent">
-								Johndoe@gmail.com
-							</span>
-						</div>
-					</div>
-					<div>
-						<div className="text-4xl m-2">
-							No. of Passwords Saved:{" "}
-							<span className="text-accent">123</span>
-						</div>
-					</div>
-					<div>
-						<div className="text-4xl m-2">
-							No. of Vaults:{" "}
-							<span className="text-accent">4</span>
-						</div>
-					</div>
-				</div>
+				) : (
+					<span className="loading loading-infinity loading-xs"></span>
+				)}
 			</div>
 		</div>
 	);
