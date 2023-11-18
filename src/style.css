@@ -5572,3 +5572,11 @@ body {
     line-height: 1.75rem;
   }
 }
+@media (max-width: 768px) and (max-height: 368px) {
+  div #how{
+     font-size: 20px;
+     padding: 10px;
+     margin: 10px;
+     background-color: black;
+   }
+ }

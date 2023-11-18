@@ -47,9 +47,9 @@ export function Navbar(props) {
   }
 
   return (
-    <div className="pr-4 mr-4 z-50">
+    <div className="pr-4 mr-2 ml-2 z-50 md:pr-4 mr-0 ml-0">
       <div
-        className={`navbar bg-primary rounded-xl text-primary-content flex-row-reverse justify-between m-4 
+        className={`navbar bg-primary rounded-xl text-primary-content flex-row-reverse justify-between m-2 
 			md:flex-row`}
       >
         {/* name */}
