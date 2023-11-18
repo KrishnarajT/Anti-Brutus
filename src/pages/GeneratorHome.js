@@ -16,7 +16,6 @@ import { useEffect } from "react";
 const GeneratorHome = () => {
   const { theme } = React.useContext(ThemeContext);
   useEffect(() => {
-    console.log(theme);
     if (theme === "light") {
       const light_button = document.getElementById("light_button");
       light_button.click();

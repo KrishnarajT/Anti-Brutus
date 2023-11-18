@@ -8,13 +8,6 @@ const Card = (props) => {
       className="card w-[28rem] mediumshadow hover:scale-105 transform-gpu duration-200
         hover:shadow-2xl bg-primary hover:bg-primary-focus text-primary-content titillium"
     >
-      {/* <figure className="px-10 pt-10">
-				<img
-					src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-					alt="Shoes"
-					className="rounded-xl"
-				/>
-			</figure> */}
       <div className="card-body items-center text-center">
         <div className="card-title text-4xl mb-2">{props.title}</div>
         {props.icon}
