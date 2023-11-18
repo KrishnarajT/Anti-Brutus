@@ -57,7 +57,7 @@ const About = () => {
         className="flex justify-center p-2 flex-col align-middle items-center md:p-4"
         id="how"
       >
-        <div className="mt-6 text-base-content text-4xl p-2 text-center rounded-full px-12 outline-secondary mb-6 outline md:text-5xl md:mb-0 md:mt-0">
+        <div className="mt-6 text-base-content text-4xl p-2 text-center rounded-full px-12 outline-secondary mb-6 outline md:text-6xl md:mb-12 md:mt-12 ">
           Developers
         </div>
         <div className="flex flex-wrap flex-row gap-12 items-center justify-center align-middle mx-10 md:gap-16">
