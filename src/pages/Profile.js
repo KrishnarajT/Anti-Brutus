@@ -25,7 +25,7 @@ const Profile = () => {
           params: {
             user_email: userEmail,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -73,7 +73,7 @@ const Profile = () => {
       <div className="text-6xl titillium m-4 text-center w-full text-accent">
         Profile
       </div>
-      <div className="flex outline rounded-3xl m-10 p-12 items-center justify-evenly h-1/2">
+      <div className="flex flex-col md:flex-row outline rounded-3xl m-10 p-8 md:p-12 lg:p-16 items-center justify-center md:justify-between max-w-screen-l  mx-auto">
         <div className="w-96 h-96">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ const Profile = () => {
           </svg>
         </div>
         {data ? (
-          <div className="flex flex-col justify-start h-full items-start w-1/2 py-10">
+          <div className="flex flex-col justify-start h-full items-start w-full md:w-1/2 lg:w-2/3 py-10">
             <div>
               <div className="text-4xl m-2">
                 Name: <span className="text-accent">{data.user_name}</span>

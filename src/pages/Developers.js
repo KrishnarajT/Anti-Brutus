@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   IconBrandGithub,
   IconBrandGmail,
@@ -6,11 +6,11 @@ import {
   IconPhoneCall,
 } from "@tabler/icons-react";
 import { ThemeContext } from "../context/ThemeContext";
-import { useEffect } from "react";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 const Developers = ({ data }) => {
   const { theme } = React.useContext(ThemeContext);
+
   useEffect(() => {
     if (theme === "light") {
       const light_button = document.getElementById("light_button");
@@ -20,6 +20,7 @@ const Developers = ({ data }) => {
       dark_button.click();
     }
   });
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div
@@ -33,17 +34,12 @@ const Developers = ({ data }) => {
           <button
             className="btn btn-neutral btn-circle btn-lg"
             onClick={() => {
-              // copy the phone number to clipboard
-              // show the toast
               navigator.clipboard.writeText("+91 9834312135");
               const toast = document.querySelector(".toast");
               toast.classList.remove("hidden");
               setTimeout(() => {
                 toast.classList.add("hidden");
               }, 2000);
-              // show toast
-              // open the phone app
-              // window.open("tel:+919834312135", "_blank");
             }}
           >
             <IconPhoneCall stroke={1} className="w-8 h-8" />
@@ -67,15 +63,8 @@ const Developers = ({ data }) => {
           <button
             className="btn btn-neutral btn-circle btn-lg"
             onClick={() => {
-              // navigator.clipboard.writeText(data.github);
-              // const toast = document.querySelector(".toast");
-              // toast.classList.remove("hidden");
-              // setTimeout(() => {
-              // 	toast.classList.add("hidden");
-              // }, 2000);
               window.open(data.github, "_blank");
             }}
-            // copy to clipboard and show toast.
           >
             <IconBrandGithub stroke={1} className="w-8 h-8" />
           </button>
