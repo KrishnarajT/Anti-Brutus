@@ -266,6 +266,15 @@ app.post("/add_vault_data", async (request, response) => {
   const encryptedPassword = encryptData(Password, DEK);
   const encryptedUrl = encryptData(Url, DEK);
 
+  console.log("Pass_name:", Pass_name);
+  console.log("username:", username);
+  console.log("Password:", Password);
+  console.log("Url:", Url);
+  console.log("Description:", Description);
+  console.log("Icon:", Icon);
+  console.log("email:", email);
+
+  
   if (user_fate) {
     try {
       const vault_data = await dbobj.add_vault_data(
