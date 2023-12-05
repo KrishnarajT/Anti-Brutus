@@ -10,6 +10,8 @@ const get_data = require("./firebase");
 // Enable CORS
 app.use(cors());
 
+app.options('*',cors());
+
 // Importing crypto module for generating salt and hashing password
 const crypto = require("crypto");
 
