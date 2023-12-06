@@ -20,7 +20,7 @@ const GeneratorHome = () => {
 
   return (
     <div className="" id={theme === "light" ? "divbg" : "divbgdark"}>
-      <div className="flex flex-col lg:flex-row justify-between p-8">
+      <div className="flex flex-col lg:flex-row justify-between p-8 overscroll-auto">
         <div className="flex-1">
           <div className="text-[4rem] lg:text-[8rem] text-netural titillium p-4 lg:p-8 m-4 lg:m-8 line leading-tight">
             The Only Password Manager you need!
