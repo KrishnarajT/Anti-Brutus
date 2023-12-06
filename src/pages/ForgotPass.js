@@ -51,7 +51,7 @@ const ForgotPass = (props) => {
               email: email,
               password: password,
             },
-          },
+          }
         )
         .then((response) => {
           return response;
@@ -88,7 +88,7 @@ const ForgotPass = (props) => {
               params: {
                 email: email,
               },
-            },
+            }
           )
           .then((response) => {
             return response;
@@ -122,7 +122,7 @@ const ForgotPass = (props) => {
         } else {
           comment.innerHTML = "Server not running!";
           alert(
-            "Something went wrong! Server not running! Call the Devs! couldnt send otp",
+            "Something went wrong! Server not running! Call the Devs! couldnt send otp"
           );
         }
       } else if (response.data.message === "user not found") {
@@ -148,7 +148,7 @@ const ForgotPass = (props) => {
               email: email,
               password: password,
             },
-          },
+          }
         )
         .then((response) => {
           return response;
@@ -220,7 +220,7 @@ const ForgotPass = (props) => {
 
     if (!validatePassword(value)) {
       setPasswordError(
-        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one symbol.",
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one symbol."
       );
     } else {
       setPasswordError("");
@@ -253,7 +253,6 @@ const ForgotPass = (props) => {
     e.preventDefault();
     // Submit the form
   };
-
   return (
     <div className="p-0 m-0 bg-base-100">
       <div className="overflow-hidden">
@@ -267,17 +266,11 @@ const ForgotPass = (props) => {
                 </div>
               </div>
             </div>
-            <div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
-              <h2
-                className="text-center text-4xl text-primary-content font-display font-semibold lg:text-left xl:text-5xl
-              xl:text-bold"
-              >
+            <div className="mt-10 px-4 lg:px-12 xl:px-24 xl:max-w-2xl">
+              <h2 className="text-center text-4xl text-primary-content font-display font-semibold lg:text-left xl:text-5xl xl:text-bold">
                 Reset Password
               </h2>
-              <div
-                className="text-center text-xl text-secondary font-display font-semibold lg:text-left xl:text-xl
-              xl:text-bold rubik pt-3"
-              >
+              <div className="text-center text-xl text-secondary font-display font-semibold lg:text-left xl:text-xl xl:text-bold rubik pt-3">
                 “The fault, dear Brutus, is not in our stars But in ourselves.”{" "}
                 <br></br>
                 <br></br>
@@ -393,5 +386,4 @@ const ForgotPass = (props) => {
     </div>
   );
 };
-
 export default ForgotPass;
