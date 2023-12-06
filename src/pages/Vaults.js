@@ -47,7 +47,7 @@ const Vaults = () => {
           params: {
             vault_id: deleteVaultID,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -94,7 +94,7 @@ const Vaults = () => {
           params: {
             user_email: userEmail,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -157,7 +157,7 @@ const Vaults = () => {
             vault_description: newVaultDescription,
             user_email: userEmail,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -211,11 +211,11 @@ const Vaults = () => {
         </div>
       </div>
       <div>
-        <div className="overflow-x-auto p-8 px-20 flex flex-wrap justify-center">
+        <div className="overflow-x-auto p-4 md:p-8 lg:px-20 flex flex-wrap justify-center">
           {vaults.length > 0
             ? vaults.map((vault) => {
                 return (
-                  <div className="card w-1/4 h-72 bg-base-100 shadow-xl image-full m-4">
+                  <div className="card w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 h-72 bg-base-100 shadow-xl image-full m-4">
                     <div
                       style={{
                         backgroundImage: `url("${vault.vault_image}")`,
@@ -245,7 +245,7 @@ const Vaults = () => {
                           className="btn btn-primary btn-lg"
                           onClick={() => {
                             navigate(
-                              `/vaults/${vault.vault_id}/${vault.vault_name}`,
+                              `/vaults/${vault.vault_id}/${vault.vault_name}`
                             );
                           }}
                         >
