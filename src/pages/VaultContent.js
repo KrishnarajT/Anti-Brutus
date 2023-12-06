@@ -146,7 +146,7 @@ const VaultContent = () => {
             user_email: user_email,
             vault_id: params.id,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -195,7 +195,7 @@ const VaultContent = () => {
           params: {
             pass_id: selected_password.pass_id,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -289,7 +289,7 @@ const VaultContent = () => {
               description: description,
               icon: `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`,
             },
-          },
+          }
         )
         .then((response) => {
           return response;
@@ -361,7 +361,7 @@ const VaultContent = () => {
               description: description,
               icon: `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`,
             },
-          },
+          }
         )
         .then((response) => {
           return response;
@@ -459,7 +459,7 @@ const VaultContent = () => {
         </div>
       </div>
       <div className="flex">
-        <div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll scroll-smooth">
+        <div className="overflow-x-hidden p-8 px-20 flex-1 h-[70vh] scroll-m-4 will-change-scroll w-[30vh]scroll-smooth">
           {passwords.length !== 0 ? (
             <table className="table text-xl">
               {/* head */}
