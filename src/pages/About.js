@@ -63,6 +63,7 @@ const About = () => {
           {developers.map((dev, index) => (
             <Developers key={index} data={dev} />
           ))}
+
         </div>
 
         <div className="text-base-content text-5xl p-4 text-center rounded-full px-16 outline-secondary outline m-20 md:text-6xl">
@@ -72,10 +73,41 @@ const About = () => {
           Huge thanks to DaisyUI for the CSS framework, and Heroicons for the
           icons. Here are the links:
           <br />
+
           <div className="flex m-2 p-2 flex-wrap md:m-4 md:p-4">
             <a
               href="https://daisyui.com/"
               className="ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
+
+            >
+              {" "}
+              DaisyUI{" "}
+            </a>
+            <br></br>
+            <a
+              href="https://heroicons.com/"
+              className="ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
+            >
+              {" "}
+              Hero Icons{" "}
+            </a>
+            <a
+              href="https://tabler-icons.io/"
+              className=" ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
+            >
+              {" "}
+              Tabler Icons{" "}
+            </a>
+            <a
+              href="https://www.tailwindcss.com/"
+              className="ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
+            >
+              {" "}
+              TailwindCSS{" "}
+            </a>
+            <a
+              href="https://react.dev/"
+              className=" ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
             >
               DaisyUI
             </a>
