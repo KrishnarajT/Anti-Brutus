@@ -37,7 +37,8 @@ const GeneratorHome = () => {
             theme === "light" ? "svgthing" : "svgthingdark"
           }`}
         >
-          <div className="text-4xl lg:text-9xl titillium text-center lg:text-left">
+          <div class="text-2xl lg:text-9xl titillium text-center lg:text-left">
+            {" "}
             Generate your Own Secure Passwords!
           </div>
           <button
