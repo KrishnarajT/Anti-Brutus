@@ -6,7 +6,7 @@ import About from "./pages/About";
 import Random from "./pages/Random";
 import Master from "./pages/Master";
 import Hashed from "./pages/Hashed";
-import ThemeContextProvider from "./context/ThemeContext";
+import { ThemeContextProvider } from "./context/ThemeContextProvider";
 import Developers from "./pages/Developers";
 import Vaults from "./pages/Vaults";
 import Profile from "./pages/Profile";

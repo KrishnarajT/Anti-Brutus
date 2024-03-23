@@ -272,7 +272,6 @@ app.post("/add_vault_data", async (request, response) => {
   console.log("Icon:", Icon);
   console.log("email:", email);
 
-  
   if (user_fate) {
     try {
       const vault_data = await dbobj.add_vault_data(

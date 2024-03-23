@@ -1,0 +1,13 @@
+version: "latest"
+services:
+  frontend:
+    image: krishnarajt/anti-brutus-frontend:latest
+    ports:
+      - 3000:3000
+    environment:
+      - HOST=0.0.0.0
+
+  backend:
+    image: krishnarajt/anti-brutus-backend:latest
+    ports:
+      - 5000:5000

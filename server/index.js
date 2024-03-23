@@ -13,7 +13,7 @@ const normalizePort = (val) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort("5000");
 app.set("port", port);
 
 const errorHandler = (error) => {
@@ -41,6 +41,8 @@ const errorHandler = (error) => {
 const server = http.createServer(app);
 
 server.on("error", errorHandler);
-server.on("listening", () => {});
+server.on("listening", () => {
+  console.log(`Server is listening on port: ${port}`);
+});
 
 server.listen(port);
