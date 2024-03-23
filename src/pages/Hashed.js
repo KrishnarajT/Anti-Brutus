@@ -39,14 +39,14 @@ const Hashed = () => {
     setPasswordLength(event.target.value);
     regenerate_password(
       parseInt(event.target.value),
-      parseInt(whichth_position),
+      parseInt(whichth_position)
     );
   };
   const handleWhichthPositionChanger = (event) => {
     setWhichthPosition(() => {
       regenerate_password(
         parseInt(passwordLength),
-        parseInt(event.target.value),
+        parseInt(event.target.value)
       );
       return parseInt(event.target.value);
     });
@@ -54,14 +54,14 @@ const Hashed = () => {
 
   const regenerate_password = (
     updated_password_length,
-    updated_whichth_pos,
+    updated_whichth_pos
   ) => {
     const password = generatePassword(
       updated_password_length,
       includeSymbols,
       includeUppercase,
       base_hash_string,
-      updated_whichth_pos,
+      updated_whichth_pos
     );
     if (password) {
       setPassword(password);
@@ -73,7 +73,7 @@ const Hashed = () => {
     includeSymbols,
     includeUppercase,
     base_hash_string,
-    updated_whichth_pos,
+    updated_whichth_pos
   ) => {
     if (base_hash_string === undefined) {
       // base_hash_string = "password"
@@ -93,7 +93,7 @@ const Hashed = () => {
     // use whichth position here to take a substring only from that position
     hashSubstring = hash.substring(
       updated_whichth_pos * length,
-      (updated_whichth_pos + 1) * length,
+      (updated_whichth_pos + 1) * length
     );
     // const hashSubstring = hash.substring(hash.length - length);
     if (includeSymbols && includeUppercase) {
@@ -103,7 +103,7 @@ const Hashed = () => {
       // do this only once.
       const randomIndex = Math.floor(Math.random() * length);
       const randomUppercaseIndex = Math.floor(
-        Math.random() * uppercaseLetters.length,
+        Math.random() * uppercaseLetters.length
       );
       const randomUppercase = uppercaseLetters[randomUppercaseIndex];
       const randomSymbolIndex = Math.floor(Math.random() * symbols.length);
@@ -130,7 +130,7 @@ const Hashed = () => {
       // do this only once.
       const randomIndex = Math.floor(Math.random() * length);
       const randomUppercaseIndex = Math.floor(
-        Math.random() * uppercaseLetters.length,
+        Math.random() * uppercaseLetters.length
       );
       const randomUppercase = uppercaseLetters[randomUppercaseIndex];
       result =
@@ -147,13 +147,13 @@ const Hashed = () => {
       passwordLength,
       includeSymbols,
       includeUppercase,
-      base_hash_string,
+      base_hash_string
     );
     if (password) {
       setPassword(password);
       // enable the whichthpositionslider
       const whichth_position_slider = document.querySelector(
-        "#whichth_position_slider",
+        "#whichth_position_slider"
       );
       whichth_position_slider.disabled = false;
     }
@@ -196,7 +196,7 @@ const Hashed = () => {
         {/* tweak params */}
         <div className="outline p-4 flex-1 m-16 rounded-3xl outline-secondary h-fit">
           <div className="flex justify-center p-4">
-            <div className="text-base-content text-5xl p-4">
+            <div className="text-base-content text-3xl p-4 lg:text-5xl">
               Tweak Input Parameters
             </div>
           </div>

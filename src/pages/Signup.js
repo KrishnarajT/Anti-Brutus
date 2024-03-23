@@ -73,7 +73,7 @@ const Signup = (props) => {
 
     if (!validateUsername(value)) {
       setUsernameError(
-        "Username must be between 3 and 16 characters long and can only contain letters, numbers, underscores, and hyphens.",
+        "Username must be between 3 and 16 characters long and can only contain letters, numbers, underscores, and hyphens."
       );
     } else {
       setUsernameError("");
@@ -100,7 +100,7 @@ const Signup = (props) => {
     // Check if password is valid
     if (!validatePassword(value)) {
       setPasswordError(
-        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one symbol.",
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one symbol."
       );
     } else {
       setPasswordError("");
@@ -136,7 +136,7 @@ const Signup = (props) => {
               params: {
                 email: email,
               },
-            },
+            }
           )
           .then((response) => {
             return response;
@@ -182,7 +182,7 @@ const Signup = (props) => {
                 params: {
                   email: email,
                 },
-              },
+              }
             )
             .then((response) => {
               return response;
@@ -243,7 +243,7 @@ const Signup = (props) => {
                 password: password,
                 special_string: "dog",
               },
-            },
+            }
           )
           .then((response) => {
             return response;
@@ -537,7 +537,6 @@ const Signup = (props) => {
                 <div id="brutuslogo" className="w-16 h-16 m-4"></div>
               </div>
             </div>
-
             <div className="max-w-xs transform duration-200 hover:scale-105 cursor-pointer">
               <div id="mainsvgsignup" className="w-[50rem] h-[50rem]"></div>
             </div>

@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import "../css/About.css";
 import Developers from "./Developers";
@@ -42,44 +41,44 @@ const developers = [
 
 const About = () => {
   const { theme } = React.useContext(ThemeContext);
+
   useEffect(() => {
-    if (theme === "light") {
-      const light_button = document.getElementById("light_button");
-      light_button.click();
-    } else {
-      const dark_button = document.getElementById("dark_button");
-      dark_button.click();
-    }
-  });
+    const themeButton =
+      theme === "light"
+        ? document.getElementById("light_button")
+        : document.getElementById("dark_button");
+    themeButton.click();
+  }, [theme]);
+
   return (
     <div>
       <div
-        className="flex justify-center p-4 flex-col align-middle items-center"
+        className="flex justify-center p-2 flex-col align-middle items-center md:p-4"
         id="how"
       >
-        <div className="text-base-content text-5xl p-4 text-center rounded-full px-16 outline-secondary outline">
+        <div className="mt-6 text-base-content text-4xl p-2 text-center rounded-full px-12 outline-secondary mb-6 outline md:text-6xl md:mb-12 md:mt-12">
           Developers
         </div>
-        <div className="flex flex-wrap flex-row gap-16 items-center justify-center align-middle mx-10">
-          <Developers data={developers[0]} />
-          <Developers data={developers[1]} />
-        </div>
-        <div className="flex flex-wrap flex-row gap-16 items-center justify-center align-middle mx-10">
-          <Developers data={developers[2]} />
-          <Developers data={developers[3]} />
+        <div className="flex flex-wrap gap-12 items-center justify-center align-middle mx-2 md:mx-10 md:gap-16">
+          {developers.map((dev, index) => (
+            <Developers key={index} data={dev} />
+          ))}
+
         </div>
 
-        <div className="text-base-content text-6xl p-4 text-center rounded-full px-16 outline-secondary outline m-20">
+        <div className="text-base-content text-5xl p-4 text-center rounded-full px-16 outline-secondary outline m-20 md:text-6xl">
           Credits and Thanks
         </div>
-        <div className="text-base-content text-3xl p-8 bg-base-200 rounded-3xl flex flex-col items-center outline mb-16 text-center">
+        <div className="text-base-content text-2xl p-4 bg-base-200 rounded-3xl flex flex-col items-center outline mb-16 text-center md:text-3xl">
           Huge thanks to DaisyUI for the CSS framework, and Heroicons for the
           icons. Here are the links:
-          <br></br>
-          <div className="flex m-4 p-4 flex-wrap">
+          <br />
+
+          <div className="flex m-2 p-2 flex-wrap md:m-4 md:p-4">
             <a
               href="https://daisyui.com/"
-              className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
+              className="ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
+
             >
               {" "}
               DaisyUI{" "}
@@ -87,44 +86,44 @@ const About = () => {
             <br></br>
             <a
               href="https://heroicons.com/"
-              className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
+              className="ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
             >
               {" "}
               Hero Icons{" "}
             </a>
             <a
               href="https://tabler-icons.io/"
-              className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
+              className=" ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
             >
               {" "}
               Tabler Icons{" "}
             </a>
             <a
               href="https://www.tailwindcss.com/"
-              className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
+              className="ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
             >
               {" "}
               TailwindCSS{" "}
             </a>
             <a
               href="https://react.dev/"
-              className="outline rounded-full m-4 p-4 text-center self-center hover:bg-neutral hover:text-neutral-content"
+              className=" ml-16 outline rounded-full m-3 p-4 w-44 text-center self-center hover:bg-neutral hover:text-neutral-content md:w-48 md:ml-8"
             >
-              {" "}
-              ReactJS{" "}
+              DaisyUI
             </a>
+            {/* Add other links here */}
           </div>
           This project was made as a part of the assignments for Full Stack
           Development Course at MIT WPU.
-          <br></br>
+          <br />
           We are grateful to our teachers, and our parents for encouraging us to
           keep trying new stuff, without any restrictions.
-          <br></br>
+          <br />
           None of this would be possible without their help.
-          <br></br>
-          <br></br>
+          <br />
+          <br />
           We are also grateful to our friends, for their inputs on the looks and
-          features of the website, and for constantly encourating us to keep
+          features of the website, and for constantly encouraging us to keep
           going.
         </div>
       </div>

@@ -35,7 +35,7 @@ const Login = (props) => {
             email: email,
             password: password,
           },
-        },
+        }
       )
       .then((response) => {
         return response;
@@ -99,7 +99,7 @@ const Login = (props) => {
     }
     if (!validatePassword(password)) {
       setPasswordError(
-        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.",
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
       );
     } else {
       setPasswordError("");
